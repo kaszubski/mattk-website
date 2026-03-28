@@ -9,354 +9,530 @@ import { en as t } from "@/i18n";
   <Nav t={t} />
 
   <main id="main-content">
-    <!-- Hero -->
-    <section class="hero section" aria-labelledby="hero-heading">
+
+    <!-- ── Hero ─────────────────────────────────────────── -->
+    <section class="hero" aria-labelledby="hero-heading">
       <div class="container">
-        <p class="hero__greeting">{t.hero.greeting}</p>
-        <h1 id="hero-heading" class="hero__name">Matt Kaszubski</h1>
-        <p class="hero__role">{t.hero.role}</p>
-        <p class="hero__tagline">{t.hero.tagline}</p>
-        <div class="hero__cta">
-          <a href="#writing" class="btn btn--primary">{t.hero.cta.writing}</a>
-          <a href="#contact" class="btn btn--secondary">{t.hero.cta.contact}</a>
+        <div class="hero__inner">
+          <p class="hero__kicker label">
+            <span class="hero__kicker-rule" aria-hidden="true"></span>
+            {t.hero.role}
+          </p>
+
+          <h1 id="hero-heading" class="hero__name">
+            Matt<br /><em>Kaszubski</em>
+          </h1>
+
+          <div class="hero__foot">
+            <p class="hero__tagline">{t.hero.tagline}</p>
+            <div class="hero__links" role="list">
+              <a href="#writing" class="hero__link" role="listitem">
+                {t.hero.cta.writing}
+                <span aria-hidden="true"> ↓</span>
+              </a>
+              <a href="#contact" class="hero__link hero__link--muted" role="listitem">
+                {t.hero.cta.contact}
+                <span aria-hidden="true"> ↓</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- About -->
-    <section class="section bg-subtle" id="about" aria-labelledby="about-heading">
+    <!-- ── About ─────────────────────────────────────────── -->
+    <section class="section" id="about" aria-labelledby="about-heading">
       <div class="container">
-        <h2 id="about-heading" class="section-title">{t.about.title}</h2>
-        {t.about.body.map((para) => <p class="about__para">{para}</p>)}
+        <div class="section-grid">
+          <div class="section-grid__label" aria-hidden="true">
+            <span class="label">About</span>
+          </div>
+          <div class="section-grid__content">
+            <h2 id="about-heading" class="section-heading">{t.about.title}</h2>
+            <div class="prose">
+              {t.about.body.map((para) => <p>{para}</p>)}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Experience -->
+    <!-- ── Experience ────────────────────────────────────── -->
     <section class="section" id="experience" aria-labelledby="experience-heading">
       <div class="container">
-        <h2 id="experience-heading" class="section-title">{t.experience.title}</h2>
-        <ul class="experience__list" role="list">
-          {
-            t.experience.roles.map((role) => (
-              <li class="experience__item">
-                <div class="experience__header">
-                  <div>
-                    <h3 class="experience__title">{role.title}</h3>
-                    <p class="experience__company">{role.company}</p>
-                  </div>
-                  <div class="experience__meta">
-                    <span>{role.period}</span>
-                    <span>{role.location}</span>
-                  </div>
-                </div>
-                <p class="experience__desc">{role.description}</p>
-              </li>
-            ))
-          }
-        </ul>
+        <div class="section-grid">
+          <div class="section-grid__label" aria-hidden="true">
+            <span class="label">Work</span>
+          </div>
+          <div class="section-grid__content">
+            <h2 id="experience-heading" class="section-heading">{t.experience.title}</h2>
+            <ul class="cv" role="list">
+              {
+                t.experience.roles.map((role) => (
+                  <li class="cv__entry">
+                    <div class="cv__left">
+                      <h3 class="cv__title">{role.title}</h3>
+                      <p class="cv__company">{role.company}</p>
+                      <p class="cv__desc">{role.description}</p>
+                    </div>
+                    <div class="cv__right">
+                      <span class="cv__period">{role.period}</span>
+                      <span class="cv__location">{role.location}</span>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Writing -->
-    <section class="section bg-subtle" id="writing" aria-labelledby="writing-heading">
+    <!-- ── Writing ───────────────────────────────────────── -->
+    <section class="section" id="writing" aria-labelledby="writing-heading">
       <div class="container">
-        <h2 id="writing-heading" class="section-title">{t.writing.title}</h2>
-        <p class="section-subtitle">{t.writing.subtitle}</p>
-        <ul class="posts" role="list">
-          {
-            t.writing.posts.map((post) => (
-              <li class="post-card">
-                <h3 class="post-card__title">
-                  <a href={post.url} rel="noopener noreferrer" target="_blank">
-                    {post.title}
-                  </a>
-                </h3>
-                <p class="post-card__desc">{post.description}</p>
-                <a
-                  href={post.url}
-                  class="post-card__link"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  aria-label={`${t.writing.readOnMedium}: ${post.title}`}
-                >
-                  {t.writing.readOnMedium} &rarr;
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+        <div class="section-grid">
+          <div class="section-grid__label" aria-hidden="true">
+            <span class="label">Writing</span>
+          </div>
+          <div class="section-grid__content">
+            <h2 id="writing-heading" class="section-heading">{t.writing.title}</h2>
+            <p class="writing-deck">{t.writing.subtitle}</p>
+            <ol class="journal" role="list">
+              {
+                t.writing.posts.map((post, i) => (
+                  <li class="journal__entry">
+                    <span class="journal__num" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div class="journal__body">
+                      <h3 class="journal__title">
+                        <a
+                          href={post.url}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {post.title}
+                        </a>
+                      </h3>
+                      <p class="journal__desc">{post.description}</p>
+                      <a
+                        href={post.url}
+                        class="journal__cta"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        aria-label={`${t.writing.readOnMedium}: ${post.title}`}
+                      >
+                        {t.writing.readOnMedium} &rarr;
+                      </a>
+                    </div>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Contact -->
+    <!-- ── Contact ───────────────────────────────────────── -->
     <section class="section" id="contact" aria-labelledby="contact-heading">
       <div class="container">
-        <h2 id="contact-heading" class="section-title">{t.contact.title}</h2>
-        <p class="contact__body">{t.contact.body}</p>
-        <ul class="contact__links" role="list">
-          <li>
-            <a
-              href="https://www.linkedin.com/in/mateuszkaszubski/"
-              rel="noopener noreferrer"
-              target="_blank"
-              class="contact__link"
-            >
-              {t.contact.links.linkedin}
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/kaszubski"
-              rel="noopener noreferrer"
-              target="_blank"
-              class="contact__link"
-            >
-              {t.contact.links.github}
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://medium.com/@mateuszkaszubski"
-              rel="noopener noreferrer"
-              target="_blank"
-              class="contact__link"
-            >
-              {t.contact.links.medium}
-            </a>
-          </li>
-        </ul>
+        <div class="section-grid">
+          <div class="section-grid__label" aria-hidden="true">
+            <span class="label">Contact</span>
+          </div>
+          <div class="section-grid__content">
+            <h2 id="contact-heading" class="section-heading">{t.contact.title}</h2>
+            <p class="contact__body">{t.contact.body}</p>
+            <ul class="contact__list" role="list">
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/mateuszkaszubski/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  class="contact__item"
+                >
+                  <span class="contact__item-arrow" aria-hidden="true">↗</span>
+                  {t.contact.links.linkedin}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/kaszubski"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  class="contact__item"
+                >
+                  <span class="contact__item-arrow" aria-hidden="true">↗</span>
+                  {t.contact.links.github}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://medium.com/@mateuszkaszubski"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  class="contact__item"
+                >
+                  <span class="contact__item-arrow" aria-hidden="true">↗</span>
+                  {t.contact.links.medium}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
+
   </main>
 
   <Footer t={t} />
 </BaseLayout>
 
 <style>
-  /* Hero */
+  /* ── Hero ─────────────────────────────────────────────── */
   .hero {
-    padding-block: var(--space-2xl);
+    padding-block: var(--space-2xl) var(--space-xl);
   }
 
-  .hero__greeting {
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: var(--space-sm);
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .hero__kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .hero__kicker-rule {
+    display: block;
+    width: 2.5rem;
+    height: 1px;
+    background: var(--color-border-strong);
+    flex-shrink: 0;
   }
 
   .hero__name {
-    font-size: var(--text-2xl);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    margin-bottom: var(--space-sm);
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: var(--color-text);
+    font-optical-sizing: auto;
+    /* Slight optical adjustment at large sizes */
+    font-variation-settings: "opsz" 72;
   }
 
-  .hero__role {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-md);
+  .hero__name em {
+    font-style: italic;
+    color: var(--color-accent);
+    font-weight: 300;
+    font-variation-settings: "opsz" 72, "wght" 300;
+  }
+
+  .hero__foot {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-lg);
+    max-width: 56ch;
   }
 
   .hero__tagline {
     font-size: var(--text-lg);
-    max-width: 54ch;
-    margin-bottom: var(--space-lg);
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    font-style: italic;
   }
 
-  .hero__cta {
+  .hero__links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-md);
-  }
-
-  /* Buttons */
-  .btn {
-    display: inline-block;
-    padding: 0.625rem 1.25rem;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: var(--text-sm);
-    text-decoration: none;
-    transition: background-color var(--transition), color var(--transition),
-      border-color var(--transition);
-  }
-
-  .btn--primary {
-    background-color: var(--color-accent);
-    color: #fff;
-    border: 2px solid var(--color-accent);
-  }
-
-  .btn--primary:hover {
-    background-color: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
-    color: #fff;
-  }
-
-  .btn--secondary {
-    background-color: transparent;
-    color: var(--color-text);
-    border: 2px solid var(--color-border);
-  }
-
-  .btn--secondary:hover {
-    border-color: var(--color-text-muted);
-    color: var(--color-text);
-  }
-
-  /* Section headings */
-  .bg-subtle {
-    background-color: var(--color-bg-subtle);
-  }
-
-  .section-title {
-    font-size: var(--text-xl);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: var(--space-lg);
-  }
-
-  .section-subtitle {
-    color: var(--color-text-muted);
-    margin-top: calc(-1 * var(--space-md));
-    margin-bottom: var(--space-lg);
-  }
-
-  /* About */
-  .about__para + .about__para {
-    margin-top: var(--space-md);
-  }
-
-  /* Experience */
-  .experience__list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
     gap: var(--space-lg);
   }
 
-  .experience__item {
-    padding: var(--space-lg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-  }
-
-  .experience__header {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
-  }
-
-  .experience__title {
-    font-size: var(--text-base);
-    font-weight: 700;
-  }
-
-  .experience__company {
-    color: var(--color-accent);
-    font-weight: 600;
-  }
-
-  .experience__meta {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+  .hero__link {
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: var(--color-text);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--color-text);
+    padding-bottom: 2px;
+    transition: color var(--transition), border-color var(--transition);
   }
 
-  .experience__desc {
+  .hero__link:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .hero__link--muted {
     color: var(--color-text-muted);
+    border-color: var(--color-border-strong);
+  }
+
+  .hero__link--muted:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* ── Section grid ─────────────────────────────────────── */
+  .section-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .section-grid__label {
+    display: none;
+  }
+
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: var(--space-lg);
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 36;
   }
 
   @media (min-width: 768px) {
-    .experience__header {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-start;
+    .section-grid {
+      grid-template-columns: 8rem 1fr;
+      gap: var(--space-2xl);
+      align-items: start;
     }
 
-    .experience__meta {
-      text-align: right;
+    .section-grid__label {
+      display: flex;
+      padding-top: 0.4rem; /* align with heading baseline */
     }
   }
 
-  /* Posts */
-  .posts {
+  /* ── Prose ────────────────────────────────────────────── */
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 60ch;
+  }
+
+  .prose p {
+    color: var(--color-text);
+    line-height: 1.8;
+  }
+
+  /* ── CV (experience) ──────────────────────────────────── */
+  .cv {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg);
   }
 
-  .post-card {
-    padding: var(--space-lg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background-color: var(--color-bg);
+  .cv__entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    padding-block: var(--space-lg);
+    border-top: 1px solid var(--color-border);
   }
 
-  .post-card__title {
+  .cv__entry:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cv__title {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  .cv__company {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-accent);
+    margin-top: 0.2rem;
+  }
+
+  .cv__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-sm);
+    max-width: 52ch;
+  }
+
+  .cv__right {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-md);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 768px) {
+    .cv__entry {
+      grid-template-columns: 1fr auto;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+
+    .cv__right {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: var(--space-xs);
+      padding-top: 0.15rem;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ── Journal (writing) ────────────────────────────────── */
+  .writing-deck {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-bottom: var(--space-xl);
+  }
+
+  .journal {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .journal__entry {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: var(--space-md);
+    padding-block: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+    align-items: start;
+  }
+
+  .journal__entry:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .journal__num {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-text-faint);
+    padding-top: 0.3rem;
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
+  }
+
+  .journal__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .journal__title {
+    font-family: var(--font-display);
     font-size: var(--text-lg);
-    font-weight: 700;
-    margin-bottom: var(--space-sm);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 24;
   }
 
-  .post-card__title a {
+  .journal__title a {
     color: var(--color-text);
     text-decoration: none;
+    transition: color var(--transition);
   }
 
-  .post-card__title a:hover {
+  .journal__title a:hover {
     color: var(--color-accent);
   }
 
-  .post-card__desc {
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-md);
-  }
-
-  .post-card__link {
+  .journal__desc {
     font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    max-width: 52ch;
+  }
+
+  .journal__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
     font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     text-decoration: none;
+    color: var(--color-text-muted);
+    transition: color var(--transition);
   }
 
-  .post-card__link:hover {
-    text-decoration: underline;
+  .journal__cta:hover {
+    color: var(--color-accent);
   }
 
-  /* Contact */
+  /* ── Contact ──────────────────────────────────────────── */
   .contact__body {
-    margin-bottom: var(--space-lg);
-    max-width: 54ch;
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    font-style: italic;
+    max-width: 48ch;
+    line-height: 1.75;
+    margin-bottom: var(--space-xl);
   }
 
-  .contact__links {
+  .contact__list {
     list-style: none;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .contact__item {
+    display: flex;
+    align-items: center;
     gap: var(--space-md);
-  }
-
-  .contact__link {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: var(--text-sm);
-    text-decoration: none;
+    padding-block: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 500;
     color: var(--color-text);
-    transition: border-color var(--transition), color var(--transition);
+    text-decoration: none;
+    transition: color var(--transition), padding-left var(--transition);
   }
 
-  .contact__link:hover {
-    border-color: var(--color-accent);
+  .contact__item:hover {
+    color: var(--color-accent);
+    padding-left: var(--space-sm);
+  }
+
+  .contact__item-arrow {
+    font-size: var(--text-sm);
+    color: var(--color-text-faint);
+    transition: color var(--transition);
+  }
+
+  .contact__item:hover .contact__item-arrow {
     color: var(--color-accent);
   }
 </style>

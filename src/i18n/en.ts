@@ -93,11 +93,6 @@ export const en = {
     rights: "All rights reserved",
   },
 
-  // Language switcher
-  lang: {
-    switchTo: "PL",
-    switchLabel: "Zmień język na polski",
-  },
 } as const;
 
 export type Translations = typeof en;

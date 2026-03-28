@@ -2,13 +2,11 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
-import { useTranslations } from "@/i18n";
-
-const t = useTranslations("en");
+import { en as t } from "@/i18n";
 ---
 
-<BaseLayout t={t} locale="en">
-  <Nav t={t} locale="en" />
+<BaseLayout t={t}>
+  <Nav t={t} />
 
   <main id="main-content">
     <!-- Hero -->

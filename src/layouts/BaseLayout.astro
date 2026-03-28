@@ -1,43 +1,35 @@
 ---
-import { getAlternatePath, type Locale } from "@/i18n";
 import type { Translations } from "@/i18n";
 
 interface Props {
   t: Translations;
-  locale: Locale;
   title?: string;
   description?: string;
   canonicalUrl?: string;
 }
 
-const { t, locale, title, description, canonicalUrl } = Astro.props;
+const { t, title, description, canonicalUrl } = Astro.props;
 
 const pageTitle = title ? `${title} — ${t.siteTitle}` : t.siteTitle;
 const pageDescription = description ?? t.siteDescription;
 const canon = canonicalUrl ?? Astro.url.href;
-const alternatePath = getAlternatePath(Astro.url, locale === "en" ? "pl" : "en");
-const alternateLocale = locale === "en" ? "pl" : "en";
-const alternateUrl = new URL(alternatePath, Astro.site).href;
 ---
 
 <!doctype html>
-<html lang={locale} dir="ltr">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canon} />
-    <link rel="alternate" hreflang={locale} href={canon} />
-    <link rel="alternate" hreflang={alternateLocale} href={alternateUrl} />
-    <link rel="alternate" hreflang="x-default" href={new URL("/", Astro.site).href} />
     <meta name="generator" content={Astro.generator} />
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canon} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:locale" content={locale === "en" ? "en_US" : "pl_PL"} />
+    <meta property="og:locale" content="en_US" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>

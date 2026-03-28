@@ -1,38 +1,25 @@
 ---
-import type { Translations, Locale } from "@/i18n";
-import { getAlternatePath } from "@/i18n";
+import type { Translations } from "@/i18n";
 
 interface Props {
   t: Translations;
-  locale: Locale;
 }
 
-const { t, locale } = Astro.props;
-const base = locale === "pl" ? "/pl" : "";
-const alternatePath = getAlternatePath(Astro.url, locale === "en" ? "pl" : "en");
+const { t } = Astro.props;
 ---
 
 <header class="site-header">
   <nav class="container container--wide nav" aria-label="Primary navigation">
-    <a class="nav__logo" href={`${base}/`} aria-label={t.siteTitle}>
+    <a class="nav__logo" href="/" aria-label={t.siteTitle}>
       MK
     </a>
 
     <ul class="nav__list" role="list">
-      <li><a href={`${base}/#about`}>{t.nav.about}</a></li>
-      <li><a href={`${base}/#experience`}>{t.nav.experience}</a></li>
-      <li><a href={`${base}/#writing`}>{t.nav.writing}</a></li>
-      <li><a href={`${base}/#contact`}>{t.nav.contact}</a></li>
+      <li><a href="/#about">{t.nav.about}</a></li>
+      <li><a href="/#experience">{t.nav.experience}</a></li>
+      <li><a href="/#writing">{t.nav.writing}</a></li>
+      <li><a href="/#contact">{t.nav.contact}</a></li>
     </ul>
-
-    <a
-      class="nav__lang"
-      href={alternatePath}
-      aria-label={t.lang.switchLabel}
-      hreflang={locale === "en" ? "pl" : "en"}
-    >
-      {t.lang.switchTo}
-    </a>
   </nav>
 </header>
 
@@ -82,22 +69,6 @@ const alternatePath = getAlternatePath(Astro.url, locale === "en" ? "pl" : "en")
 
   .nav__list a:hover {
     color: var(--color-text);
-  }
-
-  .nav__lang {
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    padding: var(--space-xs) var(--space-sm);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    transition: color var(--transition), border-color var(--transition);
-  }
-
-  .nav__lang:hover {
-    color: var(--color-text);
-    border-color: var(--color-text-muted);
   }
 
   @media (min-width: 768px) {

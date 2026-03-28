@@ -1,0 +1,357 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { useTranslations } from "@/i18n";
+
+const t = useTranslations("pl");
+---
+
+<BaseLayout t={t} locale="pl">
+  <Nav t={t} locale="pl" />
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="hero section" aria-labelledby="hero-heading">
+      <div class="container">
+        <p class="hero__greeting">{t.hero.greeting}</p>
+        <h1 id="hero-heading" class="hero__name">Matt Kaszubski</h1>
+        <p class="hero__role">{t.hero.role}</p>
+        <p class="hero__tagline">{t.hero.tagline}</p>
+        <div class="hero__cta">
+          <a href="#writing" class="btn btn--primary">{t.hero.cta.writing}</a>
+          <a href="#contact" class="btn btn--secondary">{t.hero.cta.contact}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section bg-subtle" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <h2 id="about-heading" class="section-title">{t.about.title}</h2>
+        {t.about.body.map((para) => <p class="about__para">{para}</p>)}
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section class="section" id="experience" aria-labelledby="experience-heading">
+      <div class="container">
+        <h2 id="experience-heading" class="section-title">{t.experience.title}</h2>
+        <ul class="experience__list" role="list">
+          {
+            t.experience.roles.map((role) => (
+              <li class="experience__item">
+                <div class="experience__header">
+                  <div>
+                    <h3 class="experience__title">{role.title}</h3>
+                    <p class="experience__company">{role.company}</p>
+                  </div>
+                  <div class="experience__meta">
+                    <span>{role.period}</span>
+                    <span>{role.location}</span>
+                  </div>
+                </div>
+                <p class="experience__desc">{role.description}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- Writing -->
+    <section class="section bg-subtle" id="writing" aria-labelledby="writing-heading">
+      <div class="container">
+        <h2 id="writing-heading" class="section-title">{t.writing.title}</h2>
+        <p class="section-subtitle">{t.writing.subtitle}</p>
+        <ul class="posts" role="list">
+          {
+            t.writing.posts.map((post) => (
+              <li class="post-card">
+                <h3 class="post-card__title">
+                  <a href={post.url} rel="noopener noreferrer" target="_blank">
+                    {post.title}
+                  </a>
+                </h3>
+                <p class="post-card__desc">{post.description}</p>
+                <a
+                  href={post.url}
+                  class="post-card__link"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  aria-label={`${t.writing.readOnMedium}: ${post.title}`}
+                >
+                  {t.writing.readOnMedium} &rarr;
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact" aria-labelledby="contact-heading">
+      <div class="container">
+        <h2 id="contact-heading" class="section-title">{t.contact.title}</h2>
+        <p class="contact__body">{t.contact.body}</p>
+        <ul class="contact__links" role="list">
+          <li>
+            <a
+              href="https://www.linkedin.com/in/mateuszkaszubski/"
+              rel="noopener noreferrer"
+              target="_blank"
+              class="contact__link"
+            >
+              {t.contact.links.linkedin}
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/kaszubski"
+              rel="noopener noreferrer"
+              target="_blank"
+              class="contact__link"
+            >
+              {t.contact.links.github}
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://medium.com/@mateuszkaszubski"
+              rel="noopener noreferrer"
+              target="_blank"
+              class="contact__link"
+            >
+              {t.contact.links.medium}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <Footer t={t} />
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-2xl);
+  }
+
+  .hero__greeting {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero__name {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero__role {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .hero__tagline {
+    font-size: var(--text-lg);
+    max-width: 54ch;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: background-color var(--transition), color var(--transition),
+      border-color var(--transition);
+  }
+
+  .btn--primary {
+    background-color: var(--color-accent);
+    color: #fff;
+    border: 2px solid var(--color-accent);
+  }
+
+  .btn--primary:hover {
+    background-color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: #fff;
+  }
+
+  .btn--secondary {
+    background-color: transparent;
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+  }
+
+  .btn--secondary:hover {
+    border-color: var(--color-text-muted);
+    color: var(--color-text);
+  }
+
+  .bg-subtle {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .section-title {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-lg);
+  }
+
+  .section-subtitle {
+    color: var(--color-text-muted);
+    margin-top: calc(-1 * var(--space-md));
+    margin-bottom: var(--space-lg);
+  }
+
+  .about__para + .about__para {
+    margin-top: var(--space-md);
+  }
+
+  .experience__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .experience__item {
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .experience__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .experience__title {
+    font-size: var(--text-base);
+    font-weight: 700;
+  }
+
+  .experience__company {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .experience__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .experience__desc {
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .experience__header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .experience__meta {
+      text-align: right;
+    }
+  }
+
+  .posts {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .post-card {
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+  }
+
+  .post-card__title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+  }
+
+  .post-card__title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .post-card__title a:hover {
+    color: var(--color-accent);
+  }
+
+  .post-card__desc {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .post-card__link {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post-card__link:hover {
+    text-decoration: underline;
+  }
+
+  .contact__body {
+    margin-bottom: var(--space-lg);
+    max-width: 54ch;
+  }
+
+  .contact__links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .contact__link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: border-color var(--transition), color var(--transition);
+  }
+
+  .contact__link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+</style>

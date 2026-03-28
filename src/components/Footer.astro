@@ -1,0 +1,47 @@
+---
+import type { Translations } from "@/i18n";
+
+interface Props {
+  t: Translations;
+}
+
+const { t } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container container--wide footer">
+    <p class="footer__copy">
+      &copy; {year} {t.siteTitle}. {t.footer.rights}.
+    </p>
+    <p class="footer__built">
+      {t.footer.builtWith}.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-lg);
+    margin-top: var(--space-xl);
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    align-items: center;
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .footer {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+</style>

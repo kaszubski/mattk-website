@@ -11,12 +11,12 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="container container--wide footer">
-    <p class="footer__copy">
-      &copy; {year} {t.siteTitle}
-    </p>
-    <p class="footer__built">
-      <span>{t.footer.builtWith}</span>
-    </p>
+    <div class="footer__links">
+      <a href="https://www.linkedin.com/in/mateuszkaszubski/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      <a href="https://github.com/kaszubski" rel="noopener noreferrer" target="_blank">GitHub</a>
+      <a href="https://medium.com/@mateuszkaszubski" rel="noopener noreferrer" target="_blank">Medium</a>
+    </div>
+    <p class="footer__copy">&copy; {year} {t.siteTitle}</p>
   </div>
 </footer>
 
@@ -24,14 +24,38 @@ const year = new Date().getFullYear();
   .site-footer {
     border-top: 1px solid var(--color-border);
     padding-block: var(--space-lg);
+    margin-top: var(--space-2xl);
   }
 
   .footer {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+    flex-direction: column-reverse;
+    gap: var(--space-md);
     align-items: center;
     text-align: center;
+  }
+
+  .footer__links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .footer__links a {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .footer__links a:hover {
+    color: var(--color-text);
+  }
+
+  .footer__copy {
     font-family: var(--font-body);
     font-size: var(--text-xs);
     letter-spacing: 0.06em;

@@ -3,9 +3,10 @@ import type { Translations } from "@/i18n";
 
 interface Props {
   t: Translations;
+  activePage?: "home" | "about";
 }
 
-const { t } = Astro.props;
+const { t, activePage = "home" } = Astro.props;
 ---
 
 <header class="site-header">
@@ -15,10 +16,32 @@ const { t } = Astro.props;
     </a>
 
     <ul class="nav__list" role="list">
-      <li><a href="/#about">{t.nav.about}</a></li>
-      <li><a href="/#experience">{t.nav.experience}</a></li>
-      <li><a href="/#writing">{t.nav.writing}</a></li>
-      <li><a href="/#contact">{t.nav.contact}</a></li>
+      <li>
+        <a
+          href="/#writing"
+          aria-current={activePage === "home" ? "page" : undefined}
+        >
+          {t.nav.writing}
+        </a>
+      </li>
+      <li>
+        <a
+          href="/about/"
+          aria-current={activePage === "about" ? "page" : undefined}
+        >
+          {t.nav.about}
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.meetup.com/engineering-leadership-warsaw/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {t.nav.elw}
+          <span class="sr-only">(opens in new tab)</span>
+        </a>
+      </li>
     </ul>
   </nav>
 </header>
@@ -74,7 +97,8 @@ const { t } = Astro.props;
     transition: color var(--transition);
   }
 
-  .nav__list a:hover {
+  .nav__list a:hover,
+  .nav__list a[aria-current="page"] {
     color: var(--color-text);
   }
 

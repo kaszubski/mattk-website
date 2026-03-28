@@ -6,182 +6,52 @@ import { en as t } from "@/i18n";
 ---
 
 <BaseLayout t={t}>
-  <Nav t={t} />
+  <Nav t={t} activePage="home" />
 
   <main id="main-content">
 
-    <!-- ── Hero ─────────────────────────────────────────── -->
-    <section class="hero" aria-labelledby="hero-heading">
+    <!-- ── Intro ──────────────────────────────────────────── -->
+    <section class="intro" aria-label="Introduction">
       <div class="container">
-        <div class="hero__inner">
-          <p class="hero__kicker label">
-            <span class="hero__kicker-rule" aria-hidden="true"></span>
-            {t.hero.role}
-          </p>
-
-          <h1 id="hero-heading" class="hero__name">
-            Matt<br /><em>Kaszubski</em>
-          </h1>
-
-          <div class="hero__foot">
-            <p class="hero__tagline">{t.hero.tagline}</p>
-            <div class="hero__links" role="list">
-              <a href="#writing" class="hero__link" role="listitem">
-                {t.hero.cta.writing}
-                <span aria-hidden="true"> ↓</span>
-              </a>
-              <a href="#contact" class="hero__link hero__link--muted" role="listitem">
-                {t.hero.cta.contact}
-                <span aria-hidden="true"> ↓</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── About ─────────────────────────────────────────── -->
-    <section class="section reveal" id="about" aria-labelledby="about-heading">
-      <div class="container">
-        <div class="section-grid">
-          <div class="section-grid__label" aria-hidden="true">
-            <span class="label">About</span>
-          </div>
-          <div class="section-grid__content">
-            <h2 id="about-heading" class="section-heading">{t.about.title}</h2>
-            <div class="prose">
-              {t.about.body.map((para) => <p>{para}</p>)}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Experience ────────────────────────────────────── -->
-    <section class="section reveal" id="experience" aria-labelledby="experience-heading">
-      <div class="container">
-        <div class="section-grid">
-          <div class="section-grid__label" aria-hidden="true">
-            <span class="label">Work</span>
-          </div>
-          <div class="section-grid__content">
-            <h2 id="experience-heading" class="section-heading">{t.experience.title}</h2>
-            <ul class="cv" role="list">
-              {
-                t.experience.roles.map((role) => (
-                  <li class="cv__entry">
-                    <div class="cv__left">
-                      <h3 class="cv__title">{role.title}</h3>
-                      <p class="cv__company">{role.company}</p>
-                      <p class="cv__desc">{role.description}</p>
-                    </div>
-                    <div class="cv__right">
-                      <span class="cv__period">{role.period}</span>
-                      <span class="cv__location">{role.location}</span>
-                    </div>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
+        <div class="intro__inner">
+          <h1 class="intro__name">Matt Kaszubski</h1>
+          <p class="intro__body">{t.home.intro}</p>
         </div>
       </div>
     </section>
 
     <!-- ── Writing ───────────────────────────────────────── -->
-    <section class="section reveal" id="writing" aria-labelledby="writing-heading">
+    <section id="writing" aria-labelledby="writing-heading">
       <div class="container">
-        <div class="section-grid">
-          <div class="section-grid__label" aria-hidden="true">
-            <span class="label">Writing</span>
-          </div>
-          <div class="section-grid__content">
-            <h2 id="writing-heading" class="section-heading">{t.writing.title}</h2>
-            <p class="writing-deck">{t.writing.subtitle}</p>
-            <ol class="journal" role="list">
-              {
-                t.writing.posts.map((post, i) => (
-                  <li class="journal__entry reveal">
-                    <span class="journal__num" aria-hidden="true">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <div class="journal__body">
-                      <h3 class="journal__title">
-                        <a
-                          href={post.url}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          {post.title}
-                        </a>
-                      </h3>
-                      <p class="journal__desc">{post.description}</p>
-                      <a
-                        href={post.url}
-                        class="journal__cta"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        aria-label={`${t.writing.readOnMedium}: ${post.title}`}
-                      >
-                        {t.writing.readOnMedium} &rarr;
-                      </a>
-                    </div>
-                  </li>
-                ))
-              }
-            </ol>
-          </div>
-        </div>
-      </div>
-    </section>
+        <h2 id="writing-heading" class="section-label">{t.home.writing.title}</h2>
 
-    <!-- ── Contact ───────────────────────────────────────── -->
-    <section class="section reveal" id="contact" aria-labelledby="contact-heading">
-      <div class="container">
-        <div class="section-grid">
-          <div class="section-grid__label" aria-hidden="true">
-            <span class="label">Contact</span>
-          </div>
-          <div class="section-grid__content">
-            <h2 id="contact-heading" class="section-heading">{t.contact.title}</h2>
-            <p class="contact__body">{t.contact.body}</p>
-            <ul class="contact__list" role="list">
-              <li>
+        <ol class="posts" role="list">
+          {
+            t.home.writing.posts.map((post) => (
+              <li class="post reveal">
                 <a
-                  href="https://www.linkedin.com/in/mateuszkaszubski/"
+                  class="post__link"
+                  href={post.url}
                   rel="noopener noreferrer"
                   target="_blank"
-                  class="contact__item"
                 >
-                  <span class="contact__item-arrow" aria-hidden="true">↗</span>
-                  {t.contact.links.linkedin}
+                  <span class="post__title">{post.title}</span>
+                  <span class="post__date">{post.date}</span>
                 </a>
+                <p class="post__desc">{post.description}</p>
               </li>
-              <li>
-                <a
-                  href="https://github.com/kaszubski"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  class="contact__item"
-                >
-                  <span class="contact__item-arrow" aria-hidden="true">↗</span>
-                  {t.contact.links.github}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://medium.com/@mateuszkaszubski"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  class="contact__item"
-                >
-                  <span class="contact__item-arrow" aria-hidden="true">↗</span>
-                  {t.contact.links.medium}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+            ))
+          }
+        </ol>
+
+        <a
+          class="all-posts"
+          href={t.home.writing.allPostsUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {t.home.writing.allPosts} &rarr;
+        </a>
       </div>
     </section>
 
@@ -191,374 +61,140 @@ import { en as t } from "@/i18n";
 </BaseLayout>
 
 <style>
-  /* ── Hero load cascade ───────────────────────────────── */
-  @media (prefers-reduced-motion: no-preference) {
-    @keyframes hero-in {
-      from {
-        opacity: 0;
-        translate: 0 0.6rem;
-      }
-      to {
-        opacity: 1;
-        translate: 0 0;
-      }
-    }
-
-    .hero__kicker {
-      animation: hero-in 0.5s ease-out both;
-    }
-
-    .hero__name {
-      animation: hero-in 0.55s ease-out 0.08s both;
-    }
-
-    .hero__foot {
-      animation: hero-in 0.5s ease-out 0.18s both;
-    }
-  }
-
-  /* ── Hero ─────────────────────────────────────────────── */
-  .hero {
+  /* ── Intro ────────────────────────────────────────────── */
+  .intro {
     padding-block: var(--space-2xl) var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .hero__inner {
-    display: flex;
-    flex-direction: column;
+  .intro__inner {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: var(--space-lg);
   }
 
-  .hero__kicker {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-  }
-
-  .hero__kicker-rule {
-    display: block;
-    width: 2.5rem;
-    height: 1px;
-    background: var(--color-border-strong);
-    flex-shrink: 0;
-  }
-
-  .hero__name {
+  .intro__name {
     font-family: var(--font-display);
-    font-size: var(--text-display);
+    font-size: var(--text-2xl);
     font-weight: 400;
-    font-style: normal;
-    letter-spacing: -0.04em;
-    line-height: 0.95;
+    font-style: italic;
+    letter-spacing: -0.035em;
+    line-height: 1;
     color: var(--color-text);
     font-optical-sizing: auto;
-    /* Slight optical adjustment at large sizes */
-    font-variation-settings: "opsz" 72;
+    font-variation-settings: "opsz" 48;
   }
 
-  .hero__name em {
-    font-style: italic;
-    color: var(--color-accent);
-    font-weight: 300;
-    font-variation-settings: "opsz" 72, "wght" 300;
-  }
-
-  .hero__foot {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-lg);
+  .intro__body {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.8;
     max-width: 56ch;
   }
 
-  .hero__tagline {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    line-height: 1.55;
-    font-style: italic;
-  }
-
-  .hero__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-lg);
-  }
-
-  .hero__link {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-decoration: none;
-    color: var(--color-text);
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--color-text);
-    padding-bottom: 2px;
-    transition: color var(--transition), border-color var(--transition);
-  }
-
-  .hero__link:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-  }
-
-  .hero__link--muted {
-    color: var(--color-text-muted);
-    border-color: var(--color-border-strong);
-  }
-
-  .hero__link--muted:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-  }
-
-  /* ── Section grid ─────────────────────────────────────── */
-  .section-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-  }
-
-  .section-grid__label {
-    display: none;
-  }
-
-  .section-heading {
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: 500;
-    font-style: italic;
-    letter-spacing: -0.02em;
-    color: var(--color-text);
-    margin-bottom: var(--space-lg);
-    font-optical-sizing: auto;
-    font-variation-settings: "opsz" 36;
-  }
-
   @media (min-width: 768px) {
-    .section-grid {
-      grid-template-columns: 8rem 1fr;
+    .intro__inner {
+      grid-template-columns: 14rem 1fr;
       gap: var(--space-2xl);
       align-items: start;
     }
-
-    .section-grid__label {
-      display: flex;
-      padding-top: 0.4rem; /* align with heading baseline */
-    }
   }
 
-  /* ── Prose ────────────────────────────────────────────── */
-  .prose {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    max-width: 60ch;
-  }
-
-  .prose p {
-    color: var(--color-text);
-    line-height: 1.8;
-  }
-
-  /* ── CV (experience) ──────────────────────────────────── */
-  .cv {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .cv__entry {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-sm);
-    padding-block: var(--space-lg);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .cv__entry:last-child {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .cv__title {
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    font-weight: 600;
-    color: var(--color-text);
-    line-height: 1.3;
-  }
-
-  .cv__company {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-style: italic;
-    color: var(--color-accent);
-    margin-top: 0.2rem;
-  }
-
-  .cv__desc {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    margin-top: var(--space-sm);
-    max-width: 52ch;
-  }
-
-  .cv__right {
-    display: flex;
-    flex-direction: row;
-    gap: var(--space-md);
+  /* ── Writing ─────────────────────────────────────────── */
+  .section-label {
     font-family: var(--font-body);
     font-size: var(--text-xs);
-    letter-spacing: 0.06em;
-    color: var(--color-text-faint);
+    font-weight: 600;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+    color: var(--color-text-faint);
+    padding-block: var(--space-xl) var(--space-lg);
   }
 
-  @media (min-width: 768px) {
-    .cv__entry {
-      grid-template-columns: 1fr auto;
-      gap: var(--space-xl);
-      align-items: start;
-    }
-
-    .cv__right {
-      flex-direction: column;
-      align-items: flex-end;
-      gap: var(--space-xs);
-      padding-top: 0.15rem;
-      flex-shrink: 0;
-    }
-  }
-
-  /* ── Journal (writing) ────────────────────────────────── */
-  .writing-deck {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    font-style: italic;
-    margin-bottom: var(--space-xl);
-  }
-
-  .journal {
+  .posts {
     list-style: none;
     display: flex;
     flex-direction: column;
-  }
-
-  .journal__entry {
-    display: grid;
-    grid-template-columns: 2.5rem 1fr;
-    gap: var(--space-md);
-    padding-block: var(--space-lg);
     border-top: 1px solid var(--color-border);
-    align-items: start;
   }
 
-  .journal__entry:last-child {
+  .post {
     border-bottom: 1px solid var(--color-border);
+    padding-block: var(--space-lg);
   }
 
-  .journal__num {
-    font-family: var(--font-display);
-    font-size: var(--text-sm);
-    font-style: italic;
-    color: var(--color-text-faint);
-    padding-top: 0.3rem;
-    font-optical-sizing: auto;
-    letter-spacing: -0.01em;
-  }
-
-  .journal__body {
+  .post__link {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-md);
+    text-decoration: none;
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
   }
 
-  .journal__title {
+  .post__title {
     font-family: var(--font-display);
     font-size: var(--text-lg);
     font-weight: 500;
     font-style: italic;
-    line-height: 1.2;
     letter-spacing: -0.02em;
     font-optical-sizing: auto;
     font-variation-settings: "opsz" 24;
-  }
-
-  .journal__title a {
-    color: var(--color-text);
-    text-decoration: none;
     transition: color var(--transition);
+    line-height: 1.2;
   }
 
-  .journal__title a:hover {
+  .post__link:hover .post__title {
     color: var(--color-accent);
   }
 
-  .journal__desc {
+  .post__date {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    color: var(--color-text-faint);
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+
+  .post__desc {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.65;
-    max-width: 52ch;
+    max-width: 58ch;
   }
 
-  .journal__cta {
+  .all-posts {
+    display: inline-block;
+    margin-top: var(--space-lg);
     font-family: var(--font-body);
     font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
     color: var(--color-text-muted);
     transition: color var(--transition);
+    padding-bottom: var(--space-2xl);
   }
 
-  .journal__cta:hover {
+  .all-posts:hover {
     color: var(--color-accent);
   }
 
-  /* ── Contact ──────────────────────────────────────────── */
-  .contact__body {
-    font-size: var(--text-base);
-    color: var(--color-text-muted);
-    font-style: italic;
-    max-width: 48ch;
-    line-height: 1.75;
-    margin-bottom: var(--space-xl);
-  }
+  /* ── Hero load animation ──────────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes hero-in {
+      from { opacity: 0; translate: 0 0.6rem; }
+      to   { opacity: 1; translate: 0 0; }
+    }
 
-  .contact__list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--color-border);
-  }
+    .intro__name {
+      animation: hero-in 0.5s ease-out both;
+    }
 
-  .contact__item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    padding-block: var(--space-md);
-    border-bottom: 1px solid var(--color-border);
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    font-weight: 500;
-    color: var(--color-text);
-    text-decoration: none;
-    transition: color var(--transition), padding-left var(--transition);
-  }
-
-  .contact__item:hover {
-    color: var(--color-accent);
-    padding-left: var(--space-sm);
-  }
-
-  .contact__item-arrow {
-    font-size: var(--text-sm);
-    color: var(--color-text-faint);
-    transition: color var(--transition);
-  }
-
-  .contact__item:hover .contact__item-arrow {
-    color: var(--color-accent);
+    .intro__body {
+      animation: hero-in 0.5s ease-out 0.1s both;
+    }
   }
 </style>

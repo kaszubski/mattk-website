@@ -41,7 +41,7 @@ import { en as t } from "@/i18n";
     </section>
 
     <!-- ── About ─────────────────────────────────────────── -->
-    <section class="section" id="about" aria-labelledby="about-heading">
+    <section class="section reveal" id="about" aria-labelledby="about-heading">
       <div class="container">
         <div class="section-grid">
           <div class="section-grid__label" aria-hidden="true">
@@ -58,7 +58,7 @@ import { en as t } from "@/i18n";
     </section>
 
     <!-- ── Experience ────────────────────────────────────── -->
-    <section class="section" id="experience" aria-labelledby="experience-heading">
+    <section class="section reveal" id="experience" aria-labelledby="experience-heading">
       <div class="container">
         <div class="section-grid">
           <div class="section-grid__label" aria-hidden="true">
@@ -89,7 +89,7 @@ import { en as t } from "@/i18n";
     </section>
 
     <!-- ── Writing ───────────────────────────────────────── -->
-    <section class="section" id="writing" aria-labelledby="writing-heading">
+    <section class="section reveal" id="writing" aria-labelledby="writing-heading">
       <div class="container">
         <div class="section-grid">
           <div class="section-grid__label" aria-hidden="true">
@@ -101,7 +101,7 @@ import { en as t } from "@/i18n";
             <ol class="journal" role="list">
               {
                 t.writing.posts.map((post, i) => (
-                  <li class="journal__entry">
+                  <li class="journal__entry reveal">
                     <span class="journal__num" aria-hidden="true">
                       {String(i + 1).padStart(2, "0")}
                     </span>
@@ -136,7 +136,7 @@ import { en as t } from "@/i18n";
     </section>
 
     <!-- ── Contact ───────────────────────────────────────── -->
-    <section class="section" id="contact" aria-labelledby="contact-heading">
+    <section class="section reveal" id="contact" aria-labelledby="contact-heading">
       <div class="container">
         <div class="section-grid">
           <div class="section-grid__label" aria-hidden="true">
@@ -191,6 +191,32 @@ import { en as t } from "@/i18n";
 </BaseLayout>
 
 <style>
+  /* ── Hero load cascade ───────────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes hero-in {
+      from {
+        opacity: 0;
+        translate: 0 0.6rem;
+      }
+      to {
+        opacity: 1;
+        translate: 0 0;
+      }
+    }
+
+    .hero__kicker {
+      animation: hero-in 0.5s ease-out both;
+    }
+
+    .hero__name {
+      animation: hero-in 0.55s ease-out 0.08s both;
+    }
+
+    .hero__foot {
+      animation: hero-in 0.5s ease-out 0.18s both;
+    }
+  }
+
   /* ── Hero ─────────────────────────────────────────────── */
   .hero {
     padding-block: var(--space-2xl) var(--space-xl);

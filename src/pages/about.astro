@@ -16,8 +16,9 @@ import { en as t } from "@/i18n";
     <article class="about" aria-labelledby="about-heading">
       <div class="container">
 
-        <!-- Heading -->
+        <!-- Header -->
         <header class="about__header">
+          <p class="mono about__label">About</p>
           <h1 id="about-heading" class="about__name">Matt Kaszubski</h1>
         </header>
 
@@ -28,32 +29,32 @@ import { en as t } from "@/i18n";
 
         <!-- Short bio -->
         <aside class="about__bio reveal" aria-labelledby="bio-label">
-          <h2 id="bio-label" class="about__bio-label">{t.about.shortBioLabel}</h2>
+          <h2 id="bio-label" class="mono about__bio-label">{t.about.shortBioLabel}</h2>
           <p class="about__bio-text">{t.about.shortBio}</p>
         </aside>
 
         <!-- Links -->
-        <nav class="about__links reveal" aria-label="Social links">
-          <span class="about__links-label">{t.about.connectLabel}</span>
-          <ul role="list">
+        <nav class="about__connect reveal" aria-label="Social links">
+          <p class="mono about__connect-label">{t.about.connectLabel}</p>
+          <ul class="about__links" role="list">
             <li>
               <a href="https://www.linkedin.com/in/mateuszkaszubski/" rel="noopener noreferrer" target="_blank">
-                LinkedIn
+                LinkedIn <span aria-hidden="true">↗</span>
               </a>
             </li>
             <li>
               <a href="https://medium.com/@mateuszkaszubski" rel="noopener noreferrer" target="_blank">
-                Medium
+                Medium <span aria-hidden="true">↗</span>
               </a>
             </li>
             <li>
               <a href="https://github.com/kaszubski" rel="noopener noreferrer" target="_blank">
-                GitHub
+                GitHub <span aria-hidden="true">↗</span>
               </a>
             </li>
             <li>
               <a href="https://www.meetup.com/engineering-leadership-warsaw/" rel="noopener noreferrer" target="_blank">
-                ELW
+                ELW <span aria-hidden="true">↗</span>
               </a>
             </li>
           </ul>
@@ -68,117 +69,123 @@ import { en as t } from "@/i18n";
 
 <style>
   .about {
-    padding-block: var(--space-2xl);
+    padding-block: clamp(3rem, 6vw, 5rem);
   }
 
-  /* Heading */
+  /* Header */
   .about__header {
     padding-bottom: var(--space-xl);
     border-bottom: 1px solid var(--color-border);
     margin-bottom: var(--space-xl);
   }
 
+  .about__label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    margin-bottom: var(--space-md);
+  }
+
   .about__name {
     font-family: var(--font-display);
     font-size: var(--text-2xl);
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: -0.035em;
+    font-weight: 800;
+    letter-spacing: -0.04em;
     line-height: 1;
-    font-optical-sizing: auto;
-    font-variation-settings: "opsz" 48;
+    color: var(--color-text);
   }
 
-  /* Narrative prose */
+  /* Narrative */
   .about__narrative {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-    max-width: 60ch;
+    max-width: 58ch;
     margin-bottom: var(--space-2xl);
   }
 
   .about__narrative p {
     font-size: var(--text-base);
-    line-height: 1.85;
-    color: var(--color-text);
+    line-height: 1.8;
+    color: var(--color-text-2);
   }
 
   /* Short bio */
   .about__bio {
+    max-width: 58ch;
     padding: var(--space-lg);
+    background: var(--color-bg-elevated);
     border: 1px solid var(--color-border);
-    border-left: 3px solid var(--color-accent);
+    border-left: 2px solid var(--color-accent);
+    border-radius: var(--radius-md);
     margin-bottom: var(--space-2xl);
-    max-width: 60ch;
   }
 
   .about__bio-label {
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
     color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
     margin-bottom: var(--space-sm);
   }
 
   .about__bio-text {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    font-style: italic;
+    color: var(--color-text-2);
     line-height: 1.7;
   }
 
-  /* Links */
-  .about__links {
+  /* Connect */
+  .about__connect {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-  }
-
-  .about__links-label {
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-  }
-
-  .about__links ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
     gap: var(--space-md);
   }
 
+  .about__connect-label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+  }
+
+  .about__links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
   .about__links a {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: 500;
-    color: var(--color-text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-2);
     text-decoration: none;
-    transition: color var(--transition);
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
   .about__links a:hover {
     color: var(--color-accent);
+    border-color: var(--color-accent-dim);
+    background: var(--color-accent-glow);
+    opacity: 1;
   }
 
-  /* Load animation */
+  /* Page load animation */
   @media (prefers-reduced-motion: no-preference) {
-    @keyframes page-in {
-      from { opacity: 0; translate: 0 0.5rem; }
+    @keyframes fade-in {
+      from { opacity: 0; translate: 0 0.75rem; }
       to   { opacity: 1; translate: 0 0; }
     }
 
-    .about__header {
-      animation: page-in 0.5s ease-out both;
-    }
-
-    .about__narrative {
-      animation: page-in 0.5s ease-out 0.08s both;
-    }
+    .about__header    { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+    .about__narrative { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
   }
 </style>

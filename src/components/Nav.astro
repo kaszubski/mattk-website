@@ -12,34 +12,34 @@ const { t, activePage = "home" } = Astro.props;
 <header class="site-header">
   <nav class="container container--wide nav" aria-label="Primary navigation">
     <a class="nav__logo" href="/" aria-label={`${t.siteTitle} — home`}>
-      <span aria-hidden="true">MK</span>
+      MK
     </a>
 
     <ul class="nav__list" role="list">
       <li>
         <a
           href="/#writing"
+          class:list={[{ active: activePage === "home" }]}
           aria-current={activePage === "home" ? "page" : undefined}
-        >
-          {t.nav.writing}
-        </a>
+        >{t.nav.writing}</a>
       </li>
       <li>
         <a
           href="/about/"
+          class:list={[{ active: activePage === "about" }]}
           aria-current={activePage === "about" ? "page" : undefined}
-        >
-          {t.nav.about}
-        </a>
+        >{t.nav.about}</a>
       </li>
       <li>
         <a
           href="https://www.meetup.com/engineering-leadership-warsaw/"
           rel="noopener noreferrer"
           target="_blank"
+          class="nav__external"
         >
           {t.nav.elw}
           <span class="sr-only">(opens in new tab)</span>
+          <span class="nav__ext-icon" aria-hidden="true">↗</span>
         </a>
       </li>
     </ul>
@@ -48,63 +48,78 @@ const { t, activePage = "home" } = Astro.props;
 
 <style>
   .site-header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 100;
-    background-color: var(--color-bg);
+    height: var(--nav-height);
+    background: rgba(7, 8, 10, 0.75);
+    backdrop-filter: blur(16px) saturate(1.6);
+    -webkit-backdrop-filter: blur(16px) saturate(1.6);
     border-bottom: 1px solid var(--color-border);
   }
 
   .nav {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-block: 1.125rem;
   }
 
   .nav__logo {
     font-family: var(--font-display);
-    font-style: italic;
-    font-weight: 700;
-    font-size: 1.35rem;
-    font-optical-sizing: auto;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.03em;
     text-decoration: none;
     color: var(--color-text);
-    letter-spacing: -0.02em;
     transition: color var(--transition);
-    line-height: 1;
   }
 
   .nav__logo:hover {
     color: var(--color-accent);
+    opacity: 1;
   }
 
   .nav__list {
     display: none;
     list-style: none;
-    gap: var(--space-lg);
     align-items: center;
+    gap: 0.25rem;
   }
 
   .nav__list a {
-    font-family: var(--font-body);
+    font-family: var(--font-mono);
     font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--color-text-2);
     text-decoration: none;
-    transition: color var(--transition);
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
   }
 
   .nav__list a:hover,
-  .nav__list a[aria-current="page"] {
+  .nav__list a.active {
     color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 1;
+  }
+
+  .nav__external {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .nav__ext-icon {
+    font-size: 0.65rem;
+    opacity: 0.5;
   }
 
   @media (min-width: 768px) {
-    .nav__list {
-      display: flex;
-    }
+    .nav__list { display: flex; }
   }
 </style>

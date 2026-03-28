@@ -11,17 +11,19 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="container container--wide footer">
+    <p class="footer__copy mono">&copy; {year} {t.siteTitle}</p>
     <div class="footer__links">
       <a href="https://www.linkedin.com/in/mateuszkaszubski/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
       <a href="https://github.com/kaszubski" rel="noopener noreferrer" target="_blank">GitHub</a>
       <a href="https://medium.com/@mateuszkaszubski" rel="noopener noreferrer" target="_blank">Medium</a>
     </div>
-    <p class="footer__copy">&copy; {year} {t.siteTitle}</p>
   </div>
 </footer>
 
 <style>
   .site-footer {
+    position: relative;
+    z-index: 1;
     border-top: 1px solid var(--color-border);
     padding-block: var(--space-lg);
     margin-top: var(--space-2xl);
@@ -35,31 +37,27 @@ const year = new Date().getFullYear();
     text-align: center;
   }
 
+  .footer__copy {
+    color: var(--color-text-faint);
+  }
+
   .footer__links {
     display: flex;
     gap: var(--space-lg);
   }
 
   .footer__links a {
-    font-family: var(--font-body);
+    font-family: var(--font-mono);
     font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    color: var(--color-text-2);
     text-decoration: none;
+    letter-spacing: 0.02em;
     transition: color var(--transition);
   }
 
   .footer__links a:hover {
     color: var(--color-text);
-  }
-
-  .footer__copy {
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    letter-spacing: 0.06em;
-    color: var(--color-text-faint);
+    opacity: 1;
   }
 
   @media (min-width: 768px) {

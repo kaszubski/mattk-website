@@ -1,0 +1,304 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { en as t } from "@/i18n";
+---
+
+<BaseLayout
+  t={t}
+  title="Stack"
+  description="The tools, technologies, and decisions behind mattkaszubski.com."
+>
+  <Nav t={t} />
+
+  <main id="main-content">
+    <article class="stack-page" aria-labelledby="stack-heading">
+      <div class="container">
+
+        <header class="stack-page__header">
+          <p class="mono stack-page__label">This site</p>
+          <h1 id="stack-heading" class="stack-page__title">The stack</h1>
+          <p class="stack-page__intro">
+            Built to be fast, accessible, and easy to maintain.
+            No build complexity for its own sake — every choice has a reason.
+          </p>
+        </header>
+
+        <div class="stack-page__body">
+
+          <section aria-labelledby="framework-heading">
+            <h2 id="framework-heading">Framework</h2>
+            <div class="stack-item">
+              <div class="stack-item__head">
+                <span class="stack-item__name">Astro 4</span>
+                <a href="https://astro.build" class="stack-item__link mono" rel="noopener noreferrer" target="_blank">astro.build ↗<span class="sr-only"> (opens in new tab)</span></a>
+              </div>
+              <p>
+                Astro ships zero JavaScript by default — HTML is rendered at build time and only
+                the scripts that actually need the browser are sent. For a content-focused site
+                this is the right trade-off: fast first paint, no hydration overhead, and
+                straightforward mental model. The content collections API handles the writing
+                section with full type-safety via Zod schemas.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="language-heading">
+            <h2 id="language-heading">Language</h2>
+            <div class="stack-item">
+              <div class="stack-item__head">
+                <span class="stack-item__name">TypeScript — strict mode</span>
+              </div>
+              <p>
+                Strict TypeScript throughout. Every component, page, and i18n object is typed.
+                Catching shape mismatches at build time rather than runtime is especially useful
+                when content schemas evolve — a missing field breaks the build, not a production page.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="content-heading">
+            <h2 id="content-heading">Content</h2>
+            <div class="stack-item">
+              <div class="stack-item__head">
+                <span class="stack-item__name">Markdown + Astro Content Collections</span>
+              </div>
+              <p>
+                Articles live as Markdown files validated against a Zod schema at build time.
+                Headings, dates, categories, and Medium URLs are all typed fields —
+                the schema rejects malformed frontmatter before anything reaches the browser.
+                The writing on this site is originally published on Medium; the collection serves
+                as a curated local mirror with full control over presentation.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="styling-heading">
+            <h2 id="styling-heading">Styling</h2>
+            <div class="stack-item">
+              <div class="stack-item__head">
+                <span class="stack-item__name">Vanilla CSS — scoped + global tokens</span>
+              </div>
+              <p>
+                No CSS framework. A token system in <code>:root</code> covers colour, spacing,
+                typography, and radius. Component styles are scoped with Astro's built-in
+                style scoping. Fluid typography uses <code>clamp()</code> throughout —
+                font sizes scale smoothly between breakpoints with no media queries.
+                Animations respect <code>prefers-reduced-motion</code> site-wide.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="fonts-heading">
+            <h2 id="fonts-heading">Typography</h2>
+            <div class="stack-item">
+              <div class="stack-item__head">
+                <span class="stack-item__name">Syne · Outfit · DM Mono</span>
+                <a href="https://fonts.google.com" class="stack-item__link mono" rel="noopener noreferrer" target="_blank">Google Fonts ↗<span class="sr-only"> (opens in new tab)</span></a>
+              </div>
+              <p>
+                Three typefaces with distinct roles: <strong>Syne</strong> for display headings
+                (high-weight, tight tracking), <strong>Outfit</strong> for body text (readable,
+                neutral), and <strong>DM Mono</strong> for labels, metadata, and code
+                (compact, distinct). Loaded via Google Fonts with <code>preconnect</code> hints
+                and <code>display=swap</code>.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="deploy-heading">
+            <h2 id="deploy-heading">Deployment</h2>
+            <div class="stack-item">
+              <div class="stack-item__head">
+                <span class="stack-item__name">Static output</span>
+              </div>
+              <p>
+                The site is fully static — Astro pre-renders every page to plain HTML at build
+                time. No server, no runtime, no database. Deployable to any CDN or static host.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="seo-heading">
+            <h2 id="seo-heading">SEO &amp; metadata</h2>
+            <div class="stack-item">
+              <div class="stack-item__head">
+                <span class="stack-item__name">JSON-LD · Open Graph · Sitemap</span>
+              </div>
+              <p>
+                Every page has structured data (Schema.org <code>Person</code>,
+                <code>WebSite</code>, <code>Article</code>), full Open Graph tags for social
+                previews, and a generated sitemap via <code>@astrojs/sitemap</code>.
+                Canonical URLs are set on every page.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="deps-heading">
+            <h2 id="deps-heading">Dependencies</h2>
+            <div class="stack-item">
+              <div class="stack-item__head">
+                <span class="stack-item__name">2 production dependencies</span>
+              </div>
+              <p>
+                <code>astro</code> and <code>@astrojs/sitemap</code>. That's it.
+                No UI libraries, no animation packages, no utility belt.
+                The marquee, proximity glow, scroll spy, and all interactions are written
+                from scratch in plain TypeScript — both to keep the bundle lean and because
+                these interactions are simple enough not to warrant a dependency.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="source-heading">
+            <h2 id="source-heading">Source</h2>
+            <p>
+              The full source is on
+              <a href="https://github.com/kaszubski/mattk-website" rel="noopener noreferrer" target="_blank">
+                GitHub<span class="sr-only"> (opens in new tab)</span></a>.
+            </p>
+          </section>
+
+          <p class="stack-page__updated mono">Last updated: March 2026</p>
+
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <Footer t={t} />
+</BaseLayout>
+
+<style>
+  .stack-page {
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .stack-page__header {
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-xl);
+  }
+
+  .stack-page__label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .stack-page__title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .stack-page__intro {
+    font-size: var(--text-sm);
+    color: var(--color-text-2);
+    max-width: 52ch;
+    line-height: 1.7;
+  }
+
+  .stack-page__body {
+    max-width: 58ch;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .stack-page__body h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .stack-page__body p {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    color: var(--color-text-2);
+  }
+
+  .stack-page__body a {
+    color: var(--color-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .stack-page__body code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--color-accent);
+    background: var(--color-bg-elevated);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Stack item */
+  .stack-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-left: 2px solid var(--color-accent);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .stack-item__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .stack-item__name {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .stack-item__link {
+    font-size: 0.65rem;
+    color: var(--color-text-faint);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color var(--transition);
+    flex-shrink: 0;
+  }
+
+  .stack-item__link:hover {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  .stack-page__updated {
+    color: var(--color-text-faint);
+    font-size: 0.65rem;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fade-in {
+      from { opacity: 0; translate: 0 0.75rem; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+
+    .stack-page__header { animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .stack-page__body   { animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both; }
+  }
+</style>

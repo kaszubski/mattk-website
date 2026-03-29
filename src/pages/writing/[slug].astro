@@ -1,0 +1,333 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { en as t } from "@/i18n";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Find the medium URL from translations
+const allPosts = t.writing.sections.flatMap((s) => s.posts);
+const meta = allPosts.find((p) => p.slug === post.slug);
+---
+
+<BaseLayout
+  t={t}
+  title={post.data.title}
+  description={post.data.description}
+>
+  <Nav t={t} activePage="writing" />
+
+  <main id="main-content">
+    <article class="article" aria-labelledby="article-heading">
+      <div class="container">
+
+        <header class="article__header">
+          <a href="/writing/" class="article__back mono">← Writing</a>
+          <p class="mono article__category">{post.data.category}</p>
+          <h1 id="article-heading" class="article__title">{post.data.title}</h1>
+          <p class="article__desc">{post.data.description}</p>
+          <div class="article__meta">
+            <span class="mono article__date">{post.data.date}</span>
+            {meta && (
+              <a
+                href={meta.mediumUrl}
+                class="article__medium-link mono"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read on Medium ↗
+              </a>
+            )}
+          </div>
+        </header>
+
+        <div class="article__body prose">
+          <Content />
+        </div>
+
+        <footer class="article__footer">
+          {meta && (
+            <a
+              href={meta.mediumUrl}
+              class="article__medium-cta"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <span>Originally published on Medium</span>
+              <span class="article__medium-cta-arrow" aria-hidden="true">↗</span>
+            </a>
+          )}
+          <a href="/writing/" class="article__back-footer mono">← Back to writing</a>
+        </footer>
+
+      </div>
+    </article>
+  </main>
+
+  <Footer t={t} />
+</BaseLayout>
+
+<style>
+  .article {
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  /* Header */
+  .article__header {
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-xl);
+  }
+
+  .article__back {
+    display: inline-block;
+    color: var(--color-text-faint);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-lg);
+    transition: color var(--transition);
+  }
+
+  .article__back:hover {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  .article__category {
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .article__title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .article__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-2);
+    max-width: 52ch;
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+  }
+
+  .article__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .article__date {
+    color: var(--color-text-faint);
+    font-size: 0.65rem;
+  }
+
+  .article__medium-link {
+    color: var(--color-text-2);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    transition: color var(--transition);
+  }
+
+  .article__medium-link:hover {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  /* Body / prose */
+  .prose {
+    color: var(--color-text);
+    line-height: 1.8;
+    font-size: var(--text-base);
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .prose :global(p) {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-2);
+  }
+
+  .prose :global(p):first-child {
+    color: var(--color-text);
+  }
+
+  .prose :global(strong) {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .prose :global(em) {
+    color: var(--color-text);
+    font-style: italic;
+  }
+
+  .prose :global(a) {
+    color: var(--color-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: var(--space-lg);
+    margin-bottom: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .prose :global(li) {
+    color: var(--color-text-2);
+    line-height: 1.7;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 2px solid var(--color-accent);
+    padding-left: var(--space-md);
+    margin-block: var(--space-lg);
+    color: var(--color-text-2);
+    font-style: italic;
+  }
+
+  .prose :global(blockquote p) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(pre) {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    overflow-x: auto;
+    margin-block: var(--space-lg);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--color-accent);
+    background: var(--color-bg-elevated);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+  }
+
+  .prose :global(pre code) {
+    color: var(--color-text);
+    background: none;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin-block: var(--space-xl);
+  }
+
+  /* Footer */
+  .article__footer {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .article__medium-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.6rem 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-2);
+    text-decoration: none;
+    transition: border-color var(--transition), color var(--transition);
+  }
+
+  .article__medium-cta:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  .article__medium-cta-arrow {
+    transition: translate var(--transition);
+  }
+
+  .article__medium-cta:hover .article__medium-cta-arrow {
+    translate: 1px -1px;
+  }
+
+  .article__back-footer {
+    color: var(--color-text-faint);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    transition: color var(--transition);
+  }
+
+  .article__back-footer:hover {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  /* Entry animation */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fade-in {
+      from { opacity: 0; translate: 0 0.75rem; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+
+    .article__header { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+    .article__body   { animation: fade-in 0.5s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
+  }
+</style>

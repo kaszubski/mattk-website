@@ -30,18 +30,6 @@ const { t, activePage = "home" } = Astro.props;
           aria-current={activePage === "about" ? "page" : undefined}
         >{t.nav.about}</a>
       </li>
-      <li>
-        <a
-          href="https://www.meetup.com/engineering-leadership-warsaw/"
-          rel="noopener noreferrer"
-          target="_blank"
-          class="nav__external"
-        >
-          {t.nav.elw}
-          <span class="sr-only">(opens in new tab)</span>
-          <span class="nav__ext-icon" aria-hidden="true">↗</span>
-        </a>
-      </li>
     </ul>
   </nav>
 </header>

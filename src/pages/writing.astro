@@ -22,37 +22,38 @@ import { en as t } from "@/i18n";
           <p class="writing-page__desc">{t.writing.description}</p>
         </header>
 
-        <ol class="posts" role="list">
-          {
-            t.home.writing.posts.map((post, i) => (
-              <li class="post reveal">
-                <a
-                  class="post__inner"
-                  href={post.url}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span class="post__num mono">0{i + 1}</span>
-                  <div class="post__body">
-                    <span class="post__title">{post.title}</span>
-                    <span class="post__desc">{post.description}</span>
-                  </div>
-                  <span class="post__date mono">{post.date}</span>
-                  <span class="post__arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-            ))
-          }
-        </ol>
+        {t.writing.sections.map((section) => (
+          <section class="writing-section reveal" aria-labelledby={`section-${section.id}`}>
+            <h2 id={`section-${section.id}`} class="writing-section__heading mono">
+              {section.label}
+            </h2>
+
+            <ol class="posts" role="list">
+              {section.posts.map((post, i) => (
+                <li class="post">
+                  <a class="post__inner" href={`/writing/${post.slug}/`}>
+                    <span class="post__num mono">0{i + 1}</span>
+                    <div class="post__body">
+                      <span class="post__title">{post.title}</span>
+                      <span class="post__desc">{post.description}</span>
+                    </div>
+                    <span class="post__date mono">{post.date}</span>
+                    <span class="post__arrow" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))}
 
         <footer class="writing-page__footer reveal">
           <a
-            href={t.home.writing.allPostsUrl}
+            href={t.writing.allPostsUrl}
             class="writing-page__medium-link mono"
             rel="noopener noreferrer"
             target="_blank"
           >
-            {t.home.writing.allPosts} ↗
+            {t.writing.allPostsOnMedium} ↗
           </a>
         </footer>
 
@@ -100,7 +101,24 @@ import { en as t } from "@/i18n";
     line-height: 1.7;
   }
 
-  /* Posts — shared with homepage */
+  /* Sections */
+  .writing-section {
+    margin-bottom: var(--space-xl);
+  }
+
+  .writing-section__heading {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Posts */
   .posts {
     list-style: none;
     display: flex;
@@ -180,7 +198,7 @@ import { en as t } from "@/i18n";
 
   .post__inner:hover .post__arrow {
     color: var(--color-accent);
-    translate: 1px -1px;
+    translate: 3px 0;
   }
 
   @media (min-width: 768px) {

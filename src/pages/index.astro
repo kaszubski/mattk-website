@@ -53,6 +53,21 @@ const nameLines = ["Matt", "Kaszubski"];
       </div>
     </section>
 
+    <!-- ── Worked at ─────────────────────────────────────── -->
+    <section class="worked" aria-label="Experience">
+      <div class="container">
+      <div class="worked__label mono">Experience</div>
+      <div class="worked__track-wrap" aria-hidden="true">
+        <div class="worked__track">
+          {["Asana", "IG", "Amartus", "Mindtree", "Dyson", "Sii", "HSBC",
+            "Asana", "IG", "Amartus", "Mindtree", "Dyson", "Sii", "HSBC"].map((name) => (
+            <span class="worked__item">{name}</span>
+          ))}
+        </div>
+      </div>
+      </div>
+    </section>
+
   </main>
 
   <Footer t={t} />
@@ -167,6 +182,75 @@ const nameLines = ["Matt", "Kaszubski"];
       0 0 calc(var(--glow, 0) * 28px) rgba(94, 234, 212, calc(var(--glow, 0) * 0.75)),
       0 0 calc(var(--glow, 0) * 60px) rgba(94, 234, 212, calc(var(--glow, 0) * 0.25));
     transition: color 0.25s ease, text-shadow 0.25s ease;
+  }
+
+  /* ── Worked at ───────────────────────────────────────── */
+  .worked {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .worked__label {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.6rem;
+    color: var(--color-text-faint);
+    margin-bottom: var(--space-lg);
+  }
+
+  .worked__track-wrap {
+    overflow: hidden;
+    /* fade edges */
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%
+    );
+  }
+
+  .worked__track {
+    display: flex;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+
+  .worked__track:hover {
+    animation-play-state: paused;
+  }
+
+  .worked__item {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 0.8rem + 1vw, 1.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text-faint);
+    white-space: nowrap;
+    transition: color var(--transition-md);
+    flex-shrink: 0;
+  }
+
+  .worked__item:hover {
+    color: var(--color-text-2);
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .worked__track { animation: none; }
   }
 
   /* ── Load animations ─────────────────────────────────── */

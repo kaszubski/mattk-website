@@ -1,0 +1,174 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { en as t } from "@/i18n";
+---
+
+<BaseLayout
+  t={t}
+  title="Accessibility"
+  description="Accessibility statement for mattkaszubski.com — commitment to WCAG 2.2 Level AAA conformance."
+>
+  <Nav t={t} />
+
+  <main id="main-content">
+    <article class="a11y-page" aria-labelledby="a11y-heading">
+      <div class="container">
+
+        <header class="a11y-page__header">
+          <p class="mono a11y-page__label">Accessibility</p>
+          <h1 id="a11y-heading" class="a11y-page__title">Accessibility statement</h1>
+        </header>
+
+        <div class="a11y-page__body">
+          <section aria-labelledby="commitment-heading">
+            <h2 id="commitment-heading">Commitment</h2>
+            <p>
+              I'm committed to making this site accessible to everyone. It targets
+              <strong>WCAG 2.2 Level AAA</strong> conformance and is tested with both automated tools
+              and manual keyboard/screen-reader checks.
+            </p>
+          </section>
+
+          <section aria-labelledby="measures-heading">
+            <h2 id="measures-heading">What I do</h2>
+            <ul>
+              <li>Semantic HTML throughout — headings, landmarks, lists, and ARIA only where HTML falls short.</li>
+              <li>All text meets a minimum 7:1 contrast ratio against the background (AAA).</li>
+              <li>Focus indicators are visible on every interactive element.</li>
+              <li>All interactive targets are at least 44 &times; 44&nbsp;CSS pixels.</li>
+              <li>Motion is reduced when the operating system preference is set.</li>
+              <li>The site is fully navigable by keyboard alone.</li>
+              <li>Accessibility is validated with automated tooling and manual review before each release.</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="limitations-heading">
+            <h2 id="limitations-heading">Known limitations</h2>
+            <ul>
+              <li>
+                Articles link to Medium for the full text. Medium's own accessibility is outside my control.
+              </li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="feedback-heading">
+            <h2 id="feedback-heading">Feedback</h2>
+            <p>
+              If you find an accessibility barrier on this site, please open an issue on
+              <a href="https://github.com/kaszubski/mattk-website/issues" rel="noopener noreferrer" target="_blank">
+                GitHub<span class="sr-only"> (opens in new tab)</span></a>
+              or reach out on
+              <a href="https://www.linkedin.com/in/kaszubski/" rel="noopener noreferrer" target="_blank">
+                LinkedIn<span class="sr-only"> (opens in new tab)</span></a>.
+              I take every report seriously and aim to respond within five business days.
+            </p>
+          </section>
+
+          <p class="a11y-page__updated mono">Last updated: March 2026</p>
+        </div>
+
+      </div>
+    </article>
+  </main>
+
+  <Footer t={t} />
+</BaseLayout>
+
+<style>
+  .a11y-page {
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .a11y-page__header {
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-xl);
+  }
+
+  .a11y-page__label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .a11y-page__title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-text);
+  }
+
+  .a11y-page__body {
+    max-width: 58ch;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .a11y-page__body h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .a11y-page__body p {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    color: var(--color-text-2);
+  }
+
+  .a11y-page__body ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding-left: 0;
+  }
+
+  .a11y-page__body li {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    color: var(--color-text-2);
+    padding-left: 1.2em;
+    position: relative;
+  }
+
+  .a11y-page__body li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-faint);
+  }
+
+  .a11y-page__body a {
+    color: var(--color-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .a11y-page__updated {
+    color: var(--color-text-faint);
+    font-size: 0.65rem;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fade-in {
+      from { opacity: 0; translate: 0 0.75rem; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+
+    .a11y-page__header { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+    .a11y-page__body   { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
+  }
+</style>

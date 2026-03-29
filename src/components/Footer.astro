@@ -11,7 +11,7 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="container container--wide footer">
-    <p class="footer__copy mono">&copy; {year} {t.siteTitle}</p>
+    <p class="footer__copy mono">&copy; {year} {t.siteTitle} · <a href="/accessibility/">Accessibility</a></p>
     <div class="footer__links">
       <a href="https://www.linkedin.com/in/kaszubski/" rel="noopener noreferrer" target="_blank">LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
       <a href="https://github.com/kaszubski" rel="noopener noreferrer" target="_blank">GitHub<span class="sr-only"> (opens in new tab)</span></a>
@@ -40,6 +40,16 @@ const year = new Date().getFullYear();
 
   .footer__copy {
     color: var(--color-text-faint);
+  }
+
+  .footer__copy a {
+    color: var(--color-text-faint);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .footer__copy a:hover {
+    color: var(--color-text-2);
   }
 
   .footer__links {

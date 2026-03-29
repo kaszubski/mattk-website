@@ -1,7 +1,7 @@
 ---
 title: "The Goalkeeper's Guide to Engineering Management"
 description: "Decision-making under pressure, committing to choices when your team is watching, and what penalty kicks teach you about engineering management."
-date: "Feb 2026"
+date: "2026-02-01"
 mediumUrl: "https://medium.com/@matt.kaszubski/the-goalkeepers-guide-to-engineering-management-the-penalty-kick-be286ce333a9"
 category: leadership
 ---

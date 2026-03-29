@@ -1,7 +1,7 @@
 ---
 title: "The Checklist Origin Story"
 description: "From Boeing's 1935 crash to CrowdStrike — how aviation's greatest safety innovation became software engineering's most underused tool."
-date: "2025"
+date: "2025-01-01"
 mediumUrl: "https://medium.com/@matt.kaszubski/the-checklist-origin-story-c0e8028bbe45"
 category: leadership
 ---

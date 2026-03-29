@@ -1,7 +1,7 @@
 ---
 title: "Future-Proof Your Code: Mastering JavaScript Data Grouping"
 description: "From forEach loops to Object.groupBy — a practical guide to data grouping in JavaScript with TypeScript-safe implementations."
-date: "2024"
+date: "2024-01-01"
 mediumUrl: "https://medium.com/@matt.kaszubski/future-proof-your-code-mastering-javascript-data-grouping-b4183540b8ad"
 category: coding
 ---

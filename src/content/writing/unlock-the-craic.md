@@ -1,7 +1,7 @@
 ---
 title: "Unlock the Craic: The Konami Code in TypeScript"
 description: "How to create a secret easter egg page triggered by the classic Konami Code — keyboard event detection in TypeScript from scratch."
-date: "2024"
+date: "2024-01-01"
 mediumUrl: "https://medium.com/@matt.kaszubski/unlock-the-craic-how-to-create-a-secret-page-with-the-konami-code-in-typescript-455b3123b873"
 category: coding
 ---

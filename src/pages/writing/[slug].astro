@@ -20,12 +20,17 @@ const { Content } = await post.render();
 const allPosts = t.writing.sections.flatMap((s) => s.posts);
 const meta = allPosts.find((p) => p.slug === post.slug);
 
+const formattedDate = post.data.date.toLocaleDateString("en-US", {
+  month: "short",
+  year: "numeric",
+});
+
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: post.data.title,
   description: post.data.description,
-  datePublished: post.data.date,
+  datePublished: post.data.date.toISOString(),
   author: {
     "@type": "Person",
     name: "Matt Kaszubski",
@@ -44,7 +49,7 @@ const articleJsonLd = {
   title={post.data.title}
   description={post.data.description}
   ogType="article"
-  publishedTime={post.data.date}
+  publishedTime={post.data.date.toISOString()}
   jsonLd={articleJsonLd}
 >
   <Nav t={t} activePage="writing" />
@@ -59,7 +64,7 @@ const articleJsonLd = {
           <h1 id="article-heading" class="article__title">{post.data.title}</h1>
           <p class="article__desc">{post.data.description}</p>
           <div class="article__meta">
-            <span class="mono article__date">{post.data.date}</span>
+            <span class="mono article__date">{formattedDate}</span>
             {meta && (
               <a
                 href={meta.mediumUrl}

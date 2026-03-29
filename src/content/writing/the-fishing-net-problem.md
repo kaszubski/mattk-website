@@ -1,7 +1,7 @@
 ---
 title: "The Fishing Net Problem"
 description: "What we get wrong about measuring engineering efficiency — Goodhart's Law, DORA metrics, and the survivorship bias baked into most dashboards."
-date: "2025"
+date: "2025-01-01"
 mediumUrl: "https://medium.com/@matt.kaszubski/the-fishing-net-problem-what-we-get-wrong-about-measuring-engineering-efficiency-2d5688047f29"
 category: leadership
 ---

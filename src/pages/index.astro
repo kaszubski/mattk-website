@@ -84,7 +84,7 @@ const homeJsonLd = {
         <ul class="latest__grid" role="list">
           {latestPosts.map((post) => (
             <li>
-              <a href={`/writing/${post.slug}/`} class="latest__card">
+              <a href={`/writing/${post.id.replace(/\.md$/, '')}/`} class="latest__card">
                 <div class="latest__card-top">
                   <p class="latest__card-category mono">{post.data.category}</p>
                   <span class="latest__card-arrow" aria-hidden="true">↗</span>

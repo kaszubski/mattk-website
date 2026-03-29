@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
@@ -8,19 +8,20 @@ import { en as t } from "@/i18n";
 export async function getStaticPaths() {
   const posts = await getCollection("writing");
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id.replace(/\.md$/, "") },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
+const slug = post.id.replace(/\.md$/, "");
 
 let Content: import("astro").AstroComponentFactory | undefined;
 let headings: { depth: number; slug: string; text: string }[] = [];
 try {
-  ({ Content, headings } = await post.render());
+  ({ Content, headings } = await render(post));
 } catch (err) {
-  console.error(`[writing/${post.slug}] Failed to render content:`, err);
+  console.error(`[writing/${slug}] Failed to render content:`, err);
   return Astro.redirect("/404/");
 }
 
@@ -29,14 +30,14 @@ const hasToc = tocHeadings.length > 1;
 
 // Find the medium URL from translations
 const allPosts = t.writing.sections.flatMap((s) => s.posts);
-const meta = allPosts.find((p) => p.slug === post.slug);
+const meta = allPosts.find((p) => p.slug === slug);
 
 const formattedDate = post.data.date.toLocaleDateString("en-US", {
   month: "short",
   year: "numeric",
 });
 
-const articleUrl = new URL(`/writing/${post.slug}/`, Astro.site ?? Astro.url).href;
+const articleUrl = new URL(`/writing/${slug}/`, Astro.site ?? Astro.url).href;
 const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`;
 const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(post.data.title)}`;
 
@@ -55,7 +56,7 @@ const articleJsonLd = {
     "@type": "Person",
     name: "Matt Kaszubski",
   },
-  url: new URL(`/writing/${post.slug}/`, Astro.site ?? Astro.url).href,
+  url: new URL(`/writing/${slug}/`, Astro.site ?? Astro.url).href,
 };
 ---
 

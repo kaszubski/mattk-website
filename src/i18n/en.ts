@@ -1,7 +1,7 @@
 export const en = {
   siteTitle: "Matt Kaszubski",
   siteDescription:
-    "Engineering leadership writing by Matt Kaszubski. Lead Creative Technologist at Asana, Warsaw.",
+    "Engineering leadership writing by Matt Kaszubski. Engineering Leader @ Asana — 0→1 Digital Engineering in Warsaw, AI-enabled teams.",
 
   nav: {
     writing: "Writing",
@@ -11,7 +11,7 @@ skipToContent: "Skip to main content",
 
   home: {
     intro:
-      "I'm Matt — I lead creative technologists at Asana in Warsaw, write about engineering leadership, and run the Engineering Leadership Warsaw community. My background cuts across design systems, accessibility, music, and street art, which tends to shape how I think about craft and culture in engineering.",
+      "I'm Matt — engineering leader at Asana in Warsaw. I built Digital Engineering here from zero to a function that ships daily alongside San Francisco, New York, and Dublin. Before managing teams I spent seven-plus years as an IC on fintech platforms, framework-agnostic design systems, and greenfield React. I write about what engineering leadership gets wrong: metrics that hide the real story, checklists that save launches, and why commitment beats being right every time.",
 
     writing: {
       title: "Writing",
@@ -107,13 +107,17 @@ skipToContent: "Skip to main content",
   about: {
     title: "About",
     narrative: [
-      "I grew up thinking I'd do something in music or visual art. I ended up in software — but the thread between those things is tighter than it looks. Most of what I find interesting about engineering leadership has less to do with process frameworks and more to do with craft, taste, and how people work together when things are hard.",
-      "I've spent the last several years at Asana in Warsaw, where I lead a team of creative technologists. Before that, my work centred on design systems and accessibility — building the foundations that let other teams move faster.",
-      "I write because it forces me to think more carefully. The pieces I publish on Medium are usually things I've been turning over for months — somewhere between personal essay and field note.",
+      "Your metrics are hiding your best work. I build the teams and systems that find what's missing. At Asana, I took Digital Engineering in Warsaw from zero to a fully operational function that ships daily alongside San Francisco, New York, and Dublin. I manage one engineer directly and run regular 1:1s with Tech Leads and engineers across four time zones. I also lead marketing operations for our Warsaw site—coaching teams and individuals across functions without formal hierarchy.",
+      "I defined the technical vision, established our hiring bar, and created a team culture where ownership isn't a buzzword—it's the hiring bar. This work has taught me that distributed leadership scales faster than org charts.",
+      "Before managing teams, I spent 7+ years as an IC: fintech trading platforms, framework-agnostic design systems, greenfield React applications. I know what good code looks like because I've shipped it under real pressure. That background means I can tell when a technical problem is actually a people problem wearing a ticket as a disguise.",
+      "I lead with Blanchard SLII because managing everyone the same way is lazy and it burns people out. Some engineers need structure. Some need support. Some need you to get out of the way. The skill is reading which—fast.",
+      "Right now I'm focused on AI enablement—not the hype version, but the practical one: building frameworks so my team actually adopts AI tools in their daily workflows and we can measure the impact honestly.",
+      "I write about what engineering leadership gets wrong: The Fishing Net Problem—why your metrics instrument determines what you can see; The Checklist Origin Story—from a 1935 Boeing crash to your next 2am incident; and The Goalkeeper's Guide to EM—why commitment beats correctness.",
+      "Scaling a distributed team? Rethinking how you measure impact? Figuring out the IC-to-EM transition? Let's talk.",
     ],
     shortBioLabel: "Short bio",
     shortBio:
-      "Matt Kaszubski is Lead Creative Technologist at Asana in Warsaw. He writes about engineering leadership on Medium.",
+      "Matt Kaszubski is Engineering Leader @ Asana—0→1 Digital Engineering in Warsaw and AI-enabled teams. He writes about engineering leadership on Medium.",
     connectLabel: "Find me on",
   },
 

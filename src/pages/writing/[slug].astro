@@ -14,7 +14,14 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+
+let Content: import("astro").AstroComponentFactory | undefined;
+try {
+  ({ Content } = await post.render());
+} catch (err) {
+  console.error(`[writing/${post.slug}] Failed to render content:`, err);
+  return Astro.redirect("/404/");
+}
 
 // Find the medium URL from translations
 const allPosts = t.writing.sections.flatMap((s) => s.posts);
@@ -79,7 +86,7 @@ const articleJsonLd = {
         </header>
 
         <div class="article__body prose">
-          <Content />
+          {Content && <Content />}
         </div>
 
         <footer class="article__footer">

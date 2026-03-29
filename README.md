@@ -1,38 +1,36 @@
-# capitaljs.com — Matt Kaszubski
+# Matt Kaszubski — personal site
 
-Personal brand website for [Matt Kaszubski](https://capitaljs.com) — Lead Creative Technologist at Asana, Warsaw. Portfolio, bio, and engineering leadership writing.
+Static site for Matt Kaszubski — engineering leadership at Asana (Warsaw), bio, and engineering leadership writing.
 
 ## Stack
 
-- [Astro](https://astro.build) — static site generator, zero JS runtime
+- [Astro](https://astro.build) — static site generator
 - TypeScript (strict)
-- Vanilla CSS — custom properties, `clamp()` fluid typography, dark mode
-- No external UI or i18n libraries
+- Vanilla CSS — custom properties, `clamp()` fluid typography, dark theme
 
 ## Features
 
-- **Bilingual** — English (`/`) and Polish (`/pl/`) with `hreflang` and `x-default`
-- **WCAG 2.2 AA** — skip navigation, `focus-visible`, semantic HTML, proper contrast
-- **Mobile-first** — responsive breakpoint at 768px
-- **Zero client-side JS**
+- Home, About, and Writing sections
+- Skip link, semantic regions, focus styles
+- Mobile-first layout
 
 ## Project structure
 
 ```
 src/
   i18n/
-    en.ts          # source-of-truth translations, exports Translations type
-    pl.ts          # typed against en.ts — missing keys fail the build
-    index.ts       # useTranslations(), getLocaleFromUrl(), getAlternatePath()
+    en.ts          # copy and Translations type
+    index.ts
   layouts/
     BaseLayout.astro
   components/
     Nav.astro
     Footer.astro
   pages/
-    index.astro    # EN /
-    pl/
-      index.astro  # PL /pl/
+    index.astro
+    about.astro
+    writing.astro
+    writing/[slug].astro
 public/
   favicon.svg
 ```
@@ -46,10 +44,6 @@ npm run build
 npm run preview
 ```
 
-## Adding translations
+## Copy
 
-All copy lives in `src/i18n/en.ts`. To add a new key:
-
-1. Add it to `en.ts`
-2. Add the Polish translation to `pl.ts` — TypeScript will error until both match
-3. Use it in components via `useTranslations(locale)`
+All English strings live in `src/i18n/en.ts`. Pages import `{ en as t }` from `@/i18n` (re-exported in `index.ts`).

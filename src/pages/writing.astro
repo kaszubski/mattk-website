@@ -53,7 +53,7 @@ import { en as t } from "@/i18n";
             rel="noopener noreferrer"
             target="_blank"
           >
-            {t.writing.allPostsOnMedium} ↗
+            {t.writing.allPostsOnMedium} <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span>
           </a>
         </footer>
 
@@ -223,6 +223,9 @@ import { en as t } from "@/i18n";
   }
 
   .writing-page__medium-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--color-text-2);
     text-decoration: none;
     font-size: 0.65rem;

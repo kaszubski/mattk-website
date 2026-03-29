@@ -6,13 +6,17 @@ interface Props {
   title?: string;
   description?: string;
   canonicalUrl?: string;
+  ogType?: string;
+  publishedTime?: string;
+  jsonLd?: Record<string, unknown>;
 }
 
-const { t, title, description, canonicalUrl } = Astro.props;
+const { t, title, description, canonicalUrl, ogType = "website", publishedTime, jsonLd } = Astro.props;
 
 const pageTitle = title ? `${title} — ${t.siteTitle}` : t.siteTitle;
 const pageDescription = description ?? t.siteDescription;
 const canon = canonicalUrl ?? Astro.url.href;
+const ogImage = new URL("/og-image.png", Astro.site ?? Astro.url).href;
 ---
 
 <!doctype html>
@@ -24,16 +28,26 @@ const canon = canonicalUrl ?? Astro.url.href;
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canon} />
     <meta name="generator" content={Astro.generator} />
-    <meta property="og:type" content="website" />
+    <meta name="author" content="Matt Kaszubski" />
+    <meta name="theme-color" content="#07080A" />
+    <meta property="og:type" content={ogType} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     <meta property="og:url" content={canon} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={t.siteTitle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Outfit:wght@300..500&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=block"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Outfit:wght@300..500&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -47,20 +61,21 @@ const canon = canonicalUrl ?? Astro.url.href;
 <style is:global>
   /* ─── Tokens ─────────────────────────────────────────── */
   :root {
+    color-scheme: dark;
     --color-bg:           #07080A;
     --color-bg-elevated:  #0D0F14;
     --color-bg-overlay:   #13151C;
 
     --color-text:         #EEEEF2;
-    --color-text-2:       #8888A4;
-    --color-text-faint:   #3C3C52;
+    --color-text-2:       #A8A8BE;   /* ≈7.2:1 on --color-bg — passes AAA */
+    --color-text-faint:   #7A7A92;   /* ≈4.6:1 on --color-bg — passes AA for text */
 
     --color-accent:       #5EEAD4;   /* teal — WCAG contrast ~12:1 on bg */
     --color-accent-dim:   rgba(94, 234, 212, 0.18);
     --color-accent-glow:  rgba(94, 234, 212, 0.05);
 
-    --color-border:       rgba(255, 255, 255, 0.06);
-    --color-border-hover: rgba(255, 255, 255, 0.14);
+    --color-border:       rgba(255, 255, 255, 0.16);  /* ≈3:1 on --color-bg — passes 1.4.11 */
+    --color-border-hover: rgba(255, 255, 255, 0.28);
     --color-focus:        #5EEAD4;
 
     --font-display: "Syne", sans-serif;
@@ -99,9 +114,13 @@ const canon = canonicalUrl ?? Astro.url.href;
   * { margin: 0; padding: 0; }
 
   html {
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
   }
 
   body {
@@ -186,7 +205,7 @@ const canon = canonicalUrl ?? Astro.url.href;
     border-radius: var(--radius-sm);
     transition: top var(--transition);
   }
-  .skip-nav:focus { top: var(--space-md); }
+  .skip-nav:focus-visible { top: var(--space-md); }
 
   /* ─── Layout ─────────────────────────────────────────── */
   .container {

@@ -3,12 +3,28 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
+
+const aboutJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Matt Kaszubski",
+  jobTitle: "Engineering Leader",
+  worksFor: { "@type": "Organization", name: "Asana" },
+  url: new URL("/about/", Astro.site ?? Astro.url).href,
+  description: t.about.shortBio,
+  sameAs: [
+    "https://www.linkedin.com/in/kaszubski/",
+    "https://github.com/kaszubski",
+    "https://medium.com/@mateuszkaszubski",
+  ],
+};
 ---
 
 <BaseLayout
   t={t}
   title={t.about.title}
   description={t.about.shortBio}
+  jsonLd={aboutJsonLd}
 >
   <Nav t={t} activePage="about" />
 
@@ -39,17 +55,17 @@ import { en as t } from "@/i18n";
           <ul class="about__links" role="list">
             <li>
               <a href="https://www.linkedin.com/in/kaszubski/" rel="noopener noreferrer" target="_blank">
-                LinkedIn <span aria-hidden="true">↗</span>
+                LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span>
               </a>
             </li>
             <li>
               <a href="https://medium.com/@mateuszkaszubski" rel="noopener noreferrer" target="_blank">
-                Medium <span aria-hidden="true">↗</span>
+                Medium <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span>
               </a>
             </li>
             <li>
               <a href="https://github.com/kaszubski" rel="noopener noreferrer" target="_blank">
-                GitHub <span aria-hidden="true">↗</span>
+                GitHub <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span>
               </a>
             </li>
           </ul>
@@ -160,7 +176,8 @@ import { en as t } from "@/i18n";
     font-size: var(--text-xs);
     color: var(--color-text-2);
     text-decoration: none;
-    padding: 0.4rem 0.75rem;
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     transition: color var(--transition), border-color var(--transition), background var(--transition);

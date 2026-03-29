@@ -6,9 +6,32 @@ import { en as t } from "@/i18n";
 
 const nameLines = ["Matt", "Kaszubski"];
 const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG"] as const;
+
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "Matt Kaszubski",
+      url: Astro.site?.href ?? Astro.url.origin,
+    },
+    {
+      "@type": "Person",
+      name: "Matt Kaszubski",
+      jobTitle: "Engineering Leader",
+      worksFor: { "@type": "Organization", name: "Asana" },
+      url: Astro.site?.href ?? Astro.url.origin,
+      sameAs: [
+        "https://www.linkedin.com/in/kaszubski/",
+        "https://github.com/kaszubski",
+        "https://medium.com/@mateuszkaszubski",
+      ],
+    },
+  ],
+};
 ---
 
-<BaseLayout t={t}>
+<BaseLayout t={t} jsonLd={homeJsonLd}>
   <Nav t={t} activePage="home" />
 
   <main id="main-content">
@@ -150,7 +173,8 @@ const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG"] as con
     font-weight: 500;
     letter-spacing: 0.02em;
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    min-height: 44px;
+    padding: 0.5rem 1.1rem;
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-accent);
     color: var(--color-bg);
@@ -241,9 +265,12 @@ const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG"] as con
   .worked__track-shift {
     display: flex;
     width: max-content;
-    will-change: transform;
     min-height: 2.75rem;
     padding-block: var(--space-xs);
+  }
+
+  .worked__track-shift.is-animating {
+    will-change: transform;
   }
 
   .worked__track {
@@ -389,12 +416,34 @@ const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG"] as con
         x = normalize(x, setWidth);
       }
       apply();
-      requestAnimationFrame(tick);
+      if (visible) rafId = requestAnimationFrame(tick);
     };
+
+    let visible = false;
+    let rafId: number | null = null;
+
+    const startLoop = () => {
+      if (rafId !== null) return;
+      visible = true;
+      workedShift.classList.add('is-animating');
+      lastT = performance.now();
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const stopLoop = () => {
+      visible = false;
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      workedShift.classList.remove('is-animating');
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { entry.isIntersecting ? startLoop() : stopLoop(); },
+      { threshold: 0 },
+    );
 
     measure();
     apply();
-    requestAnimationFrame(tick);
+    observer.observe(workedWrap);
     new ResizeObserver(remeasureAndClamp).observe(workedShift);
 
     workedWrap.addEventListener('pointerdown', (e: PointerEvent) => {
@@ -438,16 +487,28 @@ const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG"] as con
       'wheel',
       (e: WheelEvent) => {
         if (setWidth <= 0) return;
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-          x += e.deltaX;
-        } else {
+        const absX = Math.abs(e.deltaX);
+        const absY = Math.abs(e.deltaY);
+        if (absX > absY) {
           e.preventDefault();
-          x -= e.deltaY;
+          x -= e.deltaX;
+        } else if (absY > 0 && absX === 0) {
+          return;
         }
         x = normalize(x, setWidth);
         apply();
       },
       { passive: false },
     );
+
+    const KEYBOARD_STEP = 120;
+    workedWrap.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (setWidth <= 0) return;
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); x += KEYBOARD_STEP; }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); x -= KEYBOARD_STEP; }
+      else return;
+      x = normalize(x, setWidth);
+      apply();
+    });
   }
 </script>

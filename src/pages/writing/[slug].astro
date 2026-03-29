@@ -16,12 +16,16 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 
 let Content: import("astro").AstroComponentFactory | undefined;
+let headings: { depth: number; slug: string; text: string }[] = [];
 try {
-  ({ Content } = await post.render());
+  ({ Content, headings } = await post.render());
 } catch (err) {
   console.error(`[writing/${post.slug}] Failed to render content:`, err);
   return Astro.redirect("/404/");
 }
+
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const hasToc = tocHeadings.length > 1;
 
 // Find the medium URL from translations
 const allPosts = t.writing.sections.flatMap((s) => s.posts);
@@ -31,6 +35,10 @@ const formattedDate = post.data.date.toLocaleDateString("en-US", {
   month: "short",
   year: "numeric",
 });
+
+const articleUrl = new URL(`/writing/${post.slug}/`, Astro.site ?? Astro.url).href;
+const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`;
+const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(post.data.title)}`;
 
 const articleJsonLd = {
   "@context": "https://schema.org",
@@ -63,48 +71,97 @@ const articleJsonLd = {
 
   <main id="main-content">
     <article class="article" aria-labelledby="article-heading">
-      <div class="container">
+      <div class={`container ${hasToc ? "container--wide" : ""}`}>
+        <div class={`article__layout ${hasToc ? "article__layout--has-toc" : ""}`}>
 
-        <header class="article__header">
-          <a href="/writing/" class="article__back mono"><span aria-hidden="true">← </span>Writing</a>
-          <p class="mono article__category">{post.data.category}</p>
-          <h1 id="article-heading" class="article__title">{post.data.title}</h1>
-          <p class="article__desc">{post.data.description}</p>
-          <div class="article__meta">
-            <span class="mono article__date">{formattedDate}</span>
-            {meta && (
-              <a
-                href={meta.mediumUrl}
-                class="article__medium-link mono"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Read on Medium <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span>
-              </a>
-            )}
+          <!-- ── Main content column ───────────────────────── -->
+          <div class="article__main">
+            <header class="article__header">
+              <a href="/writing/" class="article__back mono"><span aria-hidden="true">← </span>Writing</a>
+              <p class="mono article__category">{post.data.category}</p>
+              <h1 id="article-heading" class="article__title">{post.data.title}</h1>
+              <p class="article__desc">{post.data.description}</p>
+              <div class="article__meta">
+                <span class="mono article__date">{formattedDate}</span>
+                {meta && (
+                  <a
+                    href={meta.mediumUrl}
+                    class="article__medium-link mono"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Read on Medium <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span>
+                  </a>
+                )}
+              </div>
+            </header>
+
+            <div class="article__body prose">
+              {Content && <Content />}
+            </div>
+
+            <div class="article__share">
+              <p class="article__share-label mono">Share this article</p>
+              <div class="article__share-links">
+                <a
+                  href={linkedInShareUrl}
+                  class="article__share-btn"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span>
+                </a>
+                <a
+                  href={xShareUrl}
+                  class="article__share-btn"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  X <span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span>
+                </a>
+              </div>
+            </div>
+
+            <footer class="article__footer">
+              {meta && (
+                <a
+                  href={meta.mediumUrl}
+                  class="article__medium-cta"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <span>Originally published on Medium</span>
+                  <span class="article__medium-cta-arrow" aria-hidden="true">↗</span>
+                  <span class="sr-only"> (opens in new tab)</span>
+                </a>
+              )}
+              <a href="/writing/" class="article__back-footer mono"><span aria-hidden="true">← </span>Back to writing</a>
+            </footer>
           </div>
-        </header>
 
-        <div class="article__body prose">
-          {Content && <Content />}
-        </div>
-
-        <footer class="article__footer">
-          {meta && (
-            <a
-              href={meta.mediumUrl}
-              class="article__medium-cta"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <span>Originally published on Medium</span>
-              <span class="article__medium-cta-arrow" aria-hidden="true">↗</span>
-              <span class="sr-only"> (opens in new tab)</span>
-            </a>
+          <!-- ── TOC sidebar ───────────────────────────────── -->
+          {hasToc && (
+            <aside class="article__toc-wrap" aria-label="Table of contents">
+              <nav class="toc">
+                <p class="toc__label mono">Article outline</p>
+                <ol class="toc__list" role="list">
+                  {tocHeadings.map((h) => (
+                    <li class={`toc__item toc__item--h${h.depth}`}>
+                      <a
+                        href={`#${h.slug}`}
+                        class="toc__link"
+                        data-heading={h.slug}
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </aside>
           )}
-          <a href="/writing/" class="article__back-footer mono"><span aria-hidden="true">← </span>Back to writing</a>
-        </footer>
 
+        </div>
       </div>
     </article>
   </main>
@@ -117,7 +174,17 @@ const articleJsonLd = {
     padding-block: clamp(3rem, 6vw, 5rem);
   }
 
-  /* Header */
+  /* ── Two-column layout ──────────────────────────────────── */
+  @media (min-width: 1100px) {
+    .article__layout--has-toc {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 200px;
+      gap: var(--space-lg);
+      align-items: start;
+    }
+  }
+
+  /* ── Header ─────────────────────────────────────────────── */
   .article__header {
     padding-bottom: var(--space-xl);
     border-bottom: 1px solid var(--color-border);
@@ -191,7 +258,7 @@ const articleJsonLd = {
     opacity: 1;
   }
 
-  /* Body / prose */
+  /* ── Body / prose ────────────────────────────────────────── */
   .prose {
     color: var(--color-text);
     line-height: 1.8;
@@ -303,7 +370,7 @@ const articleJsonLd = {
     margin-block: var(--space-xl);
   }
 
-  /* Footer */
+  /* ── Article footer ──────────────────────────────────────── */
   .article__footer {
     margin-top: var(--space-xl);
     padding-top: var(--space-xl);
@@ -359,7 +426,115 @@ const articleJsonLd = {
     opacity: 1;
   }
 
-  /* Entry animation */
+  /* ── TOC sidebar ─────────────────────────────────────────── */
+  .article__toc-wrap {
+    display: none;
+  }
+
+  @media (min-width: 1100px) {
+    .article__toc-wrap {
+      display: block;
+      position: sticky;
+      top: calc(var(--nav-height) + var(--space-lg));
+      max-height: calc(100dvh - var(--nav-height) - var(--space-2xl));
+      overflow-y: auto;
+      /* Hide scrollbar but keep scrollability */
+      scrollbar-width: none;
+    }
+    .article__toc-wrap::-webkit-scrollbar { display: none; }
+  }
+
+  .toc__label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.6rem;
+    margin-bottom: var(--space-md);
+    display: block;
+  }
+
+  .toc__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .toc__item--h3 {
+    padding-left: 0.75rem;
+  }
+
+  .toc__link {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1.45;
+    color: var(--color-text-faint);
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    border-left: 1px solid transparent;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+  }
+
+  .toc__link:hover {
+    color: var(--color-text-2);
+    opacity: 1;
+  }
+
+  .toc__link.is-active {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+    background: var(--color-accent-glow);
+  }
+
+  /* ── Share ───────────────────────────────────────────────── */
+  .article__share {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .article__share-label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  .article__share-links {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .article__share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 44px;
+    padding: 0.4rem 0.9rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-2);
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+  }
+
+  .article__share-btn:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent-dim);
+    background: var(--color-accent-glow);
+    opacity: 1;
+  }
+
+  /* ── Entry animation ─────────────────────────────────────── */
   @media (prefers-reduced-motion: no-preference) {
     @keyframes fade-in {
       from { opacity: 0; translate: 0 0.75rem; }
@@ -370,3 +545,38 @@ const articleJsonLd = {
     .article__body   { animation: fade-in 0.5s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
   }
 </style>
+
+<script>
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>(".toc__link[data-heading]");
+  if (tocLinks.length) {
+    const headingEls = Array.from(
+      document.querySelectorAll<HTMLElement>(".article__body h2[id], .article__body h3[id]")
+    );
+
+    let activeId = "";
+
+    function setActive(id: string) {
+      if (id === activeId) return;
+      activeId = id;
+      tocLinks.forEach((link) => {
+        link.classList.toggle("is-active", link.dataset.heading === id);
+      });
+    }
+
+    function updateActive() {
+      // Walk headings bottom-up; first one whose top is above 30% viewport height wins
+      const threshold = window.innerHeight * 0.3;
+      let current = headingEls[0]?.id ?? "";
+      for (const el of headingEls) {
+        if (el.getBoundingClientRect().top < threshold) {
+          current = el.id;
+        }
+      }
+      setActive(current);
+    }
+
+    // Initialise on load, then track scroll
+    updateActive();
+    window.addEventListener("scroll", updateActive, { passive: true });
+  }
+</script>

@@ -5,6 +5,7 @@ import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
 
 const nameLines = ["Matt", "Kaszubski"];
+const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG"] as const;
 ---
 
 <BaseLayout t={t}>
@@ -57,12 +58,23 @@ const nameLines = ["Matt", "Kaszubski"];
     <section class="worked" aria-label="Experience">
       <div class="container">
       <div class="worked__label mono">Experience</div>
-      <div class="worked__track-wrap" aria-hidden="true">
-        <div class="worked__track">
-          {["Asana", "Sii", "Mindtree", "Amartus", "IG",
-            "Asana", "Sii", "Mindtree", "Amartus", "IG"].map((name) => (
-            <span class="worked__item">{name}</span>
-          ))}
+      <div
+        class="worked__track-wrap"
+        data-worked-marquee
+        tabindex="0"
+        role="region"
+        aria-label="Companies — drag horizontally or use the mouse wheel; marquee loops"
+      >
+        <div class="worked__track-shift">
+          <ul class="worked__track" role="list">
+            {[0, 1, 2].flatMap((copy) =>
+              experienceCompanies.map((name) => (
+                <li class="worked__item" aria-hidden={copy > 0 ? true : undefined}>
+                  {name}
+                </li>
+              ))
+            )}
+          </ul>
         </div>
       </div>
       </div>
@@ -200,33 +212,47 @@ const nameLines = ["Matt", "Kaszubski"];
   }
 
   .worked__track-wrap {
+    --worked-drag: grab;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     overflow: hidden;
-    /* fade edges */
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 12%,
-      black 88%,
-      transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 12%,
-      black 88%,
-      transparent 100%
-    );
+    cursor: var(--worked-drag);
+    margin-inline: calc(var(--space-lg) * -1);
+    padding-inline: var(--space-lg);
+    touch-action: none;
+  }
+
+  .worked__track-wrap.is-dragging {
+    --worked-drag: grabbing;
+    user-select: none;
+  }
+
+  .worked__track-wrap.is-dragging .worked__item {
+    pointer-events: none;
+  }
+
+  .worked__track-wrap:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  .worked__track-shift {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    min-height: 2.75rem;
+    padding-block: var(--space-xs);
   }
 
   .worked__track {
     display: flex;
+    align-items: center;
     gap: clamp(2.5rem, 5vw, 4rem);
-    width: max-content;
-    animation: marquee 28s linear infinite;
-  }
-
-  .worked__track:hover {
-    animation-play-state: paused;
+    margin: 0;
+    list-style: none;
+    flex-shrink: 0;
   }
 
   .worked__item {
@@ -236,21 +262,16 @@ const nameLines = ["Matt", "Kaszubski"];
     letter-spacing: -0.02em;
     color: var(--color-text-faint);
     white-space: nowrap;
-    transition: color var(--transition-md);
     flex-shrink: 0;
+    cursor: inherit;
+    transition: color 0.25s ease, text-shadow 0.25s ease;
   }
 
   .worked__item:hover {
-    color: var(--color-text-2);
-  }
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .worked__track { animation: none; }
+    color: color-mix(in oklch, var(--color-accent) 100%, var(--color-text));
+    text-shadow:
+      0 0 28px rgba(94, 234, 212, 0.75),
+      0 0 60px rgba(94, 234, 212, 0.25);
   }
 
   /* ── Load animations ─────────────────────────────────── */
@@ -322,5 +343,111 @@ const nameLines = ["Matt", "Kaszubski"];
         letters.forEach(l => l.style.removeProperty('--glow'));
       });
     }
+  }
+
+  const workedWrap = document.querySelector<HTMLElement>('[data-worked-marquee]');
+  const workedShift = document.querySelector<HTMLElement>('.worked__track-shift');
+  if (workedWrap && workedShift) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const AUTO_PX_PER_SEC = 40;
+
+    let setWidth = 0;
+    let x = 0;
+    let lastT = performance.now();
+    let dragPointerId: number | null = null;
+    let lastClientX = 0;
+    let dragging = false;
+
+    const normalize = (px: number, w: number) => {
+      if (w <= 1) return px;
+      let out = px;
+      while (out > 0) out -= w;
+      while (out <= -w) out += w;
+      return out;
+    };
+
+    const measure = () => {
+      const total = workedShift.scrollWidth;
+      setWidth = total > 0 ? total / 3 : 0;
+    };
+
+    const apply = () => {
+      workedShift.style.transform = `translate3d(${x}px, 0, 0)`;
+    };
+
+    const remeasureAndClamp = () => {
+      measure();
+      if (setWidth > 0) x = normalize(x, setWidth);
+      apply();
+    };
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - lastT) / 1000, 0.05);
+      lastT = now;
+      if (!dragging && !reduceMotion && setWidth > 0) {
+        x -= AUTO_PX_PER_SEC * dt;
+        x = normalize(x, setWidth);
+      }
+      apply();
+      requestAnimationFrame(tick);
+    };
+
+    measure();
+    apply();
+    requestAnimationFrame(tick);
+    new ResizeObserver(remeasureAndClamp).observe(workedShift);
+
+    workedWrap.addEventListener('pointerdown', (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      dragging = true;
+      dragPointerId = e.pointerId;
+      lastClientX = e.clientX;
+      workedWrap.classList.add('is-dragging');
+      try {
+        workedWrap.setPointerCapture(e.pointerId);
+      } catch {
+        /* noop */
+      }
+    });
+
+    workedWrap.addEventListener('pointermove', (e: PointerEvent) => {
+      if (dragPointerId !== e.pointerId) return;
+      const dx = e.clientX - lastClientX;
+      lastClientX = e.clientX;
+      x += dx;
+      x = normalize(x, setWidth);
+      apply();
+    });
+
+    const endWorkedDrag = (e: PointerEvent) => {
+      if (dragPointerId !== e.pointerId) return;
+      try {
+        workedWrap.releasePointerCapture(e.pointerId);
+      } catch {
+        /* noop */
+      }
+      dragPointerId = null;
+      dragging = false;
+      workedWrap.classList.remove('is-dragging');
+    };
+
+    workedWrap.addEventListener('pointerup', endWorkedDrag);
+    workedWrap.addEventListener('pointercancel', endWorkedDrag);
+
+    workedWrap.addEventListener(
+      'wheel',
+      (e: WheelEvent) => {
+        if (setWidth <= 0) return;
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+          x += e.deltaX;
+        } else {
+          e.preventDefault();
+          x -= e.deltaY;
+        }
+        x = normalize(x, setWidth);
+        apply();
+      },
+      { passive: false },
+    );
   }
 </script>

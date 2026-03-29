@@ -3,6 +3,36 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
+
+const quotes = [
+  {
+    text: "The impediment to action advances action. What stands in the way becomes the way.",
+    author: "Marcus Aurelius",
+    note: "who definitely never clicked a broken link",
+  },
+  {
+    text: "Feedback is the breakfast of champions.",
+    author: "Ken Blanchard",
+    note: "and this 404 is feedback",
+  },
+  {
+    text: "You have power over your mind, not outside events. Realize this, and you will find strength.",
+    author: "Marcus Aurelius",
+    note: "the outside event being: this page not existing",
+  },
+  {
+    text: "None of us is as smart as all of us.",
+    author: "Ken Blanchard",
+    note: "and all of us agree this URL is wrong",
+  },
+  {
+    text: "Waste no more time arguing about what a good man should be. Be one.",
+    author: "Marcus Aurelius",
+    note: "or just go back to the homepage",
+  },
+];
+
+const quote = quotes[Math.floor(Math.random() * quotes.length)];
 ---
 
 <BaseLayout
@@ -20,6 +50,15 @@ import { en as t } from "@/i18n";
         <p class="not-found__desc">
           The page you're looking for doesn't exist or may have been moved.
         </p>
+
+        <blockquote class="not-found__quote">
+          <p class="not-found__quote-text">"{quote.text}"</p>
+          <footer class="not-found__quote-footer">
+            <span class="not-found__quote-author">— {quote.author}</span>
+            <span class="not-found__quote-note">{quote.note}</span>
+          </footer>
+        </blockquote>
+
         <nav class="not-found__links" aria-label="Recovery options">
           <a href="/" class="not-found__link">← Home</a>
           <a href="/writing/" class="not-found__link">Writing</a>
@@ -64,6 +103,43 @@ import { en as t } from "@/i18n";
     max-width: 40ch;
     line-height: 1.7;
     margin-bottom: var(--space-xl);
+  }
+
+  .not-found__quote {
+    max-width: 48ch;
+    padding: var(--space-md) var(--space-lg);
+    border-left: 2px solid var(--color-accent);
+    background: var(--color-bg-elevated);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin-bottom: var(--space-xl);
+  }
+
+  .not-found__quote-text {
+    font-size: var(--text-sm);
+    color: var(--color-text-2);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+  }
+
+  .not-found__quote-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .not-found__quote-author {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-accent);
+    letter-spacing: 0.04em;
+  }
+
+  .not-found__quote-note {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-faint);
+    letter-spacing: 0.02em;
   }
 
   .not-found__links {

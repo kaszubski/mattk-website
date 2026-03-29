@@ -3,6 +3,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
+
+const nameLines = ["Matt", "Kaszubski"];
 ---
 
 <BaseLayout t={t}>
@@ -19,7 +21,21 @@ import { en as t } from "@/i18n";
           <span class="mono">Lead Creative Technologist · Asana · Warsaw</span>
         </div>
 
-        <h1 class="hero__name">Matt<br />Kaszubski</h1>
+        <h1 class="hero__name" aria-label="Matt Kaszubski">
+          {nameLines.map((line, lineIndex) => (
+            <span class="hero__name-line" aria-hidden="true">
+              {line.split("").map((char, charIndex) => {
+                const globalIndex = lineIndex === 0 ? charIndex : nameLines[0].length + 1 + charIndex;
+                return (
+                  <span
+                    class="hero__letter"
+                    style={`animation-delay: ${globalIndex * 38}ms`}
+                  >{char}</span>
+                );
+              })}
+            </span>
+          ))}
+        </h1>
 
         <p class="hero__intro">{t.home.intro}</p>
 
@@ -306,16 +322,62 @@ import { en as t } from "@/i18n";
     }
   }
 
+  /* ── Name: per-letter materialize + gradient shimmer ─── */
+  .hero__name {
+    /* gradient sits ready; shimmer animates after letters land */
+    background: linear-gradient(
+      90deg,
+      var(--color-text)   0%,
+      var(--color-accent) 45%,
+      var(--color-text)   90%
+    );
+    background-size: 250% auto;
+    background-position: 200% center; /* start offscreen right */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero__name-line {
+    display: block;
+  }
+
+  .hero__letter {
+    display: inline-block;
+  }
+
   /* ── Load animations ─────────────────────────────────── */
   @media (prefers-reduced-motion: no-preference) {
-    @keyframes fade-in {
-      from { opacity: 0; translate: 0 0.75rem; }
-      to   { opacity: 1; translate: 0 0; }
+    /* Letter materialize: blurry light → sharp text */
+    @keyframes materialize {
+      0%   { opacity: 0; filter: blur(14px) brightness(3.5); scale: 1.22; }
+      55%  { opacity: 1; filter: blur(3px)  brightness(1.6); scale: 1.03; }
+      100% { opacity: 1; filter: blur(0)    brightness(1);   scale: 1;    }
+    }
+
+    /* Gradient sweep: teal light passes left-to-right once */
+    @keyframes shimmer {
+      from { background-position: 200% center; }
+      to   { background-position: -30% center; }
+    }
+
+    /* "Kaszubski" has 9 chars, global offset starts at index 5 (Matt + space) */
+    /* Last letter lands at ~(13 * 38ms) + 580ms ≈ 1074ms → shimmer at 1.1s */
+    .hero__letter {
+      animation: materialize 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .hero__name {
+      animation: shimmer 1.1s cubic-bezier(0.4, 0, 0.2, 1) 1.1s both;
     }
 
     .hero__status { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-    .hero__name   { animation: fade-in 0.55s cubic-bezier(0.16,1,0.3,1) 0.07s both; }
-    .hero__intro  { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.15s both; }
-    .hero__links  { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.22s both; }
+    .hero__intro  { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.9s both; }
+    .hero__links  { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 1.0s both; }
+
+    @keyframes fade-in {
+      from { opacity: 0; translate: 0 0.6rem; }
+      to   { opacity: 1; translate: 0 0; }
+    }
   }
 </style>

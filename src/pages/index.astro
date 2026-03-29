@@ -369,23 +369,35 @@ const nameLines = ["Matt", "Kaszubski"];
 
 <script>
   const name = document.querySelector<HTMLElement>('.hero__name');
-  if (name && window.matchMedia('(pointer: fine)').matches) {
+  if (name) {
     const letters = Array.from(name.querySelectorAll<HTMLElement>('.hero__letter'));
-    const RADIUS = 130; // px — glow falloff distance
 
-    name.addEventListener('mousemove', (e: MouseEvent) => {
-      letters.forEach(letter => {
-        const rect = letter.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
-        const glow = Math.max(0, 1 - dist / RADIUS);
-        letter.style.setProperty('--glow', glow.toFixed(3));
+    // animation-fill-mode: both holds the final keyframe color in the cascade,
+    // overriding the base CSS color-mix(). Clear it once the animation ends
+    // so the custom property can take effect.
+    letters.forEach(letter => {
+      letter.addEventListener('animationend', () => {
+        letter.style.animation = 'none';
+      }, { once: true });
+    });
+
+    if (window.matchMedia('(pointer: fine)').matches) {
+      const RADIUS = 140;
+
+      name.addEventListener('mousemove', (e: MouseEvent) => {
+        letters.forEach(letter => {
+          const rect = letter.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+          const glow = Math.max(0, 1 - dist / RADIUS);
+          letter.style.setProperty('--glow', glow.toFixed(3));
+        });
       });
-    });
 
-    name.addEventListener('mouseleave', () => {
-      letters.forEach(l => l.style.removeProperty('--glow'));
-    });
+      name.addEventListener('mouseleave', () => {
+        letters.forEach(l => l.style.removeProperty('--glow'));
+      });
+    }
   }
 </script>

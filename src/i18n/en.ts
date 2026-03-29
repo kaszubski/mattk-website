@@ -37,6 +37,12 @@ export const en = {
     },
   },
 
+  writing: {
+    title: "Writing",
+    description:
+      "Essays on engineering leadership, craft, and culture. Published on Medium.",
+  },
+
   about: {
     title: "About",
     narrative: [

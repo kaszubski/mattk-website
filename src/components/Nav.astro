@@ -3,7 +3,7 @@ import type { Translations } from "@/i18n";
 
 interface Props {
   t: Translations;
-  activePage?: "home" | "about";
+  activePage?: "home" | "writing" | "about";
 }
 
 const { t, activePage = "home" } = Astro.props;
@@ -18,9 +18,9 @@ const { t, activePage = "home" } = Astro.props;
     <ul class="nav__list" role="list">
       <li>
         <a
-          href="/#writing"
-          class:list={[{ active: activePage === "home" }]}
-          aria-current={activePage === "home" ? "page" : undefined}
+          href="/writing/"
+          class:list={[{ active: activePage === "writing" }]}
+          aria-current={activePage === "writing" ? "page" : undefined}
         >{t.nav.writing}</a>
       </li>
       <li>

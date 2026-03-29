@@ -334,6 +334,7 @@ const nameLines = ["Matt", "Kaszubski"];
 
   .hero__letter {
     display: inline-block;
+    scale: 1; /* explicit — prevents repaint when animation clears its scale:1 */
     color: var(--color-text);
     /* Proximity glow — driven by --glow (0…1) set via JS mousemove */
     color: color-mix(in oklch, var(--color-accent) calc(var(--glow, 0) * 100%), var(--color-text));
@@ -382,7 +383,15 @@ const nameLines = ["Matt", "Kaszubski"];
     // so the custom property can take effect.
     letters.forEach(letter => {
       letter.addEventListener('animationend', () => {
+        // Suppress transition before clearing animation — prevents the active
+        // transition from firing a single-frame flash on property recalc.
+        letter.style.transition = 'none';
         letter.style.animation = 'none';
+        // Double rAF: first frame applies the no-transition state,
+        // second frame re-enables transitions for the hover effect.
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          letter.style.transition = '';
+        }));
       }, { once: true });
     });
 

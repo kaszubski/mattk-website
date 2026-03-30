@@ -48,7 +48,7 @@ import { en as t } from "@/i18n";
             <h2 id="limitations-heading">Known limitations</h2>
             <ul>
               <li>
-                Articles link to Medium for the full text. Medium's own accessibility is outside my control.
+                Some articles are partially mirrored from Medium. Where a full local version is not yet available, the article links out to Medium — Medium's own accessibility is outside my control.
               </li>
             </ul>
           </section>
@@ -82,9 +82,9 @@ import { en as t } from "@/i18n";
   }
 
   .a11y-page__header {
-    padding-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
     border-bottom: 1px solid var(--color-border);
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-lg);
   }
 
   .a11y-page__label {
@@ -123,7 +123,10 @@ import { en as t } from "@/i18n";
   .a11y-page__body p {
     font-size: var(--text-base);
     line-height: 1.8;
-    color: var(--color-text-2);
+    color: var(--color-text);
+    text-align: justify;
+    hyphens: auto;
+    hyphenate-limit-chars: 6 3 3;
   }
 
   .a11y-page__body ul {
@@ -137,7 +140,7 @@ import { en as t } from "@/i18n";
   .a11y-page__body li {
     font-size: var(--text-base);
     line-height: 1.8;
-    color: var(--color-text-2);
+    color: var(--color-text);
     padding-left: 1.2em;
     position: relative;
   }

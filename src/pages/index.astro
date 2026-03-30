@@ -10,7 +10,7 @@ const nameLines = ["Matt", "Kaszubski"];
 const latestPosts = (await getCollection("writing"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 2);
-const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG"] as const;
+const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG", "HSBC"] as const;
 
 const homeJsonLd = {
   "@context": "https://schema.org",
@@ -84,7 +84,7 @@ const homeJsonLd = {
         <ul class="latest__grid" role="list">
           {latestPosts.map((post) => (
             <li>
-              <a href={`/writing/${post.id.replace(/\.md$/, '')}/`} class="latest__card">
+              <a href={`/writing/${post.id.replace(/\.mdx?$/, '')}/`} class="latest__card">
                 <div class="latest__card-top">
                   <p class="latest__card-category mono">{post.data.category}</p>
                   <span class="latest__card-arrow" aria-hidden="true">↗</span>
@@ -102,7 +102,8 @@ const homeJsonLd = {
     <!-- ── Worked at ─────────────────────────────────────── -->
     <section class="worked" aria-label="Experience">
       <div class="container">
-      <div class="worked__label mono">Experience</div>
+        <div class="worked__label mono">Experience</div>
+      </div>
       <div
         class="worked__track-wrap"
         data-worked-marquee
@@ -112,16 +113,15 @@ const homeJsonLd = {
       >
         <div class="worked__track-shift">
           <ul class="worked__track" role="list">
-            {[0, 1, 2].flatMap((copy) =>
+            {[0, 1, 2, 3, 4, 5, 6, 7].flatMap((copy) =>
               experienceCompanies.map((name) => (
                 <li class="worked__item" aria-hidden={copy > 0 ? true : undefined}>
-                  {name}
+                  {name}<span class="worked__sep" aria-hidden="true"> ·</span>
                 </li>
               ))
             )}
           </ul>
         </div>
-      </div>
       </div>
     </section>
 
@@ -174,7 +174,7 @@ const homeJsonLd = {
 
   .hero__intro {
     font-size: var(--text-base);
-    color: var(--color-text-2);
+    color: var(--color-text);
     line-height: 1.75;
     max-width: 52ch;
     margin-bottom: var(--space-lg);
@@ -210,7 +210,6 @@ const homeJsonLd = {
   }
 
   .worked__label {
-    text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     font-size: 0.6rem;
@@ -221,12 +220,8 @@ const homeJsonLd = {
   .worked__track-wrap {
     --worked-drag: grab;
     width: 100%;
-    max-width: 100%;
-    min-width: 0;
     overflow: hidden;
     cursor: var(--worked-drag);
-    margin-inline: calc(var(--space-lg) * -1);
-    padding-inline: var(--space-lg);
     touch-action: pan-y;
   }
 
@@ -275,6 +270,11 @@ const homeJsonLd = {
     flex-shrink: 0;
     cursor: inherit;
     transition: color 0.25s ease, text-shadow 0.25s ease;
+  }
+
+  .worked__sep {
+    color: var(--color-border);
+    font-weight: 400;
   }
 
   .worked__item:hover {
@@ -416,7 +416,7 @@ const homeJsonLd = {
 
   .latest__card-desc {
     font-size: var(--text-xs);
-    color: var(--color-text-2);
+    color: var(--color-text);
     line-height: 1.6;
     margin-top: auto;
     padding-top: var(--space-sm);
@@ -488,7 +488,7 @@ const homeJsonLd = {
 
     const measure = () => {
       const total = workedShift.scrollWidth;
-      setWidth = total > 0 ? total / 3 : 0;
+      setWidth = total > 0 ? total / 8 : 0;
     };
 
     const apply = () => {

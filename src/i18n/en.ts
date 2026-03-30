@@ -12,28 +12,6 @@ skipToContent: "Skip to main content",
   home: {
     intro:
       "I'm Matt — engineering leader at Asana in Warsaw. I built Digital Engineering here from zero to a function that ships daily alongside San Francisco, New York, and Dublin. Before managing teams I spent seven-plus years as an IC on fintech platforms, framework-agnostic design systems, and greenfield React. I write about what engineering leadership gets wrong: metrics that hide the real story, checklists that save launches, and why commitment beats being right every time.",
-
-    writing: {
-      title: "Writing",
-      posts: [
-        {
-          title: "The Goalkeeper's Guide to EM",
-          description:
-            "What engineering management can learn from goalkeeping — positioning, anticipation, and letting the team play.",
-          url: "/writing/the-goalkeepers-guide/",
-          date: "Feb 2026",
-        },
-        {
-          title: "The Fishing Net Problem",
-          description:
-            "On measuring what actually matters — and why most engineering metrics fish with the wrong net.",
-          url: "/writing/the-fishing-net-problem/",
-          date: "2025",
-        },
-      ],
-      allPosts: "All writing",
-      allPostsUrl: "/writing/",
-    },
   },
 
   writing: {
@@ -47,9 +25,9 @@ skipToContent: "Skip to main content",
         posts: [
           {
             slug: "the-goalkeepers-guide",
-            title: "The Goalkeeper's Guide to Engineering Management",
+            title: "The Goalkeeper's Guide to Engineering Management: The Penalty Kick",
             description:
-              "Decision-making under pressure, committing to choices when your team is watching, and what penalty kicks teach you about engineering management.",
+              "Every engineering manager faces penalty kicks. The question isn't whether you'll dive. It's whether you'll commit.",
             date: "Feb 2026",
             mediumUrl:
               "https://medium.com/@matt.kaszubski/the-goalkeepers-guide-to-engineering-management-the-penalty-kick-be286ce333a9",

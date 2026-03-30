@@ -62,14 +62,14 @@ import { en as t } from "@/i18n";
             <h2 id="content-heading">Content</h2>
             <div class="stack-item">
               <div class="stack-item__head">
-                <span class="stack-item__name">Markdown + Astro Content Collections</span>
+                <span class="stack-item__name">MDX + Astro Content Collections</span>
               </div>
               <p>
-                Articles live as Markdown files validated against a Zod schema at build time.
+                Articles live as MDX files validated against a Zod schema at build time.
                 Headings, dates, categories, and Medium URLs are all typed fields —
                 the schema rejects malformed frontmatter before anything reaches the browser.
-                The writing on this site is originally published on Medium; the collection serves
-                as a curated local mirror with full control over presentation.
+                MDX enables full Astro component support inside articles: optimized images
+                via <code>astro:assets</code> and reusable pull-quote components.
               </p>
             </div>
           </section>
@@ -139,10 +139,10 @@ import { en as t } from "@/i18n";
             <h2 id="deps-heading">Dependencies</h2>
             <div class="stack-item">
               <div class="stack-item__head">
-                <span class="stack-item__name">2 production dependencies</span>
+                <span class="stack-item__name">3 production dependencies</span>
               </div>
               <p>
-                <code>astro</code> and <code>@astrojs/sitemap</code>. That's it.
+                <code>astro</code>, <code>@astrojs/sitemap</code>, and <code>@astrojs/mdx</code>.
                 No UI libraries, no animation packages, no utility belt.
                 The marquee, proximity glow, scroll spy, and all interactions are written
                 from scratch in plain TypeScript — both to keep the bundle lean and because
@@ -176,9 +176,9 @@ import { en as t } from "@/i18n";
   }
 
   .stack-page__header {
-    padding-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
     border-bottom: 1px solid var(--color-border);
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-lg);
   }
 
   .stack-page__label {
@@ -201,9 +201,12 @@ import { en as t } from "@/i18n";
 
   .stack-page__intro {
     font-size: var(--text-sm);
-    color: var(--color-text-2);
+    color: var(--color-text);
     max-width: 52ch;
     line-height: 1.7;
+    text-align: justify;
+    hyphens: auto;
+    hyphenate-limit-chars: 6 3 3;
   }
 
   .stack-page__body {
@@ -225,7 +228,10 @@ import { en as t } from "@/i18n";
   .stack-page__body p {
     font-size: var(--text-base);
     line-height: 1.8;
-    color: var(--color-text-2);
+    color: var(--color-text);
+    text-align: justify;
+    hyphens: auto;
+    hyphenate-limit-chars: 6 3 3;
   }
 
   .stack-page__body a {

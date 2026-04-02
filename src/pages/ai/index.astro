@@ -1,0 +1,200 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { en as t } from "@/i18n";
+---
+
+<BaseLayout
+  t={t}
+  title="AI Manifesto"
+  description="My stance on AI in engineering — a multiplier, not a magic wand. People over tooling, outcomes over output."
+>
+  <Nav t={t} activePage="ai" />
+
+  <main id="main-content">
+    <article class="ai-page" aria-labelledby="ai-heading">
+      <div class="container">
+
+        <header class="ai-page__header">
+          <p class="mono ai-page__label">AI Manifesto</p>
+          <h1 id="ai-heading" class="ai-page__title">AI is a multiplier, not a magic wand</h1>
+        </header>
+
+        <div class="ai-page__body">
+          <section aria-labelledby="stance-heading">
+            <h2 id="stance-heading">My stance</h2>
+            <p>
+              AI will not replace engineers. It will make good engineers faster. But it won't
+              turn a bad process into a good one, a weak team into a strong
+              one, or a missing strategy into a present one. It's a multiplier — and multipliers
+              amplify whatever is already there.
+            </p>
+            <p>
+              The industry loves putting a number on it — some percentage of your job that AI can
+              "do for you." That framing confuses <strong>output with outcome</strong>. Yes, AI can
+              generate code, draft emails, and summarize meetings faster than any human. That's
+              output. But the outcome — the decision that shaped the architecture, the conversation
+              that unblocked the team, the judgment call at 2am — that's still people. And it will
+              be for a long time.
+            </p>
+          </section>
+
+          <section aria-labelledby="beliefs-heading">
+            <h2 id="beliefs-heading">What I believe</h2>
+            <ul>
+              <li>Invest in people, not tooling. Tools change every quarter. A strong team adapts to any of them.</li>
+              <li>AI is a multiplier. It amplifies what's already there — good and bad.</li>
+              <li>Output is not outcome. Faster code generation means nothing if you're building the wrong thing.</li>
+              <li>Adoption should be measured, not assumed. If your team "has AI tools" but nobody's workflow actually changed, you have a checkbox, not a strategy.</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="reject-heading">
+            <h2 id="reject-heading">What I push back on</h2>
+            <ul>
+              <li>"AI will replace developers." It won't. It will replace developers who refuse to adapt — the same way every tool shift has.</li>
+              <li>Percentage theatre. Reducing engineering to "X% automatable" mistakes keystrokes for craft. The hardest parts of the job — context, judgment, empathy — don't fit in a metric.</li>
+              <li>Hype-driven adoption. Buying a tool is not a strategy. Rolling it out without measuring impact is just noise.</li>
+            </ul>
+          </section>
+
+          <footer class="ai-page__signature">
+            <p class="ai-page__signature-closer">This site was built with AI. The thinking behind it was not.</p>
+            <p class="ai-page__signature-name">Matt Kaszubski</p>
+            <p class="ai-page__signature-meta mono">Warsaw, Poland — 3 April 2026</p>
+          </footer>
+        </div>
+
+      </div>
+    </article>
+  </main>
+
+  <Footer t={t} />
+</BaseLayout>
+
+<style>
+  .ai-page {
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .ai-page__header {
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-lg);
+  }
+
+  .ai-page__label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .ai-page__title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-text);
+  }
+
+  .ai-page__body {
+    max-width: 58ch;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .ai-page__body section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .ai-page__body h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .ai-page__body p {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    color: var(--color-text);
+    text-align: justify;
+    hyphens: auto;
+    hyphenate-limit-chars: 6 3 3;
+  }
+
+  .ai-page__body ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding-left: 0;
+  }
+
+  .ai-page__body li {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    color: var(--color-text);
+    padding-left: 1.2em;
+    position: relative;
+  }
+
+  .ai-page__body li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-faint);
+  }
+
+  .ai-page__body a {
+    color: var(--color-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .ai-page__signature {
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ai-page__signature-closer {
+    font-size: var(--text-base);
+    font-style: italic;
+    color: var(--color-text-2);
+    line-height: 1.8;
+    margin-bottom: var(--space-lg);
+  }
+
+  .ai-page__signature-name {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: var(--space-xs);
+  }
+
+  .ai-page__signature-meta {
+    color: var(--color-text-faint);
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fade-in {
+      from { opacity: 0; translate: 0 0.75rem; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+
+    .ai-page__header { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+    .ai-page__body   { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
+  }
+</style>

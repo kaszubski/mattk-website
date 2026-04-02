@@ -73,7 +73,10 @@ const homeJsonLd = {
           ))}
         </h1>
 
-        <p class="hero__intro">{t.home.intro}</p>
+        <div class="hero__intro">
+          <p>{t.home.intro}</p>
+          <p>{t.home.introWriting}</p>
+        </div>
 
       </div>
     </section>
@@ -187,6 +190,9 @@ const homeJsonLd = {
   }
 
   .hero__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
     font-size: var(--text-base);
     color: var(--color-text);
     line-height: 1.75;

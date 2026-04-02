@@ -11,7 +11,9 @@ skipToContent: "Skip to main content",
 
   home: {
     intro:
-      "I'm Matt — engineering leader at Asana in Warsaw. I built Digital Engineering here from zero to a function that ships daily alongside San Francisco, New York, and Dublin. Before managing teams I spent seven-plus years as an IC on fintech platforms, framework-agnostic design systems, and greenfield React. I write about what engineering leadership gets wrong: metrics that hide the real story, checklists that save launches, and why commitment beats being right every time.",
+      "I'm Matt — engineering leader at Asana in Warsaw. I took Digital Engineering from zero to a function that ships daily alongside San Francisco, New York, and Dublin.",
+    introWriting:
+      "I write about what leadership gets wrong: metrics that hide the real story, checklists that save launches, and why commitment beats being right.",
   },
 
   writing: {

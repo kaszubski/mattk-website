@@ -1,0 +1,170 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { en as t } from "@/i18n";
+
+const quotes = [
+  {
+    text: "The best way to not feel hopeless is to get up and do something.",
+    author: "Barack Obama",
+    note: "we're already working on it",
+  },
+  {
+    text: "In the middle of difficulty lies opportunity.",
+    author: "Albert Einstein",
+    note: "the opportunity being: trying again in a minute",
+  },
+  {
+    text: "The only real mistake is the one from which we learn nothing.",
+    author: "Henry Ford",
+    note: "and we're definitely logging this one",
+  },
+];
+
+const quote = quotes[Math.floor(Math.random() * quotes.length)];
+---
+
+<BaseLayout
+  t={t}
+  title="Something went wrong"
+  description="An unexpected error occurred."
+>
+  <Nav t={t} />
+
+  <main id="main-content">
+    <div class="error-page">
+      <div class="container">
+        <p class="mono error-page__code">500</p>
+        <h1 class="error-page__heading">Something went wrong</h1>
+        <p class="error-page__desc">
+          An unexpected error occurred. This is on us, not you.
+        </p>
+
+        <blockquote class="error-page__quote">
+          <p class="error-page__quote-text">"{quote.text}"</p>
+          <footer class="error-page__quote-footer">
+            <span class="error-page__quote-author">— {quote.author}</span>
+            <span class="error-page__quote-note">{quote.note}</span>
+          </footer>
+        </blockquote>
+
+        <nav class="error-page__links" aria-label="Recovery options">
+          <a href="/" class="error-page__link">← Home</a>
+          <a href="/writing/" class="error-page__link">Writing</a>
+          <a href="/about/" class="error-page__link">About</a>
+        </nav>
+      </div>
+    </div>
+  </main>
+
+  <Footer t={t} />
+</BaseLayout>
+
+<style>
+  .error-page {
+    display: flex;
+    align-items: center;
+    min-height: calc(100dvh - var(--nav-height) - 10rem);
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .error-page__code {
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .error-page__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .error-page__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-2);
+    max-width: 40ch;
+    line-height: 1.7;
+    margin-bottom: var(--space-xl);
+  }
+
+  .error-page__quote {
+    max-width: 48ch;
+    padding: var(--space-md) var(--space-lg);
+    border-left: 2px solid var(--color-accent);
+    background: var(--color-bg-elevated);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin-bottom: var(--space-xl);
+  }
+
+  .error-page__quote-text {
+    font-size: var(--text-sm);
+    color: var(--color-text-2);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+  }
+
+  .error-page__quote-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .error-page__quote-author {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-accent);
+    letter-spacing: 0.04em;
+  }
+
+  .error-page__quote-note {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-faint);
+    letter-spacing: 0.02em;
+  }
+
+  .error-page__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .error-page__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-2);
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+  }
+
+  .error-page__link:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent-dim);
+    background: var(--color-accent-glow);
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fade-in {
+      from { opacity: 0; translate: 0 0.75rem; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+
+    .error-page { animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  }
+</style>

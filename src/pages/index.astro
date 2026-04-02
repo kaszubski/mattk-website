@@ -10,7 +10,7 @@ const nameLines = ["Matt", "Kaszubski"];
 const latestPosts = (await getCollection("writing"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 2);
-const experienceCompanies = ["Asana", "Sii", "Mindtree", "Amartus", "IG", "HSBC"] as const;
+const experienceCompanies = ["IG", "Amartus", "Mindtree", "Dyson", "Sii", "HSBC", "Asana"] as const;
 
 const homeJsonLd = {
   "@context": "https://schema.org",
@@ -38,6 +38,12 @@ const homeJsonLd = {
 ---
 
 <BaseLayout t={t} jsonLd={homeJsonLd}>
+  {/* Mark intro as seen so animations only play once per session */}
+  <script is:inline>
+    if (sessionStorage.getItem('intro-seen')) {
+      document.documentElement.setAttribute('data-intro-seen', '');
+    }
+  </script>
   <Nav t={t} activePage="home" />
 
   <main id="main-content">
@@ -152,10 +158,18 @@ const homeJsonLd = {
     flex-shrink: 0;
   }
 
+  .status-dot {
+    --pulse-color: 94, 234, 212;
+  }
+
+  :global([data-theme="light"]) .status-dot {
+    --pulse-color: 13, 125, 109;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     @keyframes pulse-dot {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(94,234,212,0.4); }
-      50%       { opacity: 0.7; box-shadow: 0 0 0 4px rgba(94,234,212,0); }
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(var(--pulse-color),0.4); }
+      50%       { opacity: 0.7; box-shadow: 0 0 0 4px rgba(var(--pulse-color),0); }
     }
     .status-dot {
       animation: pulse-dot 2.4s ease-in-out infinite;
@@ -197,10 +211,15 @@ const homeJsonLd = {
     color: var(--color-text);
     /* Proximity glow — driven by --glow (0…1) set via JS mousemove */
     color: color-mix(in oklch, var(--color-accent) calc(var(--glow, 0) * 100%), var(--color-text));
+    --glow-color: 94, 234, 212;
     text-shadow:
-      0 0 calc(var(--glow, 0) * 28px) rgba(94, 234, 212, calc(var(--glow, 0) * 0.75)),
-      0 0 calc(var(--glow, 0) * 60px) rgba(94, 234, 212, calc(var(--glow, 0) * 0.25));
+      0 0 calc(var(--glow, 0) * 28px) rgba(var(--glow-color), calc(var(--glow, 0) * 0.75)),
+      0 0 calc(var(--glow, 0) * 60px) rgba(var(--glow-color), calc(var(--glow, 0) * 0.25));
     transition: color 0.25s ease, text-shadow 0.25s ease;
+  }
+
+  :global([data-theme="light"]) .hero__letter {
+    --glow-color: 13, 125, 109;
   }
 
   /* ── Worked at ───────────────────────────────────────── */
@@ -278,10 +297,14 @@ const homeJsonLd = {
   }
 
   .worked__item:hover {
-    color: color-mix(in oklch, var(--color-accent) 100%, var(--color-text));
+    color: var(--color-accent);
     text-shadow:
-      0 0 28px rgba(94, 234, 212, 0.75),
-      0 0 60px rgba(94, 234, 212, 0.25);
+      0 0 28px rgba(var(--glow-color, 94, 234, 212), 0.75),
+      0 0 60px rgba(var(--glow-color, 94, 234, 212), 0.25);
+  }
+
+  :global([data-theme="light"]) .worked__item {
+    --glow-color: 13, 125, 109;
   }
 
   /* ── Load animations ─────────────────────────────────── */
@@ -303,12 +326,12 @@ const homeJsonLd = {
       to   { opacity: 1; translate: 0 0; }
     }
 
-    .hero__letter {
+    :root:not([data-intro-seen]) .hero__letter {
       animation: materialize 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    .hero__status { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-    .hero__intro  { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.9s both; }
+    :root:not([data-intro-seen]) .hero__status { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+    :root:not([data-intro-seen]) .hero__intro  { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.9s both; }
   }
 
   /* ── Latest writing ──────────────────────────────────── */
@@ -431,6 +454,9 @@ const homeJsonLd = {
     // animation-fill-mode: both holds the final keyframe color in the cascade,
     // overriding the base CSS color-mix(). Clear it once the animation ends
     // so the custom property can take effect.
+    // If intro was already seen (no animations running), flag is already in sessionStorage.
+    // If this is the first visit, we wait for all letter animations to finish before setting it.
+    let animatedCount = 0;
     letters.forEach(letter => {
       letter.addEventListener('animationend', () => {
         // Suppress transition before clearing animation — prevents the active
@@ -442,6 +468,10 @@ const homeJsonLd = {
         requestAnimationFrame(() => requestAnimationFrame(() => {
           letter.style.transition = '';
         }));
+        // Mark intro as seen after all letters have finished animating
+        if (++animatedCount >= letters.length) {
+          sessionStorage.setItem('intro-seen', '1');
+        }
       }, { once: true });
     });
 

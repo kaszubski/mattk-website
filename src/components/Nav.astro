@@ -30,6 +30,21 @@ const { t, activePage = "home" } = Astro.props;
           aria-current={activePage === "about" ? "page" : undefined}
         >{t.nav.about}</a>
       </li>
+      <li>
+        <button
+          class="nav__theme-toggle"
+          type="button"
+          aria-label="Toggle light/dark theme"
+          data-theme-toggle
+        >
+          <svg class="nav__theme-icon nav__theme-icon--sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="nav__theme-icon nav__theme-icon--moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </li>
     </ul>
   </nav>
 </header>
@@ -42,7 +57,7 @@ const { t, activePage = "home" } = Astro.props;
     right: 0;
     z-index: 100;
     height: var(--nav-height);
-    background: rgba(7, 8, 10, 0.75);
+    background: var(--color-nav-bg);
     backdrop-filter: blur(16px) saturate(1.6);
     -webkit-backdrop-filter: blur(16px) saturate(1.6);
     border-bottom: 1px solid var(--color-border);
@@ -96,9 +111,38 @@ const { t, activePage = "home" } = Astro.props;
   .nav__list a:hover,
   .nav__list a.active {
     color: var(--color-text);
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--color-nav-hover-bg);
     opacity: 1;
   }
+
+  /* Theme toggle */
+  .nav__theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--color-text-2);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .nav__theme-toggle:hover {
+    color: var(--color-text);
+    background: var(--color-nav-hover-bg);
+  }
+
+  /* Dark mode (default): show sun icon, hide moon */
+  .nav__theme-icon--moon { display: none; }
+  .nav__theme-icon--sun  { display: block; }
+
+  /* Light mode: show moon icon, hide sun */
+  :global([data-theme="light"]) .nav__theme-icon--moon { display: block; }
+  :global([data-theme="light"]) .nav__theme-icon--sun  { display: none; }
 
   .nav__external {
     display: inline-flex;
@@ -116,3 +160,22 @@ const { t, activePage = "home" } = Astro.props;
     .nav__list a { padding-inline: 0.65rem; }
   }
 </style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'dark');
+        if (meta) meta.content = '#07080A';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        if (meta) meta.content = '#F8F9FA';
+      }
+    });
+  }
+</script>

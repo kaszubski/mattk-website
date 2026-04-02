@@ -11,12 +11,12 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="container container--wide footer">
-    <p class="footer__copy mono">&copy; {year} {t.siteTitle} · <a href="/accessibility/">Accessibility</a> · <a href="/stack/">Stack</a></p>
+    <p class="footer__copy mono">&copy; {year} {t.siteTitle} · <a href="/accessibility/">Accessibility</a> · <a href="/stack/">Stack</a> · <a href="/rss.xml">RSS</a></p>
     <div class="footer__links">
-      <a href="https://www.linkedin.com/in/kaszubski/" rel="noopener noreferrer" target="_blank">LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
-      <a href="https://github.com/kaszubski" rel="noopener noreferrer" target="_blank">GitHub<span class="sr-only"> (opens in new tab)</span></a>
-      <a href="https://medium.com/@matt.kaszubski" rel="noopener noreferrer" target="_blank">Medium<span class="sr-only"> (opens in new tab)</span></a>
-      <a href="https://x.com/kaszubski_" rel="noopener noreferrer" target="_blank">X<span class="sr-only"> (opens in new tab)</span></a>
+      <a href="https://www.linkedin.com/in/kaszubski/" rel="noopener noreferrer" target="_blank">LinkedIn <span class="footer__ext" aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a>
+      <a href="https://github.com/kaszubski" rel="noopener noreferrer" target="_blank">GitHub <span class="footer__ext" aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a>
+      <a href="https://medium.com/@matt.kaszubski" rel="noopener noreferrer" target="_blank">Medium <span class="footer__ext" aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a>
+      <a href="https://x.com/kaszubski_" rel="noopener noreferrer" target="_blank">X <span class="footer__ext" aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a>
     </div>
   </div>
 </footer>
@@ -71,6 +71,16 @@ const year = new Date().getFullYear();
 
   .footer__links a:hover {
     color: var(--color-text);
+    opacity: 1;
+  }
+
+  .footer__ext {
+    font-size: 0.6em;
+    opacity: 0.5;
+    transition: opacity var(--transition);
+  }
+
+  .footer__links a:hover .footer__ext {
     opacity: 1;
   }
 

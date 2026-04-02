@@ -9,7 +9,7 @@ interface Props {
 const { t, activePage = "home" } = Astro.props;
 ---
 
-<header class="site-header">
+<header class="site-header" transition:animate="none">
   <nav class="container container--wide nav" aria-label="Primary navigation">
     <a class="nav__logo" href="/" aria-label={`${t.siteTitle} — home`}>
       MK
@@ -169,20 +169,24 @@ const { t, activePage = "home" } = Astro.props;
 </style>
 
 <script>
-  const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
-  const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  if (btn) {
-    btn.addEventListener('click', () => {
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      if (isLight) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'dark');
-        if (meta) meta.content = '#07080A';
-      } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        if (meta) meta.content = '#F8F9FA';
-      }
-    });
+  function initThemeToggle() {
+    const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+    const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        if (isLight) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'dark');
+          if (meta) meta.content = '#07080A';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+          if (meta) meta.content = '#F8F9FA';
+        }
+      });
+    }
   }
+  initThemeToggle();
+  document.addEventListener('astro:after-swap', initThemeToggle);
 </script>

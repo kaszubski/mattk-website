@@ -9,7 +9,7 @@ const { t } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
+<footer class="site-footer" transition:animate="none">
   <div class="container container--wide footer">
     <p class="footer__copy mono">&copy; {year} {t.siteTitle} · <a href="/accessibility/">Accessibility</a> · <a href="/stack/">Stack</a> · <a href="/rss.xml">RSS</a></p>
     <div class="footer__links">

@@ -38,12 +38,6 @@ const homeJsonLd = {
 ---
 
 <BaseLayout t={t} jsonLd={homeJsonLd}>
-  {/* Mark intro as seen so animations only play once per session */}
-  <script is:inline>
-    if (sessionStorage.getItem('intro-seen')) {
-      document.documentElement.setAttribute('data-intro-seen', '');
-    }
-  </script>
   <Nav t={t} activePage="home" />
 
   <main id="main-content">
@@ -453,6 +447,7 @@ const homeJsonLd = {
 </style>
 
 <script>
+document.addEventListener('astro:page-load', () => {
   const name = document.querySelector<HTMLElement>('.hero__name');
   if (name) {
     const letters = Array.from(name.querySelectorAll<HTMLElement>('.hero__letter'));
@@ -640,4 +635,5 @@ const homeJsonLd = {
       apply();
     });
   }
+});
 </script>

@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import type { Translations } from "@/i18n";
 
 interface Props {
@@ -48,12 +49,20 @@ const ogImage = new URL("/og-image.png", Astro.site ?? Astro.url).href;
     <link rel="preload" href="/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="alternate" type="application/rss+xml" title={t.siteTitle} href="/rss.xml" />
     <script is:inline>
-      (function(){
+      function applyTheme(){
         var t=localStorage.getItem('theme');
         var light=t?t==='light':window.matchMedia('(prefers-color-scheme: light)').matches;
         if(light){document.documentElement.setAttribute('data-theme','light');document.querySelector('meta[name="theme-color"]').content='#F8F9FA'}
-      })();
+        else{document.documentElement.removeAttribute('data-theme');document.querySelector('meta[name="theme-color"]').content='#07080A'}
+      }
+      function applyIntroSeen(){
+        if(sessionStorage.getItem('intro-seen')){document.documentElement.setAttribute('data-intro-seen','')}
+      }
+      applyTheme();
+      applyIntroSeen();
+      document.addEventListener('astro:after-swap',function(){applyTheme();applyIntroSeen()});
     </script>
+    <ClientRouter />
   </head>
   <body>
     <a class="skip-nav" href="#main-content">{t.nav.skipToContent}</a>

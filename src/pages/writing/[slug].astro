@@ -42,7 +42,7 @@ const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${
 const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(post.data.title)}`;
 
 const siteUrl = (Astro.site ?? Astro.url).origin;
-const ogImage = new URL("/og-image.svg", Astro.site ?? Astro.url).href;
+const ogImage = new URL("/og-image.png", Astro.site ?? Astro.url).href;
 
 const articleJsonLd = {
   "@context": "https://schema.org",

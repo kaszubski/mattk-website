@@ -64,8 +64,31 @@ Add or edit **`src/content/writing/*.mdx`** with valid frontmatter (`title`, `de
 
 For the About page “featured essays” list, add the slug to **`featuredWritingSlugs`** in `src/i18n/en.ts`. Category labels for the writing index live under **`writing.sectionLabels`**.
 
-## Nice to have
+## Future work & tech debt
 
-- Raster OG image (PNG/WebP) for broader social crawler support
-- Per-article OG images
-- Optional hardening: storage quota guards for theme/intro scripts, env-based `site` URL for staging
+Optional polish and gaps called out in review; nothing here blocks shipping.
+
+**Sharing & SEO**
+
+- Raster OG (PNG/WebP) instead of or alongside SVG for better social crawler support
+- Per-route OG images for articles and key pages
+
+**Runtime hardening**
+
+- `try/catch` / quota handling around `localStorage` / `sessionStorage` in theme and intro scripts
+- Env-based `site` URL for staging or preview builds so canonicals and absolute links stay correct
+
+**Testing & QA**
+
+- Visual regression (e.g. Playwright screenshots) for layout-critical pages
+- Broader Playwright coverage beyond axe (keyboard paths, critical interactions)
+- Optional: fail CI on axe *moderate* issues (today only serious/critical are gated)
+
+**Accessibility**
+
+- Periodic manual checks: screen reader spot tests, full keyboard pass on custom widgets (marquee, theme control, etc.)
+
+**Engineering**
+
+- Optional: align theme toggle `aria-pressed` / labels with persisted theme on first paint (today Nav script owns state after load)
+- `content.config.ts`: Zod API deprecation hints from upstream — revisit when Astro documents the replacement

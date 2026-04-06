@@ -70,12 +70,12 @@ Optional polish and gaps called out in review; nothing here blocks shipping.
 
 **Sharing & SEO**
 
-- Raster OG (PNG/WebP) instead of or alongside SVG for better social crawler support
+- ~~Raster OG (PNG/WebP) instead of or alongside SVG for better social crawler support~~ ✅
 - Per-route OG images for articles and key pages
 
 **Runtime hardening**
 
-- `try/catch` / quota handling around `localStorage` / `sessionStorage` in theme and intro scripts
+- ~~`try/catch` / quota handling around `localStorage` / `sessionStorage` in theme and intro scripts~~ ✅
 - Env-based `site` URL for staging or preview builds so canonicals and absolute links stay correct
 
 **Testing & QA**
@@ -90,5 +90,5 @@ Optional polish and gaps called out in review; nothing here blocks shipping.
 
 **Engineering**
 
-- Optional: align theme toggle `aria-pressed` / labels with persisted theme on first paint (today Nav script owns state after load)
+- ~~Optional: align theme toggle `aria-pressed` / labels with persisted theme on first paint (today Nav script owns state after load)~~ ✅
 - `content.config.ts`: Zod API deprecation hints from upstream — revisit when Astro documents the replacement

@@ -495,7 +495,7 @@ document.addEventListener('astro:page-load', () => {
         }));
         // Mark intro as seen after all letters have finished animating
         if (++animatedCount >= letters.length) {
-          sessionStorage.setItem('intro-seen', '1');
+          try{sessionStorage.setItem('intro-seen', '1')}catch(e){}
         }
       }, { once: true });
     });

@@ -187,11 +187,11 @@ const { t, activePage = "home" } = Astro.props;
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
       if (isLight) {
         document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'dark');
+        try{localStorage.setItem('theme', 'dark')}catch(e){}
         if (meta) meta.content = '#07080A';
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
+        try{localStorage.setItem('theme', 'light')}catch(e){}
         if (meta) meta.content = '#F8F9FA';
       }
       syncThemeToggle(btn);

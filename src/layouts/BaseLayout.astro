@@ -50,13 +50,13 @@ const ogImage = new URL("/og-image.svg", Astro.site ?? Astro.url).href;
     <link rel="alternate" type="application/rss+xml" title={t.siteTitle} href="/rss.xml" />
     <script is:inline>
       function applyTheme(){
-        var t=localStorage.getItem('theme');
+        var t;try{t=localStorage.getItem('theme')}catch(e){}
         var light=t?t==='light':window.matchMedia('(prefers-color-scheme: light)').matches;
         if(light){document.documentElement.setAttribute('data-theme','light');document.querySelector('meta[name="theme-color"]').content='#F8F9FA'}
         else{document.documentElement.removeAttribute('data-theme');document.querySelector('meta[name="theme-color"]').content='#07080A'}
       }
       function applyIntroSeen(){
-        if(sessionStorage.getItem('intro-seen')){document.documentElement.setAttribute('data-intro-seen','')}
+        try{if(sessionStorage.getItem('intro-seen')){document.documentElement.setAttribute('data-intro-seen','')}}catch(e){}
       }
       applyTheme();
       applyIntroSeen();

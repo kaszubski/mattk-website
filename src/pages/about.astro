@@ -84,6 +84,32 @@ const aboutJsonLd = {
           <p class="about__bio-text">{t.about.shortBio}</p>
         </aside>
 
+        <aside class="about__glossary reveal" aria-labelledby="glossary-label">
+          <h2 id="glossary-label" class="mono about__glossary-label">Glossary</h2>
+          <dl class="about__glossary-list">
+            <div class="about__glossary-entry">
+              <dt><abbr title="Individual Contributor">IC</abbr></dt>
+              <dd>Individual Contributor — an engineer who ships directly, not managing others</dd>
+            </div>
+            <div class="about__glossary-entry">
+              <dt><abbr title="Engineering Manager">EM</abbr></dt>
+              <dd>Engineering Manager</dd>
+            </div>
+            <div class="about__glossary-entry">
+              <dt><abbr title="Key Performance Indicator">KPI</abbr></dt>
+              <dd>Key Performance Indicator</dd>
+            </div>
+            <div class="about__glossary-entry">
+              <dt><abbr title="Situational Leadership II">SLII</abbr></dt>
+              <dd>Situational Leadership II — the Blanchard adaptive leadership model</dd>
+            </div>
+            <div class="about__glossary-entry">
+              <dt><abbr title="DevOps Research and Assessment">DORA</abbr></dt>
+              <dd>DevOps Research and Assessment — four key software delivery metrics</dd>
+            </div>
+          </dl>
+        </aside>
+
         <nav class="about__connect reveal" aria-label="Social links">
           <p class="mono about__connect-label">{t.about.connectLabel}</p>
           <ul class="about__links" role="list">
@@ -321,6 +347,53 @@ const aboutJsonLd = {
     text-align: justify;
     hyphens: auto;
     hyphenate-limit-chars: 6 3 3;
+  }
+
+  /* Glossary */
+  .about__glossary {
+    max-width: 58ch;
+    margin-bottom: var(--space-xl);
+  }
+
+  .about__glossary-label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about__glossary-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .about__glossary-entry {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: var(--space-md);
+    align-items: baseline;
+  }
+
+  .about__glossary-entry dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+  }
+
+  .about__glossary-entry dt abbr {
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+    cursor: help;
+  }
+
+  .about__glossary-entry dd {
+    font-size: var(--text-xs);
+    color: var(--color-text-2);
+    line-height: 1.5;
   }
 
   /* Connect */

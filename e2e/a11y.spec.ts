@@ -17,7 +17,7 @@ const ROUTES = [
   ["404 page", "/this-route-should-not-exist-404-test/"],
 ] as const;
 
-async function expectNoSeriousA11yViolations(page: Page, pathname: string, colorScheme: "light" | "dark") {
+async function expectNoA11yViolations(page: Page, pathname: string, colorScheme: "light" | "dark") {
   // `BaseLayout` prefers saved `localStorage.theme` over `prefers-color-scheme`; clear it so
   // emulateMedia reliably drives light/dark tokens for these checks.
   await page.addInitScript(() => {
@@ -33,16 +33,16 @@ async function expectNoSeriousA11yViolations(page: Page, pathname: string, color
   await expect(page.locator("#main-content"), `${pathname}: main landmark`).toBeVisible();
 
   const { violations } = await new AxeBuilder({ page }).analyze();
-  const serious = violations.filter((v) => v.impact === "serious" || v.impact === "critical");
-  const label = `${pathname} [${colorScheme}]: ${serious.map((v) => `${v.id} — ${v.help}`).join("; ")}`;
-  expect(serious, label).toEqual([]);
+  const failing = violations.filter((v) => v.impact === "moderate" || v.impact === "serious" || v.impact === "critical");
+  const label = `${pathname} [${colorScheme}]: ${failing.map((v) => `${v.id} (${v.impact}) — ${v.help}`).join("; ")}`;
+  expect(failing, label).toEqual([]);
 }
 
-test.describe("accessibility (axe, serious + critical only)", () => {
+test.describe("accessibility (axe, moderate + serious + critical)", () => {
   for (const [name, pathname] of ROUTES) {
     for (const scheme of COLOR_SCHEMES) {
       test(`${name} (${scheme})`, async ({ page }) => {
-        await expectNoSeriousA11yViolations(page, pathname, scheme);
+        await expectNoA11yViolations(page, pathname, scheme);
       });
     }
   }

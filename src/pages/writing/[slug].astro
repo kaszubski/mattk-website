@@ -3,20 +3,22 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
-import { en as t } from "@/i18n";
+import { en as t, type Translations } from "@/i18n";
+import { writingSlugFromEntryId } from "@/lib/post-slug";
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 
 export async function getStaticPaths() {
   const posts = await getCollection("writing");
   return posts.map((post) => ({
-    params: { slug: post.id.replace(/\.mdx?$/, "") },
+    params: { slug: writingSlugFromEntryId(post.id) },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const slug = post.id.replace(/\.mdx?$/, "");
+const slug = writingSlugFromEntryId(post.id);
 
-let Content: import("astro").AstroComponentFactory | undefined;
+let Content: AstroComponentFactory | undefined;
 let headings: { depth: number; slug: string; text: string }[] = [];
 try {
   ({ Content, headings } = await render(post));
@@ -29,7 +31,8 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const hasToc = tocHeadings.length > 1;
 
 // Find the medium URL from translations
-const allPosts = t.writing.sections.flatMap((s) => s.posts);
+type WritingPostMeta = Translations["writing"]["sections"][number]["posts"][number];
+const allPosts: WritingPostMeta[] = t.writing.sections.flatMap((s) => [...s.posts]);
 const meta = allPosts.find((p) => p.slug === slug);
 
 const formattedDate = post.data.date.toLocaleDateString("en-US", {

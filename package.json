@@ -2,6 +2,9 @@
   "name": "mattk-website",
   "type": "module",
   "version": "0.1.0",
+  "engines": {
+    "node": ">=20.11.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -10,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "verify": "npm run check && npm run test && npm run test:e2e",
     "playwright:install": "playwright install chromium",
     "astro": "astro"
   },

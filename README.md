@@ -71,7 +71,7 @@ Optional polish and gaps called out in review; nothing here blocks shipping.
 **Sharing & SEO**
 
 - ~~Raster OG (PNG/WebP) instead of or alongside SVG for better social crawler support~~ ✅
-- Per-route OG images for articles and key pages
+- ~~Per-route OG images for articles and key pages~~ ✅ (articles with `ogImage` frontmatter)
 
 **Runtime hardening**
 

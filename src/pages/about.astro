@@ -3,6 +3,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
+import type { Translations } from "@/i18n";
+
+type WritingListPost = Translations["writing"]["sections"][number]["posts"][number];
+
+const allWritingPosts: WritingListPost[] = t.writing.sections.flatMap((s) => [...s.posts]);
+const featuredEssays = t.about.featuredWritingSlugs
+  .map((slug) => allWritingPosts.find((p) => p.slug === slug))
+  .filter((post): post is WritingListPost => post !== undefined);
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -32,24 +40,50 @@ const aboutJsonLd = {
   <main id="main-content">
     <article class="about" aria-labelledby="about-heading">
       <div class="container">
-
-        <!-- Header -->
         <header class="about__header">
-          <h1 id="about-heading" class="mono about__label">About</h1>
+          <p class="mono about__page-label">{t.about.pageLabel}</p>
+          <h1 id="about-heading" class="about__title">{t.about.headline}</h1>
+          <p class="mono about__tagline">{t.about.tagline}</p>
         </header>
 
-        <!-- Narrative -->
         <div class="about__narrative reveal">
           {t.about.narrative.map((para) => <p>{para}</p>)}
         </div>
 
-        <!-- Short bio -->
+        <section class="about__writing reveal" aria-labelledby="essays-heading">
+          <h2 id="essays-heading" class="mono about__writing-label">{t.about.featuredWritingSectionLabel}</h2>
+          <p class="about__writing-intro">{t.about.featuredWritingIntro}</p>
+          <ul class="about__essay-list" role="list">
+            {featuredEssays.map((post) => (
+              <li>
+                <a class="about__essay-link" href={`/writing/${post.slug}/`}>
+                  <span class="about__essay-title">{post.title}</span>
+                  <span class="about__essay-arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a href="/writing/" class="mono about__all-writing">{t.about.allWritingLabel}<span aria-hidden="true"> →</span></a>
+        </section>
+
+        <p class="about__cta reveal">
+          {t.about.closingLead}{" "}
+          <a
+            href={t.about.closingCtaHref}
+            class="about__cta-link"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {t.about.closingCtaLabel}<span aria-hidden="true"> ↗</span>
+            <span class="sr-only"> (opens in new tab)</span>
+          </a>
+        </p>
+
         <aside class="about__bio reveal" aria-labelledby="bio-label">
           <h2 id="bio-label" class="mono about__bio-label">{t.about.shortBioLabel}</h2>
           <p class="about__bio-text">{t.about.shortBio}</p>
         </aside>
 
-        <!-- Links -->
         <nav class="about__connect reveal" aria-label="Social links">
           <p class="mono about__connect-label">{t.about.connectLabel}</p>
           <ul class="about__links" role="list">
@@ -75,7 +109,6 @@ const aboutJsonLd = {
             </li>
           </ul>
         </nav>
-
       </div>
     </article>
   </main>
@@ -95,12 +128,31 @@ const aboutJsonLd = {
     margin-bottom: var(--space-lg);
   }
 
-  .about__label {
+  .about__page-label {
     color: var(--color-text-faint);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 0.65rem;
     margin-bottom: var(--space-md);
+  }
+
+  .about__title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .about__tagline {
+    color: var(--color-text-2);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.65rem;
+    line-height: 1.5;
+    max-width: 52ch;
   }
 
   /* Narrative */
@@ -119,6 +171,128 @@ const aboutJsonLd = {
     text-align: justify;
     hyphens: auto;
     hyphenate-limit-chars: 6 3 3;
+  }
+
+  /* Featured writing */
+  .about__writing {
+    max-width: 58ch;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about__writing-label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about__writing-intro {
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    max-width: 52ch;
+  }
+
+  .about__essay-list {
+    list-style: none;
+    margin: 0 0 var(--space-md);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .about__essay-list li {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about__essay-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-md);
+    padding: 0.95rem 0.35rem;
+    margin-inline: -0.35rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: background var(--transition-md);
+  }
+
+  .about__essay-link:hover {
+    background: var(--color-bg-elevated);
+    opacity: 1;
+  }
+
+  .about__essay-title {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    transition: color var(--transition);
+  }
+
+  .about__essay-link:hover .about__essay-title {
+    color: var(--color-accent);
+  }
+
+  .about__essay-arrow {
+    color: var(--color-text-faint);
+    font-size: var(--text-sm);
+    flex-shrink: 0;
+    transition: color var(--transition), translate var(--transition);
+  }
+
+  .about__essay-link:hover .about__essay-arrow {
+    color: var(--color-accent);
+    translate: 3px 0;
+  }
+
+  .about__all-writing {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--color-text-faint);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    transition: color var(--transition);
+  }
+
+  .about__all-writing:hover {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  /* CTA */
+  .about__cta {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    color: var(--color-text);
+    max-width: 58ch;
+    margin-bottom: var(--space-xl);
+    text-align: justify;
+    hyphens: auto;
+    hyphenate-limit-chars: 6 3 3;
+  }
+
+  .about__cta-link {
+    color: var(--color-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+
+  .about__cta-link:hover {
+    opacity: 1;
   }
 
   /* Short bio */
@@ -192,14 +366,12 @@ const aboutJsonLd = {
     opacity: 1;
   }
 
-  /* Page load animation */
   @media (prefers-reduced-motion: no-preference) {
     @keyframes fade-in {
       from { opacity: 0; translate: 0 0.75rem; }
       to   { opacity: 1; translate: 0 0; }
     }
 
-    .about__header    { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-    .about__narrative { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
+    .about__header { animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
   }
 </style>

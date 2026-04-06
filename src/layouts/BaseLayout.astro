@@ -10,14 +10,15 @@ interface Props {
   ogType?: string;
   publishedTime?: string;
   jsonLd?: Record<string, unknown>;
+  ogImage?: string;
 }
 
-const { t, title, description, canonicalUrl, ogType = "website", publishedTime, jsonLd } = Astro.props;
+const { t, title, description, canonicalUrl, ogType = "website", publishedTime, jsonLd, ogImage: ogImageProp } = Astro.props;
 
 const pageTitle = title ? `${title} — ${t.siteTitle}` : t.siteTitle;
 const pageDescription = description ?? t.siteDescription;
 const canon = canonicalUrl ?? Astro.url.href;
-const ogImage = new URL("/og-image.png", Astro.site ?? Astro.url).href;
+const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url).href;
 ---
 
 <!doctype html>

@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import { getImage } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
@@ -42,7 +43,12 @@ const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${
 const xShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(post.data.title)}`;
 
 const siteUrl = (Astro.site ?? Astro.url).origin;
-const ogImage = new URL("/og-image.png", Astro.site ?? Astro.url).href;
+
+let ogImage: string | undefined;
+if (post.data.ogImage) {
+  const optimized = await getImage({ src: post.data.ogImage, width: 1200, height: 630, format: "png" });
+  ogImage = new URL(optimized.src, Astro.site ?? Astro.url).href;
+}
 
 const articleJsonLd = {
   "@context": "https://schema.org",
@@ -51,7 +57,7 @@ const articleJsonLd = {
   description: post.data.description,
   datePublished: post.data.date.toISOString(),
   dateModified: post.data.date.toISOString(),
-  image: ogImage,
+  image: ogImage ?? new URL("/og-image.png", Astro.site ?? Astro.url).href,
   author: {
     "@type": "Person",
     name: "Matt Kaszubski",
@@ -82,6 +88,7 @@ const breadcrumbJsonLd = {
   ogType="article"
   publishedTime={post.data.date.toISOString()}
   jsonLd={articleJsonLd}
+  ogImage={ogImage}
 >
   <Nav t={t} activePage="writing" />
 

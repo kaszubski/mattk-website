@@ -21,7 +21,7 @@ Static site for Matt Kaszubski — engineering leadership at Asana (Warsaw), bio
 - JSON-LD (`WebSite`, `Person`, `Article`), Open Graph / Twitter meta, canonical URLs
 - **Trailing slashes** enforced in config (`trailingSlash: "always"`) for consistent URLs
 - Skip link, landmarks, focus styles, reduced motion, WCAG-oriented contrast (see [Accessibility](https://mattkaszubski.com/accessibility/) on the site)
-- **Vitest** (unit helpers) + **Playwright** + **axe** (serious/critical) in CI, with HTML report artifacts on failure
+- **Vitest** (unit helpers) + **Playwright** + **axe** (moderate/serious/critical) in CI, with HTML report artifacts on failure
 
 ## Project structure
 
@@ -60,35 +60,39 @@ npm run verify           # check + Vitest + e2e (matches CI)
 
 ## Content
 
-Add or edit **`src/content/writing/*.mdx`** with valid frontmatter (`title`, `description`, `date`, `mediumUrl`, `category`). The writing index, RSS, and article URLs are derived automatically.
+Add or edit **`src/content/writing/*.mdx`** with valid frontmatter (`title`, `description`, `date`, `mediumUrl`, `category`, optional `ogImage`). The writing index, RSS, and article URLs are derived automatically. Articles with `ogImage` get a 1200×630 PNG for social previews; others fall back to the generic OG card.
 
 For the About page “featured essays” list, add the slug to **`featuredWritingSlugs`** in `src/i18n/en.ts`. Category labels for the writing index live under **`writing.sectionLabels`**.
 
 ## Future work & tech debt
 
-Optional polish and gaps called out in review; nothing here blocks shipping.
+### Completed
 
-**Sharing & SEO**
+- ~~Raster OG (PNG/WebP) for social crawler support~~ ✅
+- ~~Per-route OG images for articles~~ ✅ (articles with `ogImage` frontmatter)
+- ~~`try/catch` around `localStorage` / `sessionStorage`~~ ✅
+- ~~Theme toggle `aria-pressed` sync on first paint~~ ✅
+- ~~Gate CI on axe moderate violations~~ ✅
 
-- ~~Raster OG (PNG/WebP) instead of or alongside SVG for better social crawler support~~ ✅
-- ~~Per-route OG images for articles and key pages~~ ✅ (articles with `ogImage` frontmatter)
+### Next up
 
-**Runtime hardening**
+**Content & UX** — highest impact
 
-- ~~`try/catch` / quota handling around `localStorage` / `sessionStorage` in theme and intro scripts~~ ✅
-- Env-based `site` URL for staging or preview builds so canonicals and absolute links stay correct
+- Flesh out placeholder articles (4 of 6 are stubs that bounce users to Medium) or remove article routes for stubs and link directly to Medium from the writing index
+- Add `ogImage` frontmatter to future articles that include images
 
-**Testing & QA**
+**SEO**
 
-- Visual regression (e.g. Playwright screenshots) for layout-critical pages
-- Broader Playwright coverage beyond axe (keyboard paths, critical interactions)
-- Optional: fail CI on axe *moderate* issues (today only serious/critical are gated)
+- Add `<atom:link rel="self">` to RSS feed for strict validator compliance
+- Env-based `site` URL for staging or preview builds so canonicals stay correct
 
 **Accessibility**
 
 - Periodic manual checks: screen reader spot tests, full keyboard pass on custom widgets (marquee, theme control, etc.)
+- Add `aria-label` to RSS `<link>` in `<head>`
 
-**Engineering**
+**Engineering** — low priority / blocked
 
-- ~~Optional: align theme toggle `aria-pressed` / labels with persisted theme on first paint (today Nav script owns state after load)~~ ✅
 - `content.config.ts`: Zod API deprecation hints from upstream — revisit when Astro documents the replacement
+- Visual regression tests (Playwright screenshots) — nice-to-have, not critical for a personal site
+- Broader Playwright coverage beyond axe (keyboard paths, critical interactions) — nice-to-have

@@ -60,7 +60,12 @@ const ogImage = new URL("/og-image.svg", Astro.site ?? Astro.url).href;
       }
       applyTheme();
       applyIntroSeen();
-      document.addEventListener('astro:after-swap',function(){applyTheme();applyIntroSeen()});
+      document.addEventListener('astro:after-swap',function(){
+        applyTheme();
+        applyIntroSeen();
+        var main=document.getElementById('main-content');
+        if(main){main.setAttribute('tabindex','-1');main.focus({preventScroll:true});}
+      });
     </script>
     <ClientRouter />
   </head>

@@ -2,97 +2,70 @@
 
 Static site for Matt Kaszubski — engineering leadership at Asana (Warsaw), bio, and engineering leadership writing.
 
+**Live site:** [mattkaszubski.com](https://mattkaszubski.com)
+
 ## Stack
 
-- [Astro](https://astro.build) — static site generator
-- `@astrojs/mdx` — MDX support for articles (Astro components inside content)
-- `@astrojs/sitemap` — generated sitemap
-- TypeScript (strict)
-- Vanilla CSS — custom properties, `clamp()` fluid typography, dark theme
+- **[Astro](https://astro.build) 6** — static output, islands / client router where needed
+- **MDX** (`@astrojs/mdx`) — articles with a typed content collection (Zod)
+- **RSS** (`@astrojs/rss`) — feed generated from the same collection as the writing pages
+- **Sitemap** (`@astrojs/sitemap`)
+- **TypeScript** (strict) + **`@astrojs/check`** for template/type diagnostics
+- **Vanilla CSS** — design tokens in `:root`, scoped components, `clamp()` typography, light/dark themes
 
 ## Features
 
-- Home, About, Writing, Stack, and Accessibility pages
-- MDX content collection with Zod schema (ISO 8601 dates, typed frontmatter)
-- Astro image optimisation via `astro:assets` — article images processed at build time
-- Reusable `Callout` component for pull quotes inside articles
-- JSON-LD structured data (WebSite, Person, Article)
-- Open Graph and Twitter Card meta on every page
-- Sitemap via `@astrojs/sitemap`
-- Skip link, semantic landmarks, ARIA, focus styles
-- All text colours pass WCAG AAA (7:1+)
-- `prefers-reduced-motion` respected throughout
-- 44×44 px minimum touch targets
-- Mobile-first layout
+- Pages: Home, About, Writing, Stack, Accessibility, AI manifesto, 404/500
+- **Single source of truth** for posts: `src/content/writing/*.mdx` drives the writing index, article routes, **RSS**, and related metadata (titles on About are resolved from the collection)
+- `astro:assets` for optimised article images
+- JSON-LD (`WebSite`, `Person`, `Article`), Open Graph / Twitter meta, canonical URLs
+- **Trailing slashes** enforced in config (`trailingSlash: "always"`) for consistent URLs
+- Skip link, landmarks, focus styles, reduced motion, WCAG-oriented contrast (see [Accessibility](https://mattkaszubski.com/accessibility/) on the site)
+- **Vitest** (unit helpers) + **Playwright** + **axe** (serious/critical) in CI, with HTML report artifacts on failure
 
 ## Project structure
 
 ```
 src/
-  assets/
-    writing/           # Article images (optimised at build time)
-  content/
-    writing/           # MDX articles
-  content.config.ts    # Zod schema for writing collection
-  i18n/
-    en.ts              # Copy and Translations type
-    index.ts
-  layouts/
-    BaseLayout.astro
-  components/
-    Nav.astro
-    Footer.astro
-    Callout.astro      # Pull-quote component for MDX articles
+  content/writing/       # MDX articles (schema in content.config.ts)
+  i18n/en.ts             # Site copy; writing section labels + about featured slugs only
+  lib/                   # Shared helpers + *.test.ts
+  ...
   pages/
-    index.astro
-    about.astro
-    writing.astro
-    writing/[slug].astro
-    accessibility.astro
-    stack.astro
-    404.astro
-public/
-  favicon.svg
-  robots.txt
+e2e/                     # Playwright specs + helpers
+.github/workflows/       # CI (check, unit tests, Playwright)
+public/                  # favicon, robots.txt, og-image, self-hosted fonts
 ```
+
+## Requirements
+
+- **Node.js 22+** (`engines` in `package.json`)
 
 ## Development
 
 ```bash
 npm install
-npm run dev       # http://localhost:4321
+npm run dev              # http://localhost:4321
+
 npm run build
 npm run preview
+
+npm run check            # astro check
+npm run test             # Vitest
+npm run playwright:install   # first-time Playwright browser (local)
+npm run test:e2e         # build + preview + Playwright
+
+npm run verify           # check + Vitest + e2e (matches CI)
 ```
 
-## Copy
+## Content
 
-All English strings live in `src/i18n/en.ts`. Pages import `{ en as t }` from `@/i18n` (re-exported in `index.ts`).
+Add or edit **`src/content/writing/*.mdx`** with valid frontmatter (`title`, `description`, `date`, `mediumUrl`, `category`). The writing index, RSS, and article URLs are derived automatically.
 
-The writing list page (`writing.astro`) pulls post metadata from `en.ts`. The homepage latest-posts section pulls directly from the content collection via `getCollection()`. When adding a new article, update both the MDX file and the matching entry in `en.ts`.
+For the About page “featured essays” list, add the slug to **`featuredWritingSlugs`** in `src/i18n/en.ts`. Category labels for the writing index live under **`writing.sectionLabels`**.
 
 ## Nice to have
 
-Improvements flagged for future development.
-
-### SEO
-
-- [x] Add `og-image.svg` to `public/` — branded 1200×630 card; referenced in BaseLayout and Article JSON-LD
-- [ ] Convert the static `og-image.svg` to a raster PNG for broadest social platform support (Twitter/X and LinkedIn prefer PNG)
-- [ ] Per-page OG images instead of one global fallback
-- [x] Add `image` and `dateModified` fields to Article JSON-LD
-- [x] Add `isoDate` field to each post in `en.ts`; visible dates now use `<time datetime="...">` throughout
-
-### WCAG AAA
-
-- [x] Wrap visible dates in `<time datetime="...">` — `writing.astro` and `writing/[slug].astro`
-- [x] Add breadcrumb navigation on article pages — `<nav aria-label="Breadcrumb">` + `BreadcrumbList` JSON-LD (SC 2.4.8)
-- [x] Add `<abbr>` glossary on About page for IC, EM, KPI, SLII, DORA (SC 3.1.3 / 3.1.4)
-- [x] Add `<noscript>` fallback for the Experience marquee on the home page
-
-### Robustness
-
-- [ ] Wrap `localStorage.setItem` / `sessionStorage.setItem` calls in try/catch to handle `QuotaExceededError` gracefully
-- [ ] Add a null guard at the top of the marquee script (`index.astro`) so a missing DOM element doesn't fail silently
-- [ ] Guard `console.error` in `writing/[slug].astro` behind `import.meta.env.DEV` so it doesn't surface in production
-- [ ] Make the site URL configurable via env var for staging/preview builds: `process.env.PUBLIC_SITE_URL || "https://mattkaszubski.com"` in `astro.config.ts`
+- Raster OG image (PNG/WebP) for broader social crawler support
+- Per-article OG images
+- Optional hardening: storage quota guards for theme/intro scripts, env-based `site` URL for staging

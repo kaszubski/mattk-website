@@ -4,6 +4,6 @@ import mdx from "@astrojs/mdx";
 
 export default defineConfig({
   site: "https://mattkaszubski.com",
-  trailingSlash: "ignore",
+  trailingSlash: "always",
   integrations: [mdx(), sitemap()],
 });

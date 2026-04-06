@@ -1,12 +1,15 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { getLatestWritingSlug } from "./helpers/latest-writing-slug";
 
 const COLOR_SCHEMES = ["light", "dark"] as const;
+
+const articlePath = `/writing/${getLatestWritingSlug()}/`;
 
 const ROUTES = [
   ["home", "/"],
   ["writing index", "/writing/"],
-  ["writing article (MDX)", "/writing/which-goalkeeper-are-you/"],
+  ["writing article (MDX)", articlePath],
   ["about", "/about/"],
   ["AI manifesto", "/ai/"],
   ["stack", "/stack/"],

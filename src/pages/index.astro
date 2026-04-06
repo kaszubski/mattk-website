@@ -81,7 +81,7 @@ const homeJsonLd = {
       <div class="container">
 
         <div class="latest__header">
-          <p class="mono latest__label" id="latest-heading">Latest thinking</p>
+          <h2 class="mono latest__label" id="latest-heading">Latest thinking</h2>
           <a href="/writing/" class="latest__all mono">All writing <span aria-hidden="true">→</span></a>
         </div>
 
@@ -104,9 +104,9 @@ const homeJsonLd = {
     </section>
 
     <!-- ── Worked at ─────────────────────────────────────── -->
-    <section class="worked" aria-label="Experience">
+    <section class="worked" aria-labelledby="worked-heading">
       <div class="container">
-        <div class="worked__label mono">Experience</div>
+        <h2 class="worked__label mono" id="worked-heading">Experience</h2>
       </div>
       <div
         class="worked__track-wrap"
@@ -235,11 +235,14 @@ const homeJsonLd = {
   }
 
   .worked__label {
+    margin: 0 0 var(--space-lg) 0;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    line-height: 1.2;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     font-size: 0.6rem;
     color: var(--color-text-faint);
-    margin-bottom: var(--space-lg);
   }
 
   .worked__track-wrap {
@@ -365,6 +368,10 @@ const homeJsonLd = {
   }
 
   .latest__label {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    line-height: 1.2;
     color: var(--color-text-faint);
     text-transform: uppercase;
     letter-spacing: 0.12em;

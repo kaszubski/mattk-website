@@ -3,7 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
-import { en as t, type Translations } from "@/i18n";
+import { en as t } from "@/i18n";
 import { writingSlugFromEntryId } from "@/lib/post-slug";
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 
@@ -30,10 +30,7 @@ try {
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const hasToc = tocHeadings.length > 1;
 
-// Find the medium URL from translations
-type WritingPostMeta = Translations["writing"]["sections"][number]["posts"][number];
-const allPosts: WritingPostMeta[] = t.writing.sections.flatMap((s) => [...s.posts]);
-const meta = allPosts.find((p) => p.slug === slug);
+const mediumUrl = post.data.mediumUrl;
 
 const formattedDate = post.data.date.toLocaleDateString("en-US", {
   month: "short",
@@ -145,18 +142,16 @@ const breadcrumbJsonLd = {
             </div>
 
             <footer class="article__footer">
-              {meta && (
-                <a
-                  href={meta.mediumUrl}
-                  class="article__medium-cta"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span>Originally published on Medium</span>
-                  <span class="article__medium-cta-arrow" aria-hidden="true">↗</span>
-                  <span class="sr-only"> (opens in new tab)</span>
-                </a>
-              )}
+              <a
+                href={mediumUrl}
+                class="article__medium-cta"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <span>Originally published on Medium</span>
+                <span class="article__medium-cta-arrow" aria-hidden="true">↗</span>
+                <span class="sr-only"> (opens in new tab)</span>
+              </a>
               <a href="/writing/" class="article__back-footer mono"><span aria-hidden="true">← </span>Back to writing</a>
             </footer>
           </div>

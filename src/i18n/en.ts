@@ -20,80 +20,10 @@ export const en = {
     title: "Writing",
     description:
       "Essays on engineering leadership, craft, and culture.",
-    sections: [
-      {
-        id: "leadership",
-        label: "Leadership",
-        posts: [
-          {
-            slug: "which-goalkeeper-are-you",
-            title: "The Goalkeeper's Guide to Engineering Management: Which Goalkeeper Are You?",
-            description:
-              "Kahn, Buffon, Dudek — three ways to lead. The real skill isn't locking into one style forever. It's knowing which one the moment requires.",
-            date: "Mar 2026",
-            isoDate: "2026-03-29",
-            mediumUrl:
-              "https://medium.com/@matt.kaszubski/the-goalkeepers-guide-to-engineering-management-which-goalkeeper-are-you-8f1e72a8e466",
-          },
-          {
-            slug: "the-goalkeepers-guide",
-            title: "The Goalkeeper's Guide to Engineering Management: The Penalty Kick",
-            description:
-              "Every engineering manager faces penalty kicks. The question isn't whether you'll dive. It's whether you'll commit.",
-            date: "Feb 2026",
-            isoDate: "2026-02-22",
-            mediumUrl:
-              "https://medium.com/@matt.kaszubski/the-goalkeepers-guide-to-engineering-management-the-penalty-kick-be286ce333a9",
-          },
-          {
-            slug: "the-fishing-net-problem",
-            title: "The Fishing Net Problem",
-            description:
-              "What we get wrong about measuring engineering efficiency — Goodhart's Law, DORA metrics, and the survivorship bias baked into most dashboards.",
-            date: "2025",
-            isoDate: "2025",
-            mediumUrl:
-              "https://medium.com/@matt.kaszubski/the-fishing-net-problem-what-we-get-wrong-about-measuring-engineering-efficiency-2d5688047f29",
-          },
-          {
-            slug: "the-checklist-origin-story",
-            title: "The Checklist Origin Story",
-            description:
-              "From Boeing's 1935 crash to CrowdStrike — how aviation's greatest safety innovation became software engineering's most underused tool.",
-            date: "2025",
-            isoDate: "2025",
-            mediumUrl:
-              "https://medium.com/@matt.kaszubski/the-checklist-origin-story-c0e8028bbe45",
-          },
-        ],
-      },
-      {
-        id: "coding",
-        label: "Coding",
-        posts: [
-          {
-            slug: "future-proof-your-code",
-            title: "Future-Proof Your Code: Mastering JavaScript Data Grouping",
-            description:
-              "From forEach loops to Object.groupBy — a practical guide to data grouping in JavaScript with TypeScript-safe implementations.",
-            date: "2024",
-            isoDate: "2024",
-            mediumUrl:
-              "https://medium.com/@matt.kaszubski/future-proof-your-code-mastering-javascript-data-grouping-b4183540b8ad",
-          },
-          {
-            slug: "unlock-the-craic",
-            title: "Unlock the Craic: The Konami Code in TypeScript",
-            description:
-              "How to create a secret easter egg page triggered by the classic Konami Code — keyboard event detection in TypeScript from scratch.",
-            date: "2024",
-            isoDate: "2024",
-            mediumUrl:
-              "https://medium.com/@matt.kaszubski/unlock-the-craic-how-to-create-a-secret-page-with-the-konami-code-in-typescript-455b3123b873",
-          },
-        ],
-      },
-    ],
+    sectionLabels: {
+      leadership: "Leadership",
+      coding: "Coding",
+    },
     readOnMedium: "Read on Medium",
     allPostsOnMedium: "All posts on Medium",
     allPostsUrl: "https://medium.com/@matt.kaszubski",

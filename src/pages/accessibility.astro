@@ -35,12 +35,19 @@ import { en as t } from "@/i18n";
             <h2 id="measures-heading">What I do</h2>
             <ul>
               <li>Semantic HTML throughout — headings, landmarks, lists, and ARIA only where HTML falls short.</li>
+              <li>A clear heading outline on key pages (including section <code>h2</code>s on the home page).</li>
+              <li>Theme control exposes state with <code>aria-pressed</code> and an <code>aria-label</code> that matches light vs dark mode.</li>
+              <li>After in-site navigations (view transitions), focus moves to <code>#main-content</code> so keyboard and screen-reader users land on the new page.</li>
               <li>All text meets a minimum 7:1 contrast ratio against the background (AAA).</li>
               <li>Focus indicators are visible on every interactive element.</li>
               <li>All interactive targets are at least 44 &times; 44&nbsp;CSS pixels.</li>
               <li>Motion is reduced when the operating system preference is set.</li>
               <li>The site is fully navigable by keyboard alone.</li>
-              <li>Accessibility is validated with automated tooling (including CI scans on pull requests) and manual review.</li>
+              <li>
+                Continuous integration runs <code>astro check</code>, unit tests, and <strong>axe</strong> in Chromium across major templates
+                in both light and dark colour schemes; the build fails on axe <strong>serious</strong> and <strong>critical</strong> issues.
+                Moderate findings are reviewed case by case. Manual checks still matter — automation does not catch everything.
+              </li>
             </ul>
           </section>
 

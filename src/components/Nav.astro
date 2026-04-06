@@ -41,7 +41,8 @@ const { t, activePage = "home" } = Astro.props;
         <button
           class="nav__theme-toggle"
           type="button"
-          aria-label="Toggle light/dark theme"
+          aria-label="Switch to light theme"
+          aria-pressed="false"
           data-theme-toggle
         >
           <svg class="nav__theme-icon nav__theme-icon--sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -169,23 +170,32 @@ const { t, activePage = "home" } = Astro.props;
 </style>
 
 <script>
+  function syncThemeToggle(btn: HTMLButtonElement) {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    btn.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+    btn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+  }
+
   function initThemeToggle() {
     const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
     const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-        if (isLight) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'dark');
-          if (meta) meta.content = '#07080A';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'light');
-          localStorage.setItem('theme', 'light');
-          if (meta) meta.content = '#F8F9FA';
-        }
-      });
-    }
+    if (!btn) return;
+    syncThemeToggle(btn);
+    if (btn.dataset.themeToggleBound === '1') return;
+    btn.dataset.themeToggleBound = '1';
+    btn.addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'dark');
+        if (meta) meta.content = '#07080A';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        if (meta) meta.content = '#F8F9FA';
+      }
+      syncThemeToggle(btn);
+    });
   }
   initThemeToggle();
   document.addEventListener('astro:after-swap', initThemeToggle);

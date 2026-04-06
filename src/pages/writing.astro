@@ -1,8 +1,25 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
+import { writingSlugFromEntryId } from "@/lib/post-slug";
+
+const sectionOrder = [
+  { id: "leadership" as const, label: t.writing.sectionLabels.leadership },
+  { id: "coding" as const, label: t.writing.sectionLabels.coding },
+];
+
+const allPosts = await getCollection("writing");
+
+const sections = sectionOrder.map(({ id, label }) => ({
+  id,
+  label,
+  posts: allPosts
+    .filter((p) => p.data.category === id)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+}));
 ---
 
 <BaseLayout
@@ -22,25 +39,33 @@ import { en as t } from "@/i18n";
           <p class="writing-page__desc">{t.writing.description}</p>
         </header>
 
-        {t.writing.sections.map((section) => (
+        {sections.map((section) => (
           <section class="writing-section reveal" aria-labelledby={`section-${section.id}`}>
             <h2 id={`section-${section.id}`} class="writing-section__heading mono">
               {section.label}
             </h2>
 
             <ul class="posts" role="list">
-              {section.posts.map((post) => (
-                <li class="post">
-                  <a class="post__inner" href={`/writing/${post.slug}/`}>
-                    <time class="post__date mono" datetime={post.isoDate}>{post.date}</time>
-                    <div class="post__body">
-                      <span class="post__title">{post.title}</span>
-                      <span class="post__desc">{post.description}</span>
-                    </div>
-                    <span class="post__arrow" aria-hidden="true">→</span>
-                  </a>
-                </li>
-              ))}
+              {section.posts.map((post) => {
+                const slug = writingSlugFromEntryId(post.id);
+                const displayDate = post.data.date.toLocaleDateString("en-US", {
+                  month: "short",
+                  year: "numeric",
+                });
+                const datetime = post.data.date.toISOString().split("T")[0];
+                return (
+                  <li class="post">
+                    <a class="post__inner" href={`/writing/${slug}/`}>
+                      <time class="post__date mono" datetime={datetime}>{displayDate}</time>
+                      <div class="post__body">
+                        <span class="post__title">{post.data.title}</span>
+                        <span class="post__desc">{post.data.description}</span>
+                      </div>
+                      <span class="post__arrow" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         ))}

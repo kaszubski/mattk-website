@@ -1,16 +1,20 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
-import type { Translations } from "@/i18n";
+import { writingSlugFromEntryId } from "@/lib/post-slug";
 
-type WritingListPost = Translations["writing"]["sections"][number]["posts"][number];
+const allPosts = await getCollection("writing");
+const bySlug = Object.fromEntries(
+  allPosts.map((post) => [writingSlugFromEntryId(post.id), post]),
+);
 
-const allWritingPosts: WritingListPost[] = t.writing.sections.flatMap((s) => [...s.posts]);
-const featuredEssays = t.about.featuredWritingSlugs
-  .map((slug) => allWritingPosts.find((p) => p.slug === slug))
-  .filter((post): post is WritingListPost => post !== undefined);
+const featuredEssays = t.about.featuredWritingSlugs.flatMap((slug) => {
+  const post = bySlug[slug];
+  return post ? [{ slug, title: post.data.title }] : [];
+});
 
 const aboutJsonLd = {
   "@context": "https://schema.org",

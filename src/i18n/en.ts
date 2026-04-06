@@ -26,6 +26,15 @@ skipToContent: "Skip to main content",
         label: "Leadership",
         posts: [
           {
+            slug: "which-goalkeeper-are-you",
+            title: "The Goalkeeper's Guide to Engineering Management: Which Goalkeeper Are You?",
+            description:
+              "Kahn, Buffon, Dudek — three ways to lead. The real skill isn't locking into one style forever. It's knowing which one the moment requires.",
+            date: "Mar 2026",
+            mediumUrl:
+              "https://medium.com/@matt.kaszubski/the-goalkeepers-guide-to-engineering-management-which-goalkeeper-are-you-8f1e72a8e466",
+          },
+          {
             slug: "the-goalkeepers-guide",
             title: "The Goalkeeper's Guide to Engineering Management: The Penalty Kick",
             description:

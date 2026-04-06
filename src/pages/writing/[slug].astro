@@ -364,6 +364,23 @@ const articleJsonLd = {
                 0 1px 8px color-mix(in srgb, black 20%, transparent);
   }
 
+  .prose :global(.article-image-caption) {
+    text-align: center;
+    text-align-last: center;
+    text-wrap: balance;
+    hyphens: none;
+    margin-top: calc(-1 * (var(--space-xl) - var(--space-sm)));
+    margin-bottom: var(--space-xl);
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+
+  .prose :global(.article-image-caption a) {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
   /* ── Signature ───────────────────────────────────────────── */
   .article__signature {
     font-family: var(--font-mono);

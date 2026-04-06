@@ -216,16 +216,16 @@ const ogImage = new URL("/og-image.png", Astro.site ?? Astro.url).href;
     --color-bg-overlay:   #F0F1F4;
 
     --color-text:         #1A1A2E;
-    --color-text-2:       #4A4A6A;
-    --color-text-faint:   #6A6A8A;
+    --color-text-2:       #4A4A6A;   /* ~8.1:1 on #F8F9FA — AAA */
+    --color-text-faint:   #4F4F70;   /* ~7.5:1 on #F8F9FA — AAA (was #6A6A8A ~5:1) */
 
-    --color-accent:       #0D7D6D;   /* darker teal for light bg — ~4.8:1 on #F8F9FA */
-    --color-accent-dim:   rgba(13, 125, 109, 0.12);
-    --color-accent-glow:  rgba(13, 125, 109, 0.05);
+    --color-accent:       #005F50;   /* darker teal for light bg — ~7.3:1 on #F8F9FA — AAA */
+    --color-accent-dim:   rgba(0, 95, 80, 0.12);
+    --color-accent-glow:  rgba(0, 95, 80, 0.05);
 
     --color-border:       rgba(0, 0, 0, 0.12);
     --color-border-hover: rgba(0, 0, 0, 0.24);
-    --color-focus:        #0D7D6D;
+    --color-focus:        #005F50;
 
     --color-dot-grid:     rgba(0, 0, 0, 0.06);
     --color-nav-bg:       rgba(248, 249, 250, 0.8);

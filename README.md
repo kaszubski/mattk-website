@@ -88,3 +88,10 @@ Improvements flagged for future development.
 - [ ] Add breadcrumb navigation on article pages (SC 2.4.8 Location)
 - [ ] Add `<abbr>` tags or a glossary for abbreviations like DORA, EM, SLII, IC (SC 3.1.3 / 3.1.4)
 - [ ] Add a `<noscript>` fallback message for the hero and marquee
+
+### Robustness
+
+- [ ] Wrap `localStorage.setItem` / `sessionStorage.setItem` calls in try/catch to handle `QuotaExceededError` gracefully
+- [ ] Add a null guard at the top of the marquee script (`index.astro`) so a missing DOM element doesn't fail silently
+- [ ] Guard `console.error` in `writing/[slug].astro` behind `import.meta.env.DEV` so it doesn't surface in production
+- [ ] Make the site URL configurable via env var for staging/preview builds: `process.env.PUBLIC_SITE_URL || "https://mattkaszubski.com"` in `astro.config.ts`

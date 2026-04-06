@@ -32,7 +32,7 @@ import { en as t } from "@/i18n";
               {section.posts.map((post) => (
                 <li class="post">
                   <a class="post__inner" href={`/writing/${post.slug}/`}>
-                    <span class="post__date mono">{post.date}</span>
+                    <time class="post__date mono" datetime={post.isoDate}>{post.date}</time>
                     <div class="post__body">
                       <span class="post__title">{post.title}</span>
                       <span class="post__desc">{post.description}</span>

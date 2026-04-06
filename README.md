@@ -77,14 +77,22 @@ Improvements flagged for future development.
 
 ### SEO
 
-- [ ] Add `og-image.png` to `public/` — BaseLayout references it but the file doesn't exist, so every social share shows a broken image
+- [x] Add `og-image.svg` to `public/` — branded 1200×630 card; referenced in BaseLayout and Article JSON-LD
+- [ ] Convert the static `og-image.svg` to a raster PNG for broadest social platform support (Twitter/X and LinkedIn prefer PNG)
 - [ ] Per-page OG images instead of one global fallback
-- [ ] Add `image` and `dateModified` fields to Article JSON-LD
-- [ ] Convert i18n dates (`en.ts`) to ISO 8601 to match the content collection
+- [x] Add `image` and `dateModified` fields to Article JSON-LD
+- [x] Add `isoDate` field to each post in `en.ts`; visible dates now use `<time datetime="...">` throughout
 
 ### WCAG AAA
 
-- [ ] Wrap visible dates in `<time datetime="...">` for machine-readable semantics
-- [ ] Add breadcrumb navigation on article pages (SC 2.4.8 Location)
-- [ ] Add `<abbr>` tags or a glossary for abbreviations like DORA, EM, SLII, IC (SC 3.1.3 / 3.1.4)
-- [ ] Add a `<noscript>` fallback message for the hero and marquee
+- [x] Wrap visible dates in `<time datetime="...">` — `writing.astro` and `writing/[slug].astro`
+- [x] Add breadcrumb navigation on article pages — `<nav aria-label="Breadcrumb">` + `BreadcrumbList` JSON-LD (SC 2.4.8)
+- [x] Add `<abbr>` glossary on About page for IC, EM, KPI, SLII, DORA (SC 3.1.3 / 3.1.4)
+- [x] Add `<noscript>` fallback for the Experience marquee on the home page
+
+### Robustness
+
+- [ ] Wrap `localStorage.setItem` / `sessionStorage.setItem` calls in try/catch to handle `QuotaExceededError` gracefully
+- [ ] Add a null guard at the top of the marquee script (`index.astro`) so a missing DOM element doesn't fail silently
+- [ ] Guard `console.error` in `writing/[slug].astro` behind `import.meta.env.DEV` so it doesn't surface in production
+- [ ] Make the site URL configurable via env var for staging/preview builds: `process.env.PUBLIC_SITE_URL || "https://mattkaszubski.com"` in `astro.config.ts`

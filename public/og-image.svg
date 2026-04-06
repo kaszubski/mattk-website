@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="0" cy="0" r="1" fill="rgba(255,255,255,0.07)"/>
+    </pattern>
+    <radialGradient id="glow" cx="50%" cy="0%" r="80%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#5EEAD4" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#07080A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#07080A"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Border -->
+  <rect x="1" y="1" width="1198" height="628" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+  <!-- Teal accent bar -->
+  <rect x="80" y="188" width="56" height="3" fill="#5EEAD4" rx="1.5"/>
+
+  <!-- Name -->
+  <text x="80" y="310" font-family="system-ui,-apple-system,BlinkMacSystemFont,sans-serif" font-size="84" font-weight="800" fill="#EEEEF2" letter-spacing="-3">Matt Kaszubski</text>
+
+  <!-- Subtitle -->
+  <text x="80" y="368" font-family="system-ui,-apple-system,BlinkMacSystemFont,sans-serif" font-size="28" font-weight="400" fill="#5EEAD4" letter-spacing="-0.5">Engineering leadership writing</text>
+
+  <!-- Detail line -->
+  <text x="80" y="412" font-family="system-ui,-apple-system,BlinkMacSystemFont,sans-serif" font-size="20" font-weight="400" fill="#B0B0C6">Engineering Leader · Asana · Warsaw</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="560" x2="1120" y2="560" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- URL -->
+  <text x="80" y="590" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="18" fill="#9898AE" letter-spacing="0.5">mattkaszubski.com</text>
+</svg>

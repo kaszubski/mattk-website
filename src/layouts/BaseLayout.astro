@@ -184,6 +184,10 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     --color-accent-dim:   rgba(94, 234, 212, 0.18);
     --color-accent-glow:  rgba(94, 234, 212, 0.05);
 
+    --color-warm:         #F5C563;   /* amber/gold — ~11.5:1 on bg */
+    --color-warm-dim:     rgba(245, 197, 99, 0.15);
+    --color-warm-glow:    rgba(245, 197, 99, 0.06);
+
     --color-border:       rgba(255, 255, 255, 0.16);  /* ≈3:1 on --color-bg — passes 1.4.11 */
     --color-border-hover: rgba(255, 255, 255, 0.28);
     --color-focus:        #5EEAD4;
@@ -238,6 +242,10 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     --color-accent-dim:   rgba(0, 95, 80, 0.12);
     --color-accent-glow:  rgba(0, 95, 80, 0.05);
 
+    --color-warm:         #9E6C1B;   /* dark amber for light bg — ~5.7:1 on #F8F9FA — AA+ */
+    --color-warm-dim:     rgba(158, 108, 27, 0.10);
+    --color-warm-glow:    rgba(158, 108, 27, 0.05);
+
     --color-border:       rgba(0, 0, 0, 0.12);
     --color-border-hover: rgba(0, 0, 0, 0.24);
     --color-focus:        #005F50;
@@ -282,29 +290,41 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     cursor: default;
   }
 
-  /* Atmospheric glow at top */
+  /* Atmospheric glow at top — dual teal + warm */
   .bg-glow {
     position: fixed;
     top: 0;
     left: 50%;
     translate: -50% 0;
-    width: 80vw;
-    height: 40vh;
-    background: radial-gradient(
-      ellipse at 50% 0%,
-      rgba(94, 234, 212, 0.045) 0%,
-      transparent 65%
-    );
+    width: 100vw;
+    height: 60vh;
+    background:
+      radial-gradient(
+        ellipse at 30% 0%,
+        rgba(94, 234, 212, 0.04) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse at 70% 0%,
+        rgba(245, 197, 99, 0.03) 0%,
+        transparent 50%
+      );
     pointer-events: none;
     z-index: 0;
   }
 
   [data-theme="light"] .bg-glow {
-    background: radial-gradient(
-      ellipse at 50% 0%,
-      rgba(13, 125, 109, 0.06) 0%,
-      transparent 65%
-    );
+    background:
+      radial-gradient(
+        ellipse at 30% 0%,
+        rgba(13, 125, 109, 0.05) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse at 70% 0%,
+        rgba(158, 108, 27, 0.04) 0%,
+        transparent 50%
+      );
   }
 
   /* ─── Focus ──────────────────────────────────────────── */

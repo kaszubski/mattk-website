@@ -5,13 +5,32 @@ import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
 import { writingSlugFromEntryId } from "@/lib/post-slug";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 
 const nameLines = ["Matt", "Kaszubski"];
 
 const latestPosts = (await getCollection("writing"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 2);
+  .slice(0, 3);
+
+// Generate card thumbnails for posts that have ogImage
+const postCards = await Promise.all(
+  latestPosts.map(async (post) => {
+    let thumb: string | null = null;
+    if (post.data.ogImage) {
+      const img = await getImage({ src: post.data.ogImage, width: 480, height: 252, format: "webp" });
+      thumb = img.src;
+    }
+    return { post, thumb };
+  })
+);
+
 const experienceCompanies = ["IG", "Amartus", "Mindtree", "Dyson", "Sii", "HSBC", "Asana"] as const;
+
+const categoryColors: Record<string, string> = {
+  leadership: "teal",
+  coding: "warm",
+};
 
 const homeJsonLd = {
   "@context": "https://schema.org",
@@ -46,33 +65,69 @@ const homeJsonLd = {
     <!-- ── Hero ──────────────────────────────────────────── -->
     <section class="hero" aria-label="Introduction">
       <div class="container">
+        <div class="hero__layout">
 
-        <div class="hero__status">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span class="mono">Engineering Leader @ Asana · 0→1 Digital Engineering, Warsaw · AI-enabled teams</span>
+          <div class="hero__content">
+            <!-- Decorative accent element -->
+            <div class="hero__accent" aria-hidden="true">
+              <span class="hero__accent-line"></span>
+              <span class="hero__accent-dot"></span>
+              <span class="hero__accent-line hero__accent-line--short"></span>
+            </div>
+
+            <p class="hero__greeting mono">Hey, I'm</p>
+
+            <h1 class="hero__name" aria-label="Matt Kaszubski">
+              {nameLines.map((line, lineIndex) => (
+                <span class="hero__name-line" aria-hidden="true">
+                  {line.split("").map((char, charIndex) => {
+                    const globalIndex = lineIndex === 0 ? charIndex : nameLines[0].length + 1 + charIndex;
+                    return (
+                      <span
+                        class="hero__letter"
+                        style={`animation-delay: ${globalIndex * 38}ms`}
+                      >{char}</span>
+                    );
+                  })}
+                </span>
+              ))}
+            </h1>
+
+            <div class="hero__status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span class="mono">Engineering Leader @ Asana · Warsaw · AI-enabled teams</span>
+            </div>
+
+            <div class="hero__intro">
+              <p>{t.home.intro}</p>
+              <p>{t.home.introWriting}</p>
+            </div>
+
+            <div class="hero__actions">
+              <a href="/writing/" class="hero__cta">
+                <span>Read my writing</span>
+                <span class="hero__cta-arrow" aria-hidden="true">→</span>
+              </a>
+              <a href="/about/" class="hero__cta hero__cta--secondary">
+                <span>About me</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Decorative graphic — desktop only -->
+          <div class="hero__graphic" aria-hidden="true">
+            <div class="hero__orb hero__orb--teal"></div>
+            <div class="hero__orb hero__orb--warm"></div>
+            <svg class="hero__rings" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="100" r="60" stroke="var(--color-accent)" stroke-width="0.5" opacity="0.2"/>
+              <circle cx="100" cy="100" r="85" stroke="var(--color-warm)" stroke-width="0.5" opacity="0.15"/>
+              <circle cx="100" cy="100" r="40" stroke="var(--color-border)" stroke-width="0.5" opacity="0.3"/>
+              <line x1="60" y1="100" x2="140" y2="100" stroke="var(--color-accent)" stroke-width="0.5" opacity="0.15"/>
+              <line x1="100" y1="60" x2="100" y2="140" stroke="var(--color-warm)" stroke-width="0.5" opacity="0.15"/>
+            </svg>
+          </div>
+
         </div>
-
-        <h1 class="hero__name" aria-label="Matt Kaszubski">
-          {nameLines.map((line, lineIndex) => (
-            <span class="hero__name-line" aria-hidden="true">
-              {line.split("").map((char, charIndex) => {
-                const globalIndex = lineIndex === 0 ? charIndex : nameLines[0].length + 1 + charIndex;
-                return (
-                  <span
-                    class="hero__letter"
-                    style={`animation-delay: ${globalIndex * 38}ms`}
-                  >{char}</span>
-                );
-              })}
-            </span>
-          ))}
-        </h1>
-
-        <div class="hero__intro">
-          <p>{t.home.intro}</p>
-          <p>{t.home.introWriting}</p>
-        </div>
-
       </div>
     </section>
 
@@ -86,18 +141,33 @@ const homeJsonLd = {
         </div>
 
         <ul class="latest__grid" role="list">
-          {latestPosts.map((post) => (
-            <li>
-              <a href={`/writing/${writingSlugFromEntryId(post.id)}/`} class="latest__card">
-                <div class="latest__card-top">
-                  <p class="latest__card-category mono">{post.data.category}</p>
-                  <span class="latest__card-arrow" aria-hidden="true">↗</span>
-                </div>
-                <p class="latest__card-title">{post.data.title}</p>
-                <p class="latest__card-desc">{post.data.description}</p>
-              </a>
-            </li>
-          ))}
+          {postCards.map(({ post, thumb }) => {
+            const colorScheme = categoryColors[post.data.category] ?? "teal";
+            return (
+              <li>
+                <a href={`/writing/${writingSlugFromEntryId(post.id)}/`} class={`latest__card latest__card--${colorScheme}`}>
+                  {thumb ? (
+                    <div class="latest__card-image">
+                      <img src={thumb} alt="" loading="lazy" width="480" height="252" />
+                    </div>
+                  ) : (
+                    <div class="latest__card-accent" aria-hidden="true"></div>
+                  )}
+                  <div class="latest__card-body">
+                    <div class="latest__card-top">
+                      <p class="latest__card-category mono">{post.data.category}</p>
+                      <span class="latest__card-arrow" aria-hidden="true">↗</span>
+                    </div>
+                    <p class="latest__card-title">{post.data.title}</p>
+                    <p class="latest__card-desc">{post.data.description}</p>
+                    <time class="latest__card-date mono" datetime={post.data.date.toISOString().split("T")[0]}>
+                      {post.data.date.toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                    </time>
+                  </div>
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
       </div>
@@ -142,14 +212,78 @@ const homeJsonLd = {
 <style>
   /* ── Hero ────────────────────────────────────────────── */
   .hero {
-    padding-block: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+    padding-block: clamp(3rem, 7vw, 6rem) clamp(2.5rem, 5vw, 4rem);
   }
 
+  .hero__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .hero__layout {
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  /* Decorative accent — warm gradient bar + dot + short bar */
+  .hero__accent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero__accent-line {
+    display: block;
+    width: 56px;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-warm));
+  }
+
+  .hero__accent-line--short {
+    width: 20px;
+    background: linear-gradient(90deg, var(--color-warm), var(--color-warm-dim));
+    opacity: 0.6;
+  }
+
+  .hero__accent-dot {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-warm);
+    box-shadow: 0 0 8px var(--color-warm-dim);
+  }
+
+  .hero__greeting {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero__name {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Status badge */
   .hero__status {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: var(--space-lg);
+    font-size: var(--text-xs);
+    color: var(--color-text-faint);
   }
 
   .status-dot {
@@ -159,9 +293,6 @@ const homeJsonLd = {
     border-radius: 50%;
     background: var(--color-accent);
     flex-shrink: 0;
-  }
-
-  .status-dot {
     --pulse-color: 94, 234, 212;
   }
 
@@ -179,29 +310,127 @@ const homeJsonLd = {
     }
   }
 
-  .hero__name {
-    font-family: var(--font-display);
-    font-size: var(--text-display);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 0.93;
-    color: var(--color-text);
-    margin-bottom: var(--space-lg);
-  }
-
   .hero__intro {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
     font-size: var(--text-base);
-    color: var(--color-text);
+    color: var(--color-text-2);
     line-height: 1.75;
-    max-width: 52ch;
+    max-width: 56ch;
     margin-bottom: var(--space-lg);
   }
 
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
 
-  /* ── Name layout — always visible as fallback ────────── */
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-md);
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 500;
+    border: 1px solid transparent;
+  }
+
+  .hero__cta:hover {
+    opacity: 1;
+    translate: 0 -1px;
+    box-shadow:
+      0 4px 20px var(--color-accent-dim),
+      0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  .hero__cta-arrow {
+    transition: translate var(--transition);
+  }
+
+  .hero__cta:hover .hero__cta-arrow {
+    translate: 3px 0;
+  }
+
+  .hero__cta--secondary {
+    background: transparent;
+    color: var(--color-text-2);
+    border: 1px solid var(--color-border);
+  }
+
+  .hero__cta--secondary:hover {
+    border-color: var(--color-warm);
+    color: var(--color-warm);
+    box-shadow:
+      0 4px 20px var(--color-warm-dim),
+      0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  /* ── Hero decorative graphic (desktop) ─────────────── */
+  .hero__graphic {
+    display: none;
+    position: relative;
+    width: 220px;
+    height: 220px;
+  }
+
+  @media (min-width: 900px) {
+    .hero__graphic {
+      display: block;
+    }
+  }
+
+  .hero__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+  }
+
+  .hero__orb--teal {
+    width: 120px;
+    height: 120px;
+    top: 20%;
+    left: 10%;
+    background: var(--color-accent);
+    opacity: 0.08;
+  }
+
+  .hero__orb--warm {
+    width: 100px;
+    height: 100px;
+    bottom: 15%;
+    right: 10%;
+    background: var(--color-warm);
+    opacity: 0.06;
+  }
+
+  :global([data-theme="light"]) .hero__orb--teal { opacity: 0.1; }
+  :global([data-theme="light"]) .hero__orb--warm { opacity: 0.08; }
+
+  .hero__rings {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes slow-spin {
+      to { rotate: 360deg; }
+    }
+    .hero__rings {
+      animation: slow-spin 60s linear infinite;
+    }
+  }
+
+  /* ── Name layout ─────────────────────────────────────── */
   .hero__name {
     cursor: crosshair;
   }
@@ -213,9 +442,8 @@ const homeJsonLd = {
 
   .hero__letter {
     display: inline-block;
-    scale: 1; /* explicit — prevents repaint when animation clears its scale:1 */
+    scale: 1;
     color: var(--color-text);
-    /* Proximity glow — driven by --glow (0…1) set via JS mousemove */
     color: color-mix(in oklch, var(--color-accent) calc(var(--glow, 0) * 100%), var(--color-text));
     --glow-color: 94, 234, 212;
     text-shadow:
@@ -228,10 +456,34 @@ const homeJsonLd = {
     --glow-color: 13, 125, 109;
   }
 
+  /* ── Section dividers — soft gradient fade ───────────── */
+  .latest,
+  .worked {
+    position: relative;
+  }
+
+  .latest::before,
+  .worked::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    translate: -50% 0;
+    width: min(80%, 600px);
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-border) 20%,
+      var(--color-accent-dim) 50%,
+      var(--color-border) 80%,
+      transparent 100%
+    );
+  }
+
   /* ── Worked at ───────────────────────────────────────── */
   .worked {
-    padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(0.75rem, 1.5vw, 1.25rem);
-    border-top: 1px solid var(--color-border);
+    padding-block: clamp(2rem, 3.5vw, 3rem) clamp(1rem, 2vw, 1.5rem);
   }
 
   .worked__label {
@@ -329,11 +581,6 @@ const homeJsonLd = {
 
   /* ── Load animations ─────────────────────────────────── */
   @media (prefers-reduced-motion: no-preference) {
-    /*
-     * Each letter materializes from glowing teal blur → crisp white.
-     * No background-clip — avoids the WebKit filter/stacking-context bug.
-     * The staggered teal→white wave IS the shimmer effect.
-     */
     @keyframes materialize {
       0%   { opacity: 0; color: var(--color-accent); filter: blur(14px) brightness(3); scale: 1.2;  }
       45%  { opacity: 1; color: var(--color-accent); filter: blur(3px)  brightness(1.8); scale: 1.03; }
@@ -346,18 +593,33 @@ const homeJsonLd = {
       to   { opacity: 1; translate: 0 0; }
     }
 
+    @keyframes fade-in-up {
+      from { opacity: 0; translate: 0 1rem; }
+      to   { opacity: 1; translate: 0 0; }
+    }
+
     :root:not([data-intro-seen]) .hero__letter {
       animation: materialize 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    :root:not([data-intro-seen]) .hero__status { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-    :root:not([data-intro-seen]) .hero__intro  { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.9s both; }
+    :root:not([data-intro-seen]) .hero__accent   { animation: fade-in 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+    :root:not([data-intro-seen]) .hero__greeting  { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s both; }
+    :root:not([data-intro-seen]) .hero__status    { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.8s both; }
+    :root:not([data-intro-seen]) .hero__intro     { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.9s both; }
+    :root:not([data-intro-seen]) .hero__actions   { animation: fade-in-up 0.5s cubic-bezier(0.16,1,0.3,1) 1.1s both; }
+    :root:not([data-intro-seen]) .hero__graphic   { animation: fade-in 1s cubic-bezier(0.16,1,0.3,1) 0.5s both; }
+
+    .latest__card {
+      animation: fade-in-up 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .latest__grid li:nth-child(1) .latest__card { animation-delay: 0.15s; }
+    .latest__grid li:nth-child(2) .latest__card { animation-delay: 0.25s; }
+    .latest__grid li:nth-child(3) .latest__card { animation-delay: 0.35s; }
   }
 
   /* ── Latest writing ──────────────────────────────────── */
   .latest {
-    padding-block: clamp(2rem, 4vw, 3.5rem);
-    border-top: 1px solid var(--color-border);
+    padding-block: clamp(3rem, 5.5vw, 4.5rem);
   }
 
   .latest__header {
@@ -395,7 +657,7 @@ const homeJsonLd = {
     list-style: none;
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-md);
+    gap: var(--space-lg);
   }
 
   @media (min-width: 640px) {
@@ -404,23 +666,80 @@ const homeJsonLd = {
     }
   }
 
+  @media (min-width: 900px) {
+    .latest__grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
   .latest__card {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-    padding: var(--space-lg);
+    text-decoration: none;
+    height: 100%;
     background: var(--color-bg-elevated);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    text-decoration: none;
-    height: 100%;
-    transition: border-color var(--transition), background var(--transition);
+    overflow: hidden;
+    transition: border-color var(--transition-md), box-shadow var(--transition-md), translate var(--transition-md);
   }
 
   .latest__card:hover {
     border-color: var(--color-accent-dim);
-    background: var(--color-bg-overlay);
+    translate: 0 -4px;
+    box-shadow:
+      0 12px 40px var(--color-accent-glow),
+      0 4px 12px rgba(0, 0, 0, 0.2);
     opacity: 1;
+  }
+
+  .latest__card--warm:hover {
+    border-color: var(--color-warm-dim);
+    box-shadow:
+      0 12px 40px var(--color-warm-glow),
+      0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Card image */
+  .latest__card-image {
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .latest__card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale var(--transition-md);
+  }
+
+  .latest__card:hover .latest__card-image img {
+    scale: 1.03;
+  }
+
+  /* Top accent bar for cards without images */
+  .latest__card-accent {
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-dim));
+    opacity: 0.6;
+    transition: opacity var(--transition-md);
+  }
+
+  .latest__card--warm .latest__card-accent {
+    background: linear-gradient(90deg, var(--color-warm), var(--color-warm-dim));
+  }
+
+  .latest__card:hover .latest__card-accent {
+    opacity: 1;
+  }
+
+  .latest__card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    flex: 1;
   }
 
   .latest__card-top {
@@ -430,11 +749,13 @@ const homeJsonLd = {
   }
 
   .latest__card-category {
-    color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.6rem;
   }
+
+  .latest__card--teal .latest__card-category { color: var(--color-accent); }
+  .latest__card--warm .latest__card-category { color: var(--color-warm); }
 
   .latest__card-arrow {
     color: var(--color-text-faint);
@@ -444,7 +765,11 @@ const homeJsonLd = {
 
   .latest__card:hover .latest__card-arrow {
     color: var(--color-accent);
-    translate: 1px -1px;
+    translate: 2px -2px;
+  }
+
+  .latest__card--warm:hover .latest__card-arrow {
+    color: var(--color-warm);
   }
 
   .latest__card-title {
@@ -455,18 +780,38 @@ const homeJsonLd = {
     line-height: 1.15;
     color: var(--color-text);
     transition: color var(--transition);
+    /* Clamp to 3 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .latest__card:hover .latest__card-title {
     color: var(--color-accent);
   }
 
+  .latest__card--warm:hover .latest__card-title {
+    color: var(--color-warm);
+  }
+
   .latest__card-desc {
     font-size: var(--text-xs);
-    color: var(--color-text);
+    color: var(--color-text-2);
     line-height: 1.6;
-    margin-top: auto;
-    padding-top: var(--space-sm);
+    flex: 1;
+    /* Clamp to 3 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .latest__card-date {
+    font-size: 0.6rem;
+    color: var(--color-text-faint);
+    letter-spacing: 0.04em;
+    margin-top: var(--space-sm);
   }
 </style>
 
@@ -476,24 +821,14 @@ document.addEventListener('astro:page-load', () => {
   if (name) {
     const letters = Array.from(name.querySelectorAll<HTMLElement>('.hero__letter'));
 
-    // animation-fill-mode: both holds the final keyframe color in the cascade,
-    // overriding the base CSS color-mix(). Clear it once the animation ends
-    // so the custom property can take effect.
-    // If intro was already seen (no animations running), flag is already in sessionStorage.
-    // If this is the first visit, we wait for all letter animations to finish before setting it.
     let animatedCount = 0;
     letters.forEach(letter => {
       letter.addEventListener('animationend', () => {
-        // Suppress transition before clearing animation — prevents the active
-        // transition from firing a single-frame flash on property recalc.
         letter.style.transition = 'none';
         letter.style.animation = 'none';
-        // Double rAF: first frame applies the no-transition state,
-        // second frame re-enables transitions for the hover effect.
         requestAnimationFrame(() => requestAnimationFrame(() => {
           letter.style.transition = '';
         }));
-        // Mark intro as seen after all letters have finished animating
         if (++animatedCount >= letters.length) {
           try{sessionStorage.setItem('intro-seen', '1')}catch(e){}
         }

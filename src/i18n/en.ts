@@ -11,7 +11,7 @@ export const en = {
 
   home: {
     intro:
-      "I'm Matt — engineering leader at Asana in Warsaw. I took Digital Engineering from zero to a function that ships daily alongside San Francisco, New York, and Dublin.",
+      "I took Digital Engineering from zero to a function that ships daily alongside San Francisco, New York, and Dublin.",
     introWriting:
       "I write about what leadership gets wrong: metrics that hide the real story, checklists that save launches, and why commitment beats being right.",
   },

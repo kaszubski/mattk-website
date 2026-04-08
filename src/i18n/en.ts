@@ -1,7 +1,7 @@
 export const en = {
   siteTitle: "Matt Kaszubski",
   siteDescription:
-    "Engineering leadership writing by Matt Kaszubski. Engineering Leader @ Asana — 0→1 Digital Engineering in Warsaw, AI-enabled teams.",
+    "Engineering leadership writing by Matt Kaszubski. Engineering Leader in Warsaw — building teams, shipping globally, enabling AI.",
 
   nav: {
     writing: "Writing",

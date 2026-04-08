@@ -718,7 +718,7 @@ const homeJsonLd = {
     scale: 1.03;
   }
 
-  /* Top accent bar for cards without images */
+  /* Decorative accent area for cards without images */
   .latest__card-accent {
     height: 3px;
     background: linear-gradient(90deg, var(--color-accent), var(--color-accent-dim));
@@ -726,8 +726,25 @@ const homeJsonLd = {
     transition: opacity var(--transition-md);
   }
 
+  /* When sibling cards have images, grow the accent into a gradient block */
+  @media (min-width: 640px) {
+    .latest__card-accent {
+      height: auto;
+      aspect-ratio: 16 / 9;
+      background:
+        linear-gradient(
+          135deg,
+          var(--color-accent-glow) 0%,
+          var(--color-bg-elevated) 40%,
+          var(--color-warm-glow) 100%
+        );
+      border-bottom: 1px solid var(--color-border);
+      opacity: 1;
+    }
+  }
+
   .latest__card--warm .latest__card-accent {
-    background: linear-gradient(90deg, var(--color-warm), var(--color-warm-dim));
+    background: linear-gradient(135deg, var(--color-warm-glow) 0%, var(--color-bg-elevated) 40%, var(--color-accent-glow) 100%);
   }
 
   .latest__card:hover .latest__card-accent {
@@ -800,11 +817,6 @@ const homeJsonLd = {
     color: var(--color-text-2);
     line-height: 1.6;
     flex: 1;
-    /* Clamp to 3 lines */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   .latest__card-date {

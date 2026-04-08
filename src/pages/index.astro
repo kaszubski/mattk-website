@@ -662,13 +662,13 @@ const homeJsonLd = {
 
   @media (min-width: 640px) {
     .latest__grid {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
   }
 
   @media (min-width: 900px) {
     .latest__grid {
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
     }
   }
 

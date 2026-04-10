@@ -32,6 +32,7 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     <meta name="generator" content={Astro.generator} />
     <meta name="author" content="Matt Kaszubski" />
     <meta name="theme-color" content="#07080A" />
+    <meta name="robots" content="index, follow" />
     <meta property="og:type" content={ogType} />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     <meta property="og:url" content={canon} />
@@ -414,6 +415,48 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
         animation-timeline: view();
         animation-range: entry 0% entry 25%;
       }
+      .reveal-stagger > * {
+        animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 25%;
+      }
+      .reveal-stagger > *:nth-child(1)  { animation-delay: 0ms; }
+      .reveal-stagger > *:nth-child(2)  { animation-delay: 60ms; }
+      .reveal-stagger > *:nth-child(3)  { animation-delay: 120ms; }
+      .reveal-stagger > *:nth-child(4)  { animation-delay: 180ms; }
+      .reveal-stagger > *:nth-child(5)  { animation-delay: 240ms; }
+      .reveal-stagger > *:nth-child(6)  { animation-delay: 300ms; }
+      .reveal-stagger > *:nth-child(7)  { animation-delay: 360ms; }
+      .reveal-stagger > *:nth-child(8)  { animation-delay: 420ms; }
+      .reveal-stagger > *:nth-child(9)  { animation-delay: 480ms; }
+      .reveal-stagger > *:nth-child(10) { animation-delay: 540ms; }
     }
+  }
+
+  /* ─── View transitions ──────────────────────────────── */
+  ::view-transition-old(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-new(root) {
+    animation: vt-fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes vt-fade-in {
+    from { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+      animation: none !important;
+    }
+  }
+
+  /* ─── Button press ──────────────────────────────────── */
+  .hero__cta:active,
+  .article__share-btn:active,
+  .article__medium-cta:active,
+  .about__links a:active {
+    scale: 0.97;
+    transition-duration: 50ms;
   }
 </style>

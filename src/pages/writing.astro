@@ -13,6 +13,19 @@ const sectionOrder = [
 
 const allPosts = await getCollection("writing");
 
+const writingJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: t.writing.title,
+  description: t.writing.description,
+  url: new URL("/writing/", Astro.site ?? Astro.url).href,
+  isPartOf: {
+    "@type": "WebSite",
+    name: t.siteTitle,
+    url: (Astro.site ?? Astro.url).origin + "/",
+  },
+};
+
 const sections = sectionOrder.map(({ id, label }) => ({
   id,
   label,
@@ -26,6 +39,7 @@ const sections = sectionOrder.map(({ id, label }) => ({
   t={t}
   title={t.writing.title}
   description={t.writing.description}
+  jsonLd={writingJsonLd}
 >
   <Nav t={t} activePage="writing" />
 
@@ -35,7 +49,7 @@ const sections = sectionOrder.map(({ id, label }) => ({
 
         <header class="writing-page__header">
           <p class="mono writing-page__label">Writing</p>
-          <h1 id="writing-heading" class="writing-page__title">Things I've written</h1>
+          <h1 id="writing-heading" class="writing-page__title" transition:name="page-title">Things I've written</h1>
           <p class="writing-page__desc">{t.writing.description}</p>
         </header>
 
@@ -45,7 +59,7 @@ const sections = sectionOrder.map(({ id, label }) => ({
               {section.label}
             </h2>
 
-            <ul class="posts" role="list">
+            <ul class="posts reveal-stagger" role="list">
               {section.posts.map((post) => {
                 const slug = writingSlugFromEntryId(post.id);
                 const displayDate = post.data.date.toLocaleDateString("en-US", {
@@ -157,6 +171,7 @@ const sections = sectionOrder.map(({ id, label }) => ({
   }
 
   .post__inner {
+    position: relative;
     display: grid;
     grid-template-columns: minmax(4.25rem, auto) 1fr auto;
     align-items: center;
@@ -168,6 +183,22 @@ const sections = sectionOrder.map(({ id, label }) => ({
     color: var(--color-text);
     transition: background var(--transition-md);
     cursor: pointer;
+  }
+
+  .post__inner::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-accent);
+    border-radius: 1px;
+    transition: width var(--transition-md);
+  }
+
+  .post__inner:hover::before {
+    width: 100%;
   }
 
   .post__inner:hover {

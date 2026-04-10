@@ -18,7 +18,10 @@ import { en as t } from "@/i18n";
 
         <header class="a11y-page__header">
           <p class="mono a11y-page__label">Accessibility</p>
-          <h1 id="a11y-heading" class="a11y-page__title">Accessibility statement</h1>
+          <h1 id="a11y-heading" class="a11y-page__title">
+            <span class="a11y-page__title-short">A11y statement</span>
+            <span class="a11y-page__title-full">Accessibility statement</span>
+          </h1>
         </header>
 
         <div class="a11y-page__body">
@@ -109,6 +112,14 @@ import { en as t } from "@/i18n";
     letter-spacing: -0.04em;
     line-height: 1;
     color: var(--color-text);
+  }
+
+  .a11y-page__title-full { display: none; }
+  .a11y-page__title-short { display: inline; }
+
+  @media (min-width: 640px) {
+    .a11y-page__title-full { display: inline; }
+    .a11y-page__title-short { display: none; }
   }
 
   .a11y-page__body {

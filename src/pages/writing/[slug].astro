@@ -31,6 +31,10 @@ try {
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const hasToc = tocHeadings.length > 1;
 
+const wordCount = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+const readMinutes = Math.max(1, Math.round(wordCount / 200));
+const readTimeLabel = `${readMinutes} min read`;
+
 const mediumUrl = post.data.mediumUrl;
 
 const formattedDate = post.data.date.toLocaleDateString("en-US", {
@@ -93,6 +97,9 @@ const breadcrumbJsonLd = {
   <Nav t={t} activePage="writing" />
 
   <main id="main-content">
+    <div class="reading-progress" aria-hidden="true">
+      <div class="reading-progress__bar"></div>
+    </div>
     <article class="article" aria-labelledby="article-heading">
       <div class={`container ${hasToc ? "container--wide" : ""}`}>
         <div class={`article__layout ${hasToc ? "article__layout--has-toc" : ""}`}>
@@ -114,9 +121,12 @@ const breadcrumbJsonLd = {
                 </ol>
               </nav>
               <p class="mono article__category">{post.data.category}</p>
-              <h1 id="article-heading" class="article__title">{post.data.title}</h1>
+              <h1 id="article-heading" class="article__title" transition:name="page-title">{post.data.title}</h1>
               <div class="article__meta">
                 <time class="mono article__date" datetime={post.data.date.toISOString().split("T")[0]}>{formattedDate}</time>
+                <span class="mono article__read-time" aria-label={`Estimated reading time: ${readMinutes} minutes`}>
+                  {readTimeLabel}
+                </span>
               </div>
             </header>
 
@@ -196,6 +206,31 @@ const breadcrumbJsonLd = {
 <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
 <style>
+  /* ── Reading progress bar ───────────────────────────────── */
+  .reading-progress {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 99;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .reading-progress__bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-warm));
+    border-radius: 0 1px 1px 0;
+    transition: width 80ms linear;
+    will-change: width;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reading-progress__bar { transition: none; }
+  }
+
   .article {
     padding-block: clamp(3rem, 6vw, 5rem);
   }
@@ -306,6 +341,19 @@ const breadcrumbJsonLd = {
   .article__date {
     color: var(--color-text-faint);
     font-size: 0.65rem;
+  }
+
+  .article__read-time {
+    color: var(--color-text-faint);
+    font-size: 0.65rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .article__read-time::before {
+    content: '·';
+    color: var(--color-border);
   }
 
   /* ── Body / prose ────────────────────────────────────────── */
@@ -631,6 +679,19 @@ const breadcrumbJsonLd = {
 
     .article__header { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
     .article__body   { animation: fade-in 0.5s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
+
+    @supports (animation-timeline: view()) {
+      @keyframes image-zoom-in {
+        from { scale: 0.96; opacity: 0.7; filter: blur(2px); }
+        to   { scale: 1; opacity: 1; filter: blur(0); }
+      }
+
+      .prose :global(.article-image) {
+        animation: image-zoom-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 30%;
+      }
+    }
   }
 </style>
 
@@ -667,4 +728,48 @@ const breadcrumbJsonLd = {
     updateActive();
     window.addEventListener("scroll", updateActive, { passive: true });
   }
+</script>
+
+<script>
+  function initProgressBar() {
+    const bar = document.querySelector<HTMLElement>('.reading-progress__bar');
+    const article = document.querySelector<HTMLElement>('.article__body');
+    if (!bar || !article) return;
+
+    function updateProgress() {
+      const rect = article!.getBoundingClientRect();
+      const articleTop = rect.top + window.scrollY;
+      const articleHeight = rect.height;
+      const scrolled = window.scrollY - articleTop;
+      const progress = Math.max(0, Math.min(1, scrolled / (articleHeight - window.innerHeight)));
+      bar!.style.width = `${(progress * 100).toFixed(1)}%`;
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+  initProgressBar();
+  document.addEventListener('astro:after-swap', initProgressBar);
+</script>
+
+<script>
+  function initProseReveals() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!CSS.supports('animation-timeline', 'view()')) return;
+
+    const prose = document.querySelector('.article__body.prose');
+    if (!prose) return;
+
+    const blocks = prose.querySelectorAll<HTMLElement>(
+      ':scope > p, :scope > h2, :scope > h3, :scope > ul, :scope > ol, :scope > blockquote, :scope > pre'
+    );
+
+    blocks.forEach((block) => {
+      block.style.animation = 'reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both';
+      block.style.animationTimeline = 'view()';
+      block.style.animationRange = 'entry 0% entry 20%';
+    });
+  }
+  initProseReveals();
+  document.addEventListener('astro:after-swap', initProseReveals);
 </script>

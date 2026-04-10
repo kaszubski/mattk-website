@@ -1,20 +1,8 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
-import { writingSlugFromEntryId } from "@/lib/post-slug";
-
-const allPosts = await getCollection("writing");
-const bySlug = Object.fromEntries(
-  allPosts.map((post) => [writingSlugFromEntryId(post.id), post]),
-);
-
-const featuredEssays = t.about.featuredWritingSlugs.flatMap((slug) => {
-  const post = bySlug[slug];
-  return post ? [{ slug, title: post.data.title }] : [];
-});
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -42,6 +30,9 @@ const aboutJsonLd = {
   <Nav t={t} activePage="about" />
 
   <main id="main-content">
+    <div class="reading-progress" aria-hidden="true">
+      <div class="reading-progress__bar"></div>
+    </div>
     <article class="about" aria-labelledby="about-heading">
       <div class="container">
         <header class="about__header">
@@ -95,22 +86,6 @@ const aboutJsonLd = {
           </ol>
         </section>
 
-        <section class="about__writing reveal" aria-labelledby="essays-heading">
-          <h2 id="essays-heading" class="mono about__writing-label">{t.about.featuredWritingSectionLabel}</h2>
-          <p class="about__writing-intro">{t.about.featuredWritingIntro}</p>
-          <ul class="about__essay-list reveal-stagger" role="list">
-            {featuredEssays.map((post) => (
-              <li>
-                <a class="about__essay-link" href={`/writing/${post.slug}/`}>
-                  <span class="about__essay-title">{post.title}</span>
-                  <span class="about__essay-arrow" aria-hidden="true">→</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-          <a href="/writing/" class="mono about__all-writing">{t.about.allWritingLabel}<span aria-hidden="true"> →</span></a>
-        </section>
-
         <p class="about__cta reveal">
           {t.about.closingLead}{" "}
           <a
@@ -158,6 +133,12 @@ const aboutJsonLd = {
             </div>
           </dl>
         </aside>
+
+        <div class="about__writing-cta reveal">
+          <a href="/writing/" class="about__writing-btn">
+            Read my writing <span aria-hidden="true">→</span>
+          </a>
+        </div>
 
         <nav class="about__connect reveal" aria-label="Social links">
           <p class="mono about__connect-label">{t.about.connectLabel}</p>
@@ -305,6 +286,36 @@ const aboutJsonLd = {
     padding-bottom: 0;
   }
 
+  .timeline__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: var(--space-sm) var(--space-md);
+    margin-inline: calc(-1 * var(--space-md));
+    border-radius: var(--radius-md);
+    transition: background var(--transition-md);
+  }
+
+  .timeline__entry:hover .timeline__content {
+    background: var(--color-bg-elevated);
+  }
+
+  .timeline__entry:hover .timeline__company {
+    color: var(--color-accent);
+  }
+
+  .timeline__entry--ic:hover .timeline__company {
+    color: var(--color-warm);
+  }
+
+  .timeline__entry--em:hover .timeline__company {
+    color: #A78BFA;
+  }
+
+  .timeline__entry:hover .timeline__dot {
+    scale: 1.4;
+  }
+
   .timeline__marker {
     display: flex;
     flex-direction: column;
@@ -319,7 +330,7 @@ const aboutJsonLd = {
     flex-shrink: 0;
     border: 2px solid var(--color-border);
     background: var(--color-bg);
-    transition: border-color var(--transition), background var(--transition);
+    transition: border-color var(--transition), background var(--transition), scale var(--transition);
   }
 
   .timeline__entry--ic .timeline__dot {
@@ -347,11 +358,7 @@ const aboutJsonLd = {
     margin-top: var(--space-xs);
   }
 
-  .timeline__content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
+
 
   .timeline__header {
     display: flex;
@@ -367,6 +374,7 @@ const aboutJsonLd = {
     font-weight: 600;
     letter-spacing: -0.02em;
     color: var(--color-text);
+    transition: color var(--transition);
   }
 
   .timeline__period {
@@ -417,102 +425,30 @@ const aboutJsonLd = {
     background: rgba(167, 139, 250, 0.15);
   }
 
-  /* Featured writing */
-  .about__writing {
-    max-width: 58ch;
+  /* Writing CTA */
+  .about__writing-cta {
     margin-bottom: var(--space-xl);
-    padding-bottom: var(--space-xl);
-    border-bottom: 1px solid var(--color-border);
   }
 
-  .about__writing-label {
-    color: var(--color-text-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.65rem;
-    margin-bottom: var(--space-md);
-    padding-bottom: var(--space-sm);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .about__writing-intro {
-    font-size: var(--text-sm);
-    color: var(--color-text);
-    line-height: 1.7;
-    margin-bottom: var(--space-md);
-    max-width: 52ch;
-  }
-
-  .about__essay-list {
-    list-style: none;
-    margin: 0 0 var(--space-md);
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .about__essay-list li {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .about__essay-link {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: var(--space-md);
-    padding: 0.95rem 0.35rem;
-    margin-inline: -0.35rem;
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    color: var(--color-text);
-    transition: background var(--transition-md);
-  }
-
-  .about__essay-link:hover {
-    background: var(--color-bg-elevated);
-    opacity: 1;
-  }
-
-  .about__essay-title {
-    font-family: var(--font-display);
-    font-size: var(--text-base);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
-    transition: color var(--transition);
-  }
-
-  .about__essay-link:hover .about__essay-title {
-    color: var(--color-accent);
-  }
-
-  .about__essay-arrow {
-    color: var(--color-text-faint);
-    font-size: var(--text-sm);
-    flex-shrink: 0;
-    transition: color var(--transition), translate var(--transition);
-  }
-
-  .about__essay-link:hover .about__essay-arrow {
-    color: var(--color-accent);
-    translate: 3px 0;
-  }
-
-  .about__all-writing {
+  .about__writing-btn {
     display: inline-flex;
     align-items: center;
+    gap: var(--space-sm);
     min-height: 44px;
-    color: var(--color-text-faint);
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-2);
     text-decoration: none;
-    font-size: 0.65rem;
-    letter-spacing: 0.04em;
-    transition: color var(--transition);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
-  .about__all-writing:hover {
+  .about__writing-btn:hover {
     color: var(--color-accent);
+    border-color: var(--color-accent-dim);
+    background: var(--color-accent-glow);
     opacity: 1;
   }
 
@@ -665,4 +601,51 @@ const aboutJsonLd = {
 
     .about__header { animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
   }
+
+  /* Reading progress */
+  .reading-progress {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 99;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .reading-progress__bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-warm));
+    border-radius: 0 1px 1px 0;
+    transition: width 80ms linear;
+    will-change: width;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reading-progress__bar { transition: none; }
+  }
 </style>
+
+<script>
+  function initProgressBar() {
+    const bar = document.querySelector<HTMLElement>('.reading-progress__bar');
+    const content = document.querySelector<HTMLElement>('.about');
+    if (!bar || !content) return;
+
+    function updateProgress() {
+      const rect = content!.getBoundingClientRect();
+      const contentTop = rect.top + window.scrollY;
+      const contentHeight = rect.height;
+      const scrolled = window.scrollY - contentTop;
+      const progress = Math.max(0, Math.min(1, scrolled / (contentHeight - window.innerHeight)));
+      bar!.style.width = `${(progress * 100).toFixed(1)}%`;
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+  initProgressBar();
+  document.addEventListener('astro:after-swap', initProgressBar);
+</script>

@@ -13,6 +13,9 @@ import { en as t } from "@/i18n";
   <Nav t={t} activePage="ai" />
 
   <main id="main-content">
+    <div class="reading-progress" aria-hidden="true">
+      <div class="reading-progress__bar"></div>
+    </div>
     <article class="ai-page" aria-labelledby="ai-heading">
       <div class="container">
 
@@ -94,7 +97,7 @@ import { en as t } from "@/i18n";
 
   .ai-page__title {
     font-family: var(--font-display);
-    font-size: var(--text-2xl);
+    font-size: var(--text-xl);
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -197,4 +200,51 @@ import { en as t } from "@/i18n";
     .ai-page__header { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) both; }
     .ai-page__body   { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
   }
+
+  /* Reading progress */
+  .reading-progress {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 99;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .reading-progress__bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-warm));
+    border-radius: 0 1px 1px 0;
+    transition: width 80ms linear;
+    will-change: width;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reading-progress__bar { transition: none; }
+  }
 </style>
+
+<script>
+  function initProgressBar() {
+    const bar = document.querySelector<HTMLElement>('.reading-progress__bar');
+    const content = document.querySelector<HTMLElement>('.ai-page');
+    if (!bar || !content) return;
+
+    function updateProgress() {
+      const rect = content!.getBoundingClientRect();
+      const contentTop = rect.top + window.scrollY;
+      const contentHeight = rect.height;
+      const scrolled = window.scrollY - contentTop;
+      const progress = Math.max(0, Math.min(1, scrolled / (contentHeight - window.innerHeight)));
+      bar!.style.width = `${(progress * 100).toFixed(1)}%`;
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+  initProgressBar();
+  document.addEventListener('astro:after-swap', initProgressBar);
+</script>

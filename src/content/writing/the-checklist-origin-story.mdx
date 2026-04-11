@@ -1,9 +1,304 @@
 ---
 title: "The Checklist Origin Story"
-description: "From Boeing's 1935 crash to CrowdStrike — how aviation's greatest safety innovation became software engineering's most underused tool."
-date: "2025-01-01"
+shortTitle: "Checklist Origin Story"
+deck: "From Aviation to NASA to Your GitHub: How Simple Lists Saved Thousands of Lives"
+description: "From a 1935 Boeing crash to Apollo 13, Challenger, and CrowdStrike — why the humble checklist is still the strongest tool against complexity, pressure, and normalization of deviance."
+date: "2025-11-05"
 mediumUrl: "https://medium.com/@matt.kaszubski/the-checklist-origin-story-c0e8028bbe45"
 category: leadership
+readingTimeMinutes: 11
+ogImage: ../../assets/writing/the_checklist_origin_story_01.webp
 ---
 
-{/* PASTE FULL ARTICLE CONTENT BELOW */}
+import { Image } from 'astro:assets';
+import checklist01 from '../../assets/writing/the_checklist_origin_story_01.webp';
+import checklist02 from '../../assets/writing/the_checklist_origin_story_02.webp';
+import checklist03 from '../../assets/writing/the_checklist_origin_story_03.webp';
+import checklist04 from '../../assets/writing/the_checklist_origin_story_04.webp';
+import checklist05 from '../../assets/writing/the_checklist_origin_story_05.webp';
+import checklist06 from '../../assets/writing/the_checklist_origin_story_06.webp';
+import checklist07 from '../../assets/writing/the_checklist_origin_story_07.webp';
+import checklist08 from '../../assets/writing/the_checklist_origin_story_08.webp';
+
+<Image src={checklist01} alt="From aviation checklists to NASA missions and modern software delivery" class="article-image" />
+
+## TL;DR
+
+One checklist. 1.8 million crash-free miles. One skipped checkbox: $440 million lost in 45 minutes. From a 1935 plane crash to your next PR, here’s why the simplest tool in software engineering is the most powerful.
+
+## The Genesis: Boeing Model 299
+
+### When Things Went Sideways
+
+October 1935. Boeing drops their new bomber — the Model 299, prototype of the legendary B-17 Flying Fortress. This thing was next-level: faster, bigger, more powerful than anything else out there. During a demo flight at Wright Field, Ohio, an experienced pilot, Major Ployer P. Hill, made what seemed like a simple mistake — he forgot to release the elevator lock before takeoff.
+
+The plane climbed a few hundred feet, lost control, and crashed. Major Hill and the test pilot died instantly. The press called the Model 299 “too complex to fly.” Game over, right? The project looked dead in the water.
+
+<Image src={checklist02} alt="Boeing Model 299 and the 1935 crash that led to the first aviation checklist" class="article-image" />
+
+### The Pivot That Changed Everything
+
+A group of test pilots disagreed with that take. The problem wasn’t complexity — it was cognitive load. The pilot had to remember too many steps in the right sequence. So instead of scrapping the project, they built something revolutionary: the first aviation checklist in history.
+
+This simple, one-page list covered all critical tasks: pre-flight, in-flight, pre-landing, post-landing. With the checklist, the Model 299 flew over 1.8 million miles without a major incident. The U.S. Army ordered 13,000 units. The aircraft became mission-critical during WWII. That’s what we call product-market fit.
+
+## Scaling: The Evolution in Aviation
+
+### WWII: Going Mainstream
+
+During WWII, checklists became standard operating procedure across military aviation. The U.S. Army rolled them out for all aircraft types. Bombers like the B-17 and B-29 required dozens of steps in sequence — checklists ensured that even under combat stress, pilots didn’t skip critical moves.
+
+Key insight: checklists weren’t about doubting pilot competence. They were tools for pros to manage complexity. It’s like having unit tests for your brain.
+
+### Commercial Aviation: Enterprise Adoption
+
+Post-war, checklists made the jump to commercial aviation. Every airline worldwide adopted them as mandatory protocol. Today, every commercial flight starts with a detailed checklist covering all aircraft systems. Zero exceptions.
+
+## NASA and the Space Program
+
+### The Space Age (1960s): Level Up
+
+When NASA launched the space program in the ’60s, they inherited checklist culture from military aviation but took it to an entirely new level. In space, there’s zero room for improvisation — mistakes don’t just cost hardware, they cost lives.
+
+NASA built a comprehensive checklist system covering:
+
+- Standard procedures for every mission phase
+- Emergency protocols for every known failure scenario
+- Scientific experiment procedures
+- Detailed communication protocols with ground control
+
+Astronauts train with these checklists for months before each mission. Every action gets repeated hundreds of times in simulators until it becomes muscle memory paired with systematic verification. It’s like doing code reviews for physical actions.
+
+<Image src={checklist03} alt="NASA mission control and checklist-driven procedures during the space program" class="article-image" />
+
+### Apollo 13: Checklists Under Pressure
+
+The ultimate stress test came with Apollo 13 in April 1970. When an oxygen tank exploded and the moon landing had to be aborted, the astronauts and ground engineers relied on emergency procedures from their checklists.
+
+Here’s the kicker — when standard checklists weren’t enough, the NASA team created new procedures on the fly, tested them in Earth-based simulators, and transmitted them to the astronauts. That systematic approach and checklist discipline brought the crew home safely despite catastrophic failure.
+
+Key learning: checklists aren’t rigid scripts — they’re living tools that can adapt in real-time to changing conditions. Think agile methodology for life-or-death situations.
+
+<Image src={checklist04} alt="Apollo 13: emergency procedures and teamwork under extreme pressure" class="article-image" />
+
+### Challenger: When You Ignore Your Own Processes
+
+#### The Tragedy of January 28, 1986
+
+The Challenger disaster is the cautionary tale of what happens when you ignore procedures and warnings, even when they’re documented. Seven astronauts died when the shuttle exploded 73 seconds after launch.
+
+Root cause: O-ring seals in the solid rocket boosters failed due to extremely cold temperatures (around 30°F) the night before launch.
+
+#### The Organizational Bug
+
+This wasn’t a knowledge gap. Engineers at Morton Thiokol, the rocket booster manufacturer, explicitly warned NASA not to launch. They had data showing the O-rings weren’t tested at those temperatures and posed a serious risk.
+
+But NASA was under massive external pressure:
+
+- Multiple launch delays had already happened
+- Christa McAuliffe — the first teacher in space — was on board
+- Live TV broadcast was scheduled
+- Political and media pressure was intense
+
+#### Normalization of Deviance
+
+The critical issue was “normalization of deviance” — previous flights had minor O-ring issues but succeeded anyway. So NASA started treating these problems as “acceptable” and ignoring warnings. It’s like shipping with known bugs because nothing broke yet.
+
+Organizational pressure broke the safety system. Checklists and procedures only work when people actually follow them and don’t cave to external pressure to ship faster.
+
+#### Key Takeaways
+
+- Checklists and procedures are worthless if organizational culture allows bypassing them
+- External pressure (political, media, financial) cannot override safety standards
+- Even small deviations from norms must be taken seriously
+- Technical experts must have a voice at all organizational levels
+
+Post-Challenger, NASA did a complete overhaul of their safety culture, strengthening procedure adherence and building systems that make it harder to ignore them. Sometimes you need a hard reset to fix the culture.
+
+## The Dev World: When Code Review Fails Spectacularly
+
+### Same Problem, Different Context
+
+Fast forward to today’s software engineering. Turns out, the same cognitive limitations that caused the Boeing 299 crash are alive and well in our codebases. We’re dealing with massive complexity — microservices, distributed systems, multi-cloud architectures — and humans are still humans with the same limited working memory.
+
+That’s where pull request checklists come in. They’re the aviation checklist’s spiritual successor, adapted for pushing code instead of pushing throttle. But when teams skip them? The results can be catastrophic.
+
+<Image src={checklist05} alt="Software complexity, pull requests, and why review checklists matter" class="article-image" />
+
+### The Hall of Shame: Modern Tech’s Challenger Moments
+
+Let’s talk about some spectacular failures that could have been prevented with better code review practices:
+
+**The $3 Billion Update — CrowdStrike Global Outage (July 2024)**
+
+A faulty content update crashed 8.5 million Windows devices worldwide. Banks, airlines, hospitals, 911 emergency services — all went down. The bug was in the Content Validator used in the update. CrowdStrike fixed it in 78 minutes, but each affected machine needed manual rebooting. The damage? $3 billion in losses, 72 hours of downtime for major orgs, and Microsoft lost $23 billion in market value. The killer: inadequate testing across diverse environments before deployment. This is exactly what a proper pre-deployment checklist exists to catch.
+
+**The 45-Minute Bankruptcy — Knight Capital (2012)**
+
+Old test code was accidentally deployed to production. Within 45 minutes, the trading firm lost $440 million and nearly went bankrupt. The deployment checklist item “remove test code before deploying” was… skipped.
+
+Sometimes that checkbox is worth $10 million per minute.
+
+**The Live-Streamed Disaster — GitLab Database Incident (2017)**
+
+An engineer accidentally deleted the production database during a recovery attempt. Multiple checklist items were skipped: verify backup integrity before starting, double-check which database you’re connected to, have a second person verify destructive commands. GitLab’s transparency about this incident (they live-streamed the recovery) turned it into a teaching moment for the entire industry.
+
+The pattern? Every single one of these incidents involved skipping documented procedures, usually under time pressure. Sound familiar to Challenger? That’s because it’s the exact same organizational failure mode, just with different consequences.
+
+<Image src={checklist06} alt="Major tech incidents: outages, bad deploys, and skipped verification steps" class="article-image" />
+
+## Silicon Valley’s Secret Weapon: What Top Companies Actually Do
+
+### Google: The Gold Standard
+
+Google has one of the most rigorous code review processes in tech. Here’s what they actually do:
+
+- **“Readability” certification** — You literally can’t push code to production without approval from someone with “readability” in that language. This isn’t about being a senior engineer — it’s a separate certification showing you understand Google’s coding standards.
+- **Small, incremental changes** — PRs should be reviewable in under 30 minutes. Target is around 200 lines of code max.
+- **24-hour review SLA** — Most reviews receive initial feedback within 24 hours. This keeps momentum without sacrificing quality.
+- **Design-first reviews** — The most important thing to review is overall design. Does this code belong in the codebase? Is the architecture sound? Everything else is secondary.
+
+### Netflix: Resilience as a Feature
+
+Netflix’s code review culture is obsessed with one thing: resilience. Their review checklist emphasizes:
+
+- **Edge case scrutiny** — Every PR is reviewed for failure modes. What happens when the network fails? When the database is slow? When you get malformed input?
+- **Test quality matters** — They review test outcomes during PRs and worked extensively on improving confidence in test results.
+- **Automated tools** — Netflix uses Spinnaker for continuous delivery with automated rollback mechanisms that can revert updates in under 1 minute.
+
+### Meta (Facebook): Speed + Quality
+
+Facebook engineers deal with a massive, rapidly-changing codebase. Their approach:
+
+- **Under 300 lines per PR** — This promotes faster reviews and quicker iteration.
+- **Heavy static analysis** — Tools like Infer and Zoncolan catch issues automatically before human review.
+- **Extensive automated testing** — Tests are mandatory with every significant code change, ensuring stability.
+
+### Shopify: Small PRs, Big Impact
+
+Shopify has a great blog post titled “How small, coherent PRs help us not live in fear.” Their philosophy:
+
+- **Architecture Decision Records (ADRs)** — Significant PRs include ADRs that document why architectural decisions were made.
+- **PR Roulette** — A system that distributes review responsibilities fairly across the team.
+- **Security-first reviews** — Their bug bounty program feeds back into code review practices, making security a first-class concern.
+
+## The Universal Checklist (What Every Team Needs)
+
+Distilling Google, Netflix, Meta, and Shopify’s practices into one checklist:
+
+**Design & Architecture:**
+
+- Does this change belong in the codebase?
+- Is the overall design sound?
+- Does it follow existing architectural patterns?
+
+**Code Quality:**
+
+- Tests added/updated (and they actually test the right things)
+- Code is readable and maintainable
+- No debug code, commented-out sections, or console.logs
+
+**Security & Resilience:**
+
+- No hardcoded secrets or credentials
+- Input validation on all user-facing endpoints
+- Edge cases and failure modes considered
+- Database queries optimized (no N+1 problems)
+
+**Deployment Safety:**
+
+- Feature flags for gradual rollout
+- Backward-compatible database migrations
+- Monitoring/alerts configured
+- Rollback plan documented
+
+**Documentation:**
+
+- README updated if APIs changed
+- Complex logic has comments explaining the ‘why’
+- Breaking changes documented
+
+## The Automation Layer
+
+Smart teams automate everything they can. Top companies use:
+
+- **Google’s Tricorder** — runs automated analyses on code changes
+- **Microsoft’s CodeFlow** — integrated static analysis
+- **GitHub’s built-in security scanning** — catches common vulnerabilities automatically
+- **CI/CD with mandatory checks** — tests, linting, code coverage thresholds must pass before merge
+
+The rule: automate the mechanical checks so humans can focus on design, architecture, and whether the code actually solves the right problem.
+
+## Making It Actually Work: Culture Over Process
+
+Here’s what separates companies that successfully use checklists from those that don’t:
+
+- **Leadership follows the same rules** — If the CTO skips code review under deadline pressure, the team will too. Google’s SVPs get their code reviewed. Netflix’s principal engineers use the same checklist as new grads.
+- **Checklists evolve based on incidents** — Every production incident should trigger a checklist update. GitLab’s database incident led to new mandatory verification steps.
+- **Keep it simple** — If your checklist has 50 items, nobody will use it. Focus on the critical stuff. Google targets under 30 minutes per review.
+- **Make reviews educational** — When you catch something in review, explain why it matters. This spreads knowledge and prevents future issues.
+- **Distinguish blocking vs non-blocking feedback** — New Relic learned this the hard way. Label comments as “blocking” (must fix) or “non-blocking” (suggestion). This prevents bike-shedding and keeps reviews moving.
+
+The Challenger lesson applies perfectly here: organizational culture determines whether your safety systems work. You can have the best checklist in the world, but if deadline pressure causes people to skip it, you’re just waiting for your next incident.
+
+<Image src={checklist07} alt="Team culture: leadership, simple checklists, and reviews that stick" class="article-image" />
+
+## The Psychology & Theory Behind Checklists
+
+### Why They Actually Work
+
+Checklists work because they solve fundamental limitations of the human brain:
+
+- **Limited working memory** — we can only hold about 7 items simultaneously (George Miller’s research, 1956)
+- **Stress degrades cognitive function** — in critical situations, memory and attention take a serious hit
+- **Automation effect** — experts can “skip” steps because they’ve done something thousands of times
+- **“I know better” bias** — experienced professionals often think they don’t need lists
+
+### Applications Beyond Aviation and Code
+
+In 2009, Dr. Atul Gawande, a Harvard surgeon, published *The Checklist Manifesto*, showing how checklists can dramatically reduce medical errors. The World Health Organization (WHO) implemented a surgical checklist that:
+
+- Reduced surgical mortality by 47%
+- Cut post-operative complications by 36%
+
+That’s the kind of impact metrics VCs dream about. Except here, the ROI is measured in lives saved.
+
+<Image src={checklist08} alt="Checklists in medicine: Gawande, WHO surgical safety, and measured outcomes" class="article-image" />
+
+## Bottom Line
+
+The history of checklists reveals a fundamental truth: human memory and attention are unreliable, especially in complex situations under pressure. Checklists aren’t about lack of trust or competence — they’re tools professionals use to achieve excellence.
+
+From the tragic Boeing 299 crash in 1935, through Apollo 13, to the Challenger disaster, to CrowdStrike’s $3 billion outage in 2024 — all these events show that:
+
+- The best checklists emerge from lessons learned through failure
+- Procedures are only as good as the organizational culture supporting them
+- Even the best checklists are worthless when ignored under pressure
+- Simplicity is key — checklists must be practical, not theoretical
+
+Today, checklists are deployed everywhere — from medicine to construction to project management to your next pull request. Their history reminds us that when facing complexity and pressure, simple tools often turn out to be the most powerful.
+
+Whether you’re flying a B-17, launching a space shuttle, or merging code to production — the principle is the same: systematic verification beats relying on memory every single time. The companies that understand this — Google, Netflix, Meta — ship faster and more reliably than those that don’t.
+
+## Want to implement this at your company?
+
+Start here:
+
+1. Pick 5–10 critical checks (not 50)
+2. Make them mandatory in your PR template
+3. Automate what you can (tests, linting, security scans)
+4. Review and update after every incident
+5. Most importantly: make leadership follow the same rules
+
+## Sources & Further Reading
+
+- [Model 299 crash — Smithsonian National Air and Space Museum](https://airandspace.si.edu/multimedia-gallery/model-299-crash-1930s)
+- [From the ashes of the Model 299 — Historic Wings](http://fly.historicwings.com/2012/10/from-the-ashes-of-the-model-299/)
+- [Pre-flight checklist and the 1935 Model 299 — The Aviation Geek Club](https://theaviationgeekclub.com/did-you-know-the-pre-flight-checklist-was-first-introduced-by-boeing-following-the-1935-crash-of-the-prototype-b-17-then-known-as-the-model-299/)
+- [The 8 worst technology failures of 2024 — MIT Technology Review](https://www.technologyreview.com/2024/12/17/1108883/the-8-worst-technology-failures-of-2024/)
+- [8 major IT disasters of 2024 — CIO](https://www.cio.com/article/3624552/8-major-it-disasters-of-2024.html)
+- [Google Engineering Practices — code review](https://github.com/google/eng-practices)
+- [Getting the certification to review code at Google — dev.to](https://dev.to/pullrequest/getting-the-certification-to-review-code-at-google-55ng)
+- [Pull request best practices — Pull Checklist](https://www.pullchecklist.com/posts/pull-request-best-practices)
+- [What belongs in an effective code review checklist? — PullRequest](https://www.pullrequest.com/blog/what-belongs-in-an-effective-code-review-checklist/)
+- [Company-specific code review practices — Awesome Code Reviews](https://www.awesomecodereviews.com/companies/company-specific-code-review-practices/)

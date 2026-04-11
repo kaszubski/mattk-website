@@ -28,13 +28,15 @@ try {
 }
 
 const wordCount = (post.body ?? '').split(/\s+/).filter(Boolean).length;
-const readMinutes = Math.max(1, Math.round(wordCount / 200));
+const computedReadMinutes = Math.max(1, Math.round(wordCount / 200));
+const readMinutes = post.data.readingTimeMinutes ?? computedReadMinutes;
 const readTimeLabel = `${readMinutes} min read`;
 
 const mediumUrl = post.data.mediumUrl;
 
 const formattedDate = post.data.date.toLocaleDateString("en-US", {
   month: "short",
+  day: "numeric",
   year: "numeric",
 });
 
@@ -118,6 +120,7 @@ const breadcrumbJsonLd = {
               </nav>
               <p class="mono article__category">{post.data.category}</p>
               <h1 id="article-heading" class="article__title" transition:name="page-title">{post.data.title}</h1>
+              {post.data.deck && <p class="article__desc">{post.data.deck}</p>}
               <div class="article__meta">
                 <time class="mono article__date" datetime={post.data.date.toISOString().split("T")[0]}>{formattedDate}</time>
                 <span class="mono article__read-time" aria-label={`Estimated reading time: ${readMinutes} minutes`}>

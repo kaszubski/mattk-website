@@ -7,10 +7,12 @@ const writing = defineCollection({
     z.object({
       title: z.string(),
       shortTitle: z.string().optional(),
+      deck: z.string().optional(),
       description: z.string(),
       date: z.coerce.date(),
       mediumUrl: z.string().url(),
       category: z.enum(["leadership", "coding"]),
+      readingTimeMinutes: z.number().int().positive().optional(),
       ogImage: image().optional(),
     }),
 });

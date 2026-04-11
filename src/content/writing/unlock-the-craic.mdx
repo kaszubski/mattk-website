@@ -1,10 +1,107 @@
 ---
-title: "Unlock the Craic: The Konami Code in TypeScript"
-shortTitle: "The Konami Code in TypeScript"
-description: "How to create a secret easter egg page triggered by the classic Konami Code — keyboard event detection in TypeScript from scratch."
-date: "2024-01-01"
+title: "Unlock the Craic: How to Create a Secret Page with the Konami Code in TypeScript"
+shortTitle: "Konami Code in TypeScript"
+description: "Add a hidden page to your site with the classic Konami Code — keyboard detection in TypeScript, a tiny HTML shell, and a simple secret destination."
+date: "2024-05-19"
 mediumUrl: "https://medium.com/@matt.kaszubski/unlock-the-craic-how-to-create-a-secret-page-with-the-konami-code-in-typescript-455b3123b873"
 category: coding
+ogImage: ../../assets/writing/unlock_the_crack_01.webp
 ---
 
-{/* PASTE FULL ARTICLE CONTENT BELOW */}
+import { Image } from 'astro:assets';
+import unlockCraic01 from '../../assets/writing/unlock_the_crack_01.webp';
+import unlockCraic02 from '../../assets/writing/unlock_the_crack_02.webp';
+
+<Image src={unlockCraic01} alt="Konami Code sequence and playful Easter egg vibe for a personal website" class="article-image" />
+
+Ah, Easter eggs in software! They’re like hidden gems, waiting to be discovered by those in the know. Today, I’m gonna show you how to add a bit of magic to your website with the famous Konami code. You know the one — Up, Up, Down, Down, Left, Right, Left, Right, B, A. Let’s dive in and give your site some serious craic.
+
+## What’s the Story with the Konami Code?
+
+Before we get our hands dirty, let’s have a quick gander at the Konami code. This little beauty comes from the world of video games and has been making waves since the 80s. Gamers use it to unlock cheats and hidden features. Now, we’re gonna use it to create our own hidden page on your website.
+
+## Setting Up the HTML and TypeScript
+
+First things first, we need a basic HTML setup. This is where the magic happens.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konami Code Easter Egg</title>
+</head>
+<body>
+    <h1>Welcome to My Website</h1>
+    <p>Try entering the Konami code!</p>
+    <script src="konami.js"></script>
+</body>
+</html>
+```
+
+Now let’s write the TypeScript code that will handle the Konami code detection and redirect.
+
+```typescript
+// TypeScript code in konami.ts
+document.addEventListener('DOMContentLoaded', (event: Event) => {
+    const secretPage: string = 'secret.html'; // Replace with your secret page URL
+    const konamiCode: number[] = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+    let konamiCodePosition: number = 0;
+
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.keyCode === konamiCode[konamiCodePosition]) {
+            konamiCodePosition++;
+            if (konamiCodePosition === konamiCode.length) {
+                window.location.href = secretPage;
+                konamiCodePosition = 0;
+            }
+        } else {
+            konamiCodePosition = 0;
+        }
+    });
+});
+```
+
+To compile this TypeScript code to JavaScript, you need to have TypeScript installed. If you haven’t installed TypeScript yet, you can do so via npm:
+
+```bash
+npm install -g typescript
+```
+
+Then, compile your TypeScript file:
+
+```bash
+tsc konami.ts
+```
+
+## Creating the Secret Page
+
+Now that we’ve got the code sorted, let’s create the secret page that your visitors will be redirected to. Here’s a simple example:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Page</title>
+</head>
+<body>
+    <h1>Congratulations!</h1>
+    <p>You have discovered the secret page!</p>
+</body>
+</html>
+```
+
+## Testing Your Easter Egg
+
+Time to give it a whirl! Open your HTML file in a browser and use the arrow keys along with B and A to enter the Konami code: Up, Up, Down, Down, Left, Right, Left, Right, B, A. If all’s well, you’ll be whisked away to your secret page.
+
+If it’s not working, don’t be a gobshite — check the console for any errors and make sure the JavaScript file is linked properly. A quick look should sort you out.
+
+<Image src={unlockCraic02} alt="Celebrating the hidden page unlock after entering the Konami Code in the browser" class="article-image" />
+
+There you have it, folks! You’ve just added a bit of secret sauce to your website. Now, anyone who knows the code can discover your hidden page. Feel free to jazz it up a bit more and make it your own. And if you’ve got any questions or just want to share your own Easter eggs, drop a comment below.
+
+Enjoyed this bit of craic? Follow me for more tips and tricks on web development.

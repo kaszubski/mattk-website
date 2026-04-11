@@ -1,0 +1,71 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import TimezoneDashboard from "@/components/TimezoneDashboard.astro";
+import { en as t } from "@/i18n";
+---
+
+<BaseLayout
+  t={t}
+  title="World Clocks"
+  description="Live timezone dashboard — see what time it is in San Francisco, New York, Dublin, Warsaw, and Sydney."
+>
+  <Nav t={t} />
+
+  <main id="main-content">
+    <div class="clocks-page">
+      <div class="container container--wide">
+
+        <header class="clocks-page__header">
+          <p class="mono clocks-page__label">Easter egg</p>
+          <h1 class="clocks-page__title" id="clocks-heading">World clocks</h1>
+          <p class="clocks-page__intro">
+            A live look at the timezones I work across. Hover a city to see its phase
+            and highlight hour differences in the matrix below.
+          </p>
+        </header>
+
+        <section aria-labelledby="clocks-heading">
+          <TimezoneDashboard />
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer t={t} />
+</BaseLayout>
+
+<style>
+  .clocks-page {
+    padding-block: clamp(2.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .clocks-page__header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .clocks-page__label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-faint);
+    margin-bottom: var(--space-sm);
+  }
+
+  .clocks-page__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .clocks-page__intro {
+    font-size: var(--text-base);
+    color: var(--color-text-2);
+    max-width: 52ch;
+    line-height: 1.7;
+  }
+</style>

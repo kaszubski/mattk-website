@@ -1,0 +1,658 @@
+---
+/**
+ * Interactive timezone dashboard showing 5 cities on 24h timelines.
+ * Uses inline <script> for client-side interactivity (live clocks, hover).
+ */
+
+const CITIES = [
+  { name: "San Francisco", code: "SFO", tz: "America/Los_Angeles", flag: "🇺🇸" },
+  { name: "New York", code: "NYC", tz: "America/New_York", flag: "🇺🇸" },
+  { name: "Dublin", code: "DUB", tz: "Europe/Dublin", flag: "🇮🇪" },
+  { name: "Warsaw", code: "WAW", tz: "Europe/Warsaw", flag: "🇵🇱" },
+  { name: "Sydney", code: "SYD", tz: "Australia/Sydney", flag: "🇦🇺" },
+];
+---
+
+<div class="tz-dash" data-tz-dashboard>
+  <!-- Hour ruler -->
+  <div class="tz-ruler" aria-hidden="true">
+    <div class="tz-ruler__label-spacer"></div>
+    <div class="tz-ruler__track">
+      {Array.from({ length: 25 }, (_, i) => (
+        <span class="tz-ruler__hour" style={`left: ${(i / 24) * 100}%`}>
+          {String(i).padStart(2, "0")}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- City rows -->
+  {CITIES.map((city, i) => (
+    <div
+      class="tz-city"
+      data-tz-city={city.code}
+      data-tz={city.tz}
+      style={`animation-delay: ${i * 80}ms`}
+    >
+      <div class="tz-city__info">
+        <span class="tz-city__flag">{city.flag}</span>
+        <div class="tz-city__meta">
+          <span class="tz-city__name">{city.name}</span>
+          <span class="tz-city__code mono">{city.code}</span>
+        </div>
+        <div class="tz-city__clock-wrap">
+          <span class="tz-city__clock mono" data-tz-clock>--:--:--</span>
+          <span class="tz-city__offset mono" data-tz-offset></span>
+        </div>
+        <span class="tz-city__phase mono" data-tz-phase></span>
+      </div>
+      <div class="tz-city__timeline">
+        <canvas class="tz-city__canvas" data-tz-canvas height="36"></canvas>
+        <div class="tz-city__cursor" data-tz-cursor></div>
+      </div>
+    </div>
+  ))}
+
+  <!-- Overlap matrix -->
+  <div class="tz-matrix" style={`animation-delay: ${CITIES.length * 80 + 100}ms`}>
+    <p class="tz-matrix__title mono">Hour differences</p>
+    <div class="tz-matrix__scroll">
+      <table class="tz-matrix__table" aria-label="Hour differences between cities">
+        <thead>
+          <tr>
+            <th></th>
+            {CITIES.map((c) => (
+              <th class="mono" data-tz-matrix-head={c.code}>{c.code}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {CITIES.map((row) => (
+            <tr data-tz-matrix-row={row.code}>
+              <th class="mono" data-tz-matrix-head={row.code}>{row.code}</th>
+              {CITIES.map((col) => (
+                <td
+                  class="tz-matrix__cell mono"
+                  data-tz-matrix-cell={`${row.code}-${col.code}`}
+                >
+                  {row.code === col.code ? "—" : ""}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Dashboard container ─────────────────────────────── */
+  .tz-dash {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: #07090e;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    overflow: hidden;
+  }
+
+  :global([data-theme="light"]) .tz-dash {
+    background: var(--color-bg-elevated);
+  }
+
+  /* ── Ruler ───────────────────────────────────────────── */
+  .tz-ruler {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    margin-bottom: var(--space-sm);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  :global([data-theme="light"]) .tz-ruler {
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .tz-ruler__label-spacer {
+    flex-shrink: 0;
+    width: 200px;
+  }
+
+  @media (max-width: 700px) {
+    .tz-ruler__label-spacer {
+      width: 100px;
+    }
+  }
+
+  .tz-ruler__track {
+    position: relative;
+    flex: 1;
+    height: 18px;
+  }
+
+  .tz-ruler__hour {
+    position: absolute;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--color-text-faint);
+    opacity: 0.6;
+    user-select: none;
+  }
+
+  /* Show fewer hours on narrow screens */
+  @media (max-width: 700px) {
+    .tz-ruler__hour:nth-child(odd) {
+      display: none;
+    }
+  }
+
+  /* ── City row ────────────────────────────────────────── */
+  .tz-city {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background var(--transition);
+    cursor: default;
+    opacity: 0;
+    animation: tz-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  :global([data-theme="light"]) .tz-city {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .tz-city:last-of-type {
+    border-bottom: none;
+  }
+
+  .tz-city[data-tz-hovered] {
+    background: rgba(255, 107, 107, 0.04);
+  }
+
+  :global([data-theme="light"]) .tz-city[data-tz-hovered] {
+    background: rgba(255, 107, 107, 0.06);
+  }
+
+  /* ── City info panel ─────────────────────────────────── */
+  .tz-city__info {
+    flex-shrink: 0;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding-right: var(--space-sm);
+    overflow: hidden;
+  }
+
+  @media (max-width: 700px) {
+    .tz-city__info {
+      width: 100px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+  }
+
+  .tz-city__flag {
+    font-size: 1.1rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 700px) {
+    .tz-city__flag {
+      display: none;
+    }
+  }
+
+  .tz-city__meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .tz-city__name {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 700px) {
+    .tz-city__name {
+      display: none;
+    }
+  }
+
+  .tz-city__code {
+    font-size: 9px;
+    color: var(--color-text-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .tz-city__clock-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: auto;
+  }
+
+  @media (max-width: 700px) {
+    .tz-city__clock-wrap {
+      align-items: flex-start;
+      margin-left: 0;
+    }
+  }
+
+  .tz-city__clock {
+    font-size: var(--text-xs);
+    color: #ffd43b;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+  }
+
+  :global([data-theme="light"]) .tz-city__clock {
+    color: #9E6C1B;
+  }
+
+  .tz-city__offset {
+    font-size: 9px;
+    color: var(--color-text-faint);
+    opacity: 0.7;
+  }
+
+  .tz-city__phase {
+    display: none;
+    font-size: 9px;
+    color: var(--color-text-faint);
+    white-space: nowrap;
+    margin-left: var(--space-xs);
+  }
+
+  .tz-city[data-tz-hovered] .tz-city__phase {
+    display: inline;
+  }
+
+  @media (max-width: 700px) {
+    .tz-city__phase {
+      display: none !important;
+    }
+  }
+
+  /* ── Timeline strip ──────────────────────────────────── */
+  .tz-city__timeline {
+    flex: 1;
+    position: relative;
+    height: 36px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .tz-city__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Cursor ──────────────────────────────────────────── */
+  .tz-city__cursor {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #ffd43b;
+    border-radius: 1px;
+    box-shadow: 0 0 6px rgba(255, 212, 59, 0.6), 0 0 12px rgba(255, 212, 59, 0.3);
+    pointer-events: none;
+    transition: left 0.3s ease;
+  }
+
+  :global([data-theme="light"]) .tz-city__cursor {
+    background: #9E6C1B;
+    box-shadow: 0 0 6px rgba(158, 108, 27, 0.5), 0 0 12px rgba(158, 108, 27, 0.25);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes tz-cursor-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .tz-city__cursor {
+      animation: tz-cursor-pulse 2s ease-in-out infinite;
+    }
+  }
+
+  /* ── Matrix ──────────────────────────────────────────── */
+  .tz-matrix {
+    margin-top: var(--space-lg);
+    opacity: 0;
+    animation: tz-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .tz-matrix__title {
+    font-size: var(--text-xs);
+    color: var(--color-text-faint);
+    margin-bottom: var(--space-sm);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .tz-matrix__scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tz-matrix__table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 320px;
+  }
+
+  .tz-matrix__table th,
+  .tz-matrix__table td {
+    padding: 6px 10px;
+    text-align: center;
+    font-size: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    white-space: nowrap;
+  }
+
+  :global([data-theme="light"]) .tz-matrix__table th,
+  :global([data-theme="light"]) .tz-matrix__table td {
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .tz-matrix__table th {
+    color: var(--color-text-faint);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+  }
+
+  .tz-matrix__cell {
+    font-variant-numeric: tabular-nums;
+    transition: background var(--transition);
+  }
+
+  /* ── Fade-up animation ───────────────────────────────── */
+  @keyframes tz-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tz-city,
+    .tz-matrix {
+      opacity: 1;
+      animation: none;
+    }
+    .tz-city__cursor {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  interface CityConfig {
+    code: string;
+    tz: string;
+  }
+
+  interface NowInfo {
+    h: number;
+    m: number;
+    s: number;
+    frac: number;
+    timeStr: string;
+  }
+
+  const CITIES: CityConfig[] = [
+    { code: "SFO", tz: "America/Los_Angeles" },
+    { code: "NYC", tz: "America/New_York" },
+    { code: "DUB", tz: "Europe/Dublin" },
+    { code: "WAW", tz: "Europe/Warsaw" },
+    { code: "SYD", tz: "Australia/Sydney" },
+  ];
+
+  function getNow(tz: string): NowInfo {
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: tz,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).formatToParts(now);
+
+    const h = parseInt(parts.find((p) => p.type === "hour")!.value, 10);
+    const m = parseInt(parts.find((p) => p.type === "minute")!.value, 10);
+    const s = parseInt(parts.find((p) => p.type === "second")!.value, 10);
+    const frac = h + m / 60 + s / 3600;
+    const timeStr = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+
+    return { h, m, s, frac, timeStr };
+  }
+
+  function getOffset(tz: string): string {
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      timeZoneName: "shortOffset",
+    });
+    const parts = formatter.formatToParts(now);
+    const offsetPart = parts.find((p) => p.type === "timeZoneName");
+    return offsetPart ? offsetPart.value.replace("GMT", "UTC") : "";
+  }
+
+  function getDaylight(hourFrac: number): number {
+    // Simple sinusoidal daylight model: sunrise ~6, peak ~13, sunset ~20
+    const rad = ((hourFrac - 6) / 14) * Math.PI;
+    if (hourFrac < 5 || hourFrac > 21) return 0;
+    if (hourFrac < 6) return (hourFrac - 5) * 0.15;
+    if (hourFrac > 20) return (21 - hourFrac) * 0.15;
+    return Math.max(0, Math.sin(rad));
+  }
+
+  function getTimePhase(h: number): string {
+    if (h >= 9 && h < 17) return "☀ work hours";
+    if (h >= 17 && h < 21) return "◑ evening";
+    if (h >= 5 && h < 9) return "◐ morning";
+    return "☽ sleeping";
+  }
+
+  function diffColor(diff: number): string {
+    const abs = Math.abs(diff);
+    if (abs <= 2) return "rgba(46, 106, 72, 0.5)";      // green — close
+    if (abs <= 5) return "rgba(245, 197, 99, 0.2)";      // amber — medium
+    if (abs <= 8) return "rgba(255, 150, 100, 0.2)";     // orange — far
+    return "rgba(255, 107, 107, 0.25)";                    // red — very far
+  }
+
+  function drawTimeline(canvas: HTMLCanvasElement, tz: string): void {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+
+    const w = rect.width;
+    const h = rect.height;
+
+    // Draw 24h gradient strip
+    for (let px = 0; px < w; px++) {
+      const hourFrac = (px / w) * 24;
+      const daylight = getDaylight(hourFrac);
+
+      let r: number, g: number, b: number;
+      if (daylight === 0) {
+        // Night — dark blue
+        r = 8; g = 12; b = 24;
+      } else if (daylight < 0.3) {
+        // Dawn/dusk — warm orange blend
+        const t = daylight / 0.3;
+        r = 8 + t * 80;
+        g = 12 + t * 40;
+        b = 24 + t * 5;
+      } else {
+        // Day — green
+        const t = (daylight - 0.3) / 0.7;
+        r = 88 - t * 42;
+        g = 52 + t * 88;
+        b = 29 - t * 5;
+      }
+
+      ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+      ctx.fillRect(px, 0, 1, h);
+    }
+
+    // Work hours overlay (9-17)
+    const x9 = (9 / 24) * w;
+    const x17 = (17 / 24) * w;
+    ctx.fillStyle = "rgba(94, 234, 212, 0.08)";
+    ctx.fillRect(x9, 0, x17 - x9, h);
+
+    // Work hours borders
+    ctx.strokeStyle = "rgba(94, 234, 212, 0.2)";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(x9, 0);
+    ctx.lineTo(x9, h);
+    ctx.moveTo(x17, 0);
+    ctx.lineTo(x17, h);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function initDashboard(): void {
+    const dashEl = document.querySelector("[data-tz-dashboard]");
+    if (!dashEl) return;
+    const dash = dashEl;
+
+    const cityRows = dash.querySelectorAll<HTMLElement>("[data-tz-city]");
+    const canvases = dash.querySelectorAll<HTMLCanvasElement>("[data-tz-canvas]");
+
+    // Initial canvas draw
+    canvases.forEach((canvas) => {
+      const row = canvas.closest<HTMLElement>("[data-tz-city]");
+      if (!row) return;
+      const tz = row.dataset.tz!;
+      drawTimeline(canvas, tz);
+    });
+
+    // Redraw on resize
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        canvases.forEach((canvas) => {
+          const row = canvas.closest<HTMLElement>("[data-tz-city]");
+          if (!row) return;
+          drawTimeline(canvas, row.dataset.tz!);
+        });
+      }, 150);
+    });
+
+    // Hover handling
+    cityRows.forEach((row) => {
+      row.addEventListener("mouseenter", () => {
+        const code = row.dataset.tzCity;
+        cityRows.forEach((r) => {
+          if (r.dataset.tzCity === code) {
+            r.setAttribute("data-tz-hovered", "");
+          } else {
+            r.removeAttribute("data-tz-hovered");
+          }
+        });
+        // Highlight matrix headers
+        dash.querySelectorAll<HTMLElement>("[data-tz-matrix-head]").forEach((th) => {
+          th.style.color = th.dataset.tzMatrixHead === code ? "#ff6b6b" : "";
+        });
+      });
+
+      row.addEventListener("mouseleave", () => {
+        cityRows.forEach((r) => r.removeAttribute("data-tz-hovered"));
+        dash.querySelectorAll<HTMLElement>("[data-tz-matrix-head]").forEach((th) => {
+          th.style.color = "";
+        });
+      });
+    });
+
+    // Tick — update clocks, cursors, phases, matrix
+    function tick(): void {
+      const fracs: Record<string, number> = {};
+
+      cityRows.forEach((row) => {
+        const code = row.dataset.tzCity!;
+        const tz = row.dataset.tz!;
+        const info = getNow(tz);
+        fracs[code] = info.frac;
+
+        const clock = row.querySelector<HTMLElement>("[data-tz-clock]");
+        if (clock) clock.textContent = info.timeStr;
+
+        const offset = row.querySelector<HTMLElement>("[data-tz-offset]");
+        if (offset) offset.textContent = getOffset(tz);
+
+        const phase = row.querySelector<HTMLElement>("[data-tz-phase]");
+        if (phase) phase.textContent = getTimePhase(info.h);
+
+        const cursor = row.querySelector<HTMLElement>("[data-tz-cursor]");
+        if (cursor) cursor.style.left = `${(info.frac / 24) * 100}%`;
+      });
+
+      // Update matrix
+      CITIES.forEach((rowCity) => {
+        CITIES.forEach((colCity) => {
+          if (rowCity.code === colCity.code) return;
+          const cell = dash.querySelector<HTMLElement>(
+            `[data-tz-matrix-cell="${rowCity.code}-${colCity.code}"]`
+          );
+          if (!cell) return;
+          let diff = fracs[colCity.code] - fracs[rowCity.code];
+          // Normalize to -12..+12
+          if (diff > 12) diff -= 24;
+          if (diff < -12) diff += 24;
+          const rounded = Math.round(diff);
+          cell.textContent = `${rounded >= 0 ? "+" : ""}${rounded}h`;
+          cell.style.background = diffColor(rounded);
+          cell.style.color =
+            Math.abs(rounded) <= 2
+              ? "#5eead4"
+              : Math.abs(rounded) >= 8
+                ? "#ff6b6b"
+                : "var(--color-text-2)";
+        });
+      });
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  // Run on page load and after Astro view transitions
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDashboard);
+  } else {
+    initDashboard();
+  }
+  document.addEventListener("astro:after-swap", initDashboard);
+</script>

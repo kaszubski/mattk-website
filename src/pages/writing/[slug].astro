@@ -642,9 +642,10 @@ const breadcrumbJsonLd = {
     );
 
     blocks.forEach((block) => {
-      block.style.animation = 'reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both';
-      block.style.animationTimeline = 'view()';
-      block.style.animationRange = 'entry 0% entry 20%';
+      const s = block.style as CSSStyleDeclaration & Record<string, string>;
+      s.animation = 'reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both';
+      s.animationTimeline = 'view()';
+      s.animationRange = 'entry 0% entry 20%';
     });
   }
   initProseReveals();

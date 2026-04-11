@@ -68,8 +68,10 @@ import { en as t } from "@/i18n";
               <p>
                 Articles live as MDX under <code>src/content/writing/</code>. The writing page, RSS
                 (<code>/rss.xml</code>), and each post URL are all generated from that collection — no duplicate
-                post lists in copy files. Frontmatter includes <code>title</code>, <code>description</code>,
-                <code>date</code>, <code>mediumUrl</code>, and <code>category</code>. MDX supports
+                post lists in copy files.                 Frontmatter includes <code>title</code>, <code>description</code>,
+                <code>date</code>, <code>mediumUrl</code>, <code>category</code>, optional
+                <code>readingTimeMinutes</code> and <code>ogImage</code> (lead art for Open Graph and
+                listing thumbnails). MDX supports
                 <code>astro:assets</code> for images and small components such as pull quotes.
               </p>
             </div>
@@ -145,8 +147,9 @@ import { en as t } from "@/i18n";
               </div>
               <p>
                 Production: <code>astro</code>, <code>@astrojs/mdx</code>, <code>@astrojs/sitemap</code>,
-                and <code>@astrojs/rss</code>. No UI framework, no animation library — the marquee,
-                hero glow, TOC spy, and theme toggle are plain TypeScript.
+                and <code>@astrojs/rss</code>. No UI framework, no animation library — the experience
+                marquee, hero accents, article reading-progress bar, image skeleton helpers, and theme
+                toggle are plain TypeScript.
               </p>
             </div>
           </section>

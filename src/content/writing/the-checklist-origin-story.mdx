@@ -11,6 +11,7 @@ ogImage: ../../assets/writing/the_checklist_origin_story_01.webp
 ---
 
 import { Image } from 'astro:assets';
+import Callout from '../../components/Callout.astro';
 import checklist01 from '../../assets/writing/the_checklist_origin_story_01.webp';
 import checklist02 from '../../assets/writing/the_checklist_origin_story_02.webp';
 import checklist03 from '../../assets/writing/the_checklist_origin_story_03.webp';
@@ -24,7 +25,7 @@ import checklist08 from '../../assets/writing/the_checklist_origin_story_08.webp
 
 ## TL;DR
 
-One checklist. 1.8 million crash-free miles. One skipped checkbox: $440 million lost in 45 minutes. From a 1935 plane crash to your next PR, here’s why the simplest tool in software engineering is the most powerful.
+**One checklist. 1.8 million crash-free miles.** One skipped checkbox: **$440 million lost in 45 minutes.** From a 1935 plane crash to your next PR, here’s why **the simplest tool in software engineering is the most powerful.**
 
 ## The Genesis: Boeing Model 299
 
@@ -32,13 +33,13 @@ One checklist. 1.8 million crash-free miles. One skipped checkbox: $440 million 
 
 October 1935. Boeing drops their new bomber — the Model 299, prototype of the legendary B-17 Flying Fortress. This thing was next-level: faster, bigger, more powerful than anything else out there. During a demo flight at Wright Field, Ohio, an experienced pilot, Major Ployer P. Hill, made what seemed like a simple mistake — he forgot to release the elevator lock before takeoff.
 
-The plane climbed a few hundred feet, lost control, and crashed. Major Hill and the test pilot died instantly. The press called the Model 299 “too complex to fly.” Game over, right? The project looked dead in the water.
+The plane climbed a few hundred feet, lost control, and crashed. Major Hill and the test pilot died instantly. The press called the Model 299 “too complex to fly.” **Game over, right?** The project looked dead in the water.
 
 <Image src={checklist02} alt="Boeing Model 299 and the 1935 crash that led to the first aviation checklist" class="article-image" />
 
 ### The Pivot That Changed Everything
 
-A group of test pilots disagreed with that take. The problem wasn’t complexity — it was cognitive load. The pilot had to remember too many steps in the right sequence. So instead of scrapping the project, they built something revolutionary: the first aviation checklist in history.
+A group of test pilots disagreed with that take. The problem wasn’t complexity — it was **cognitive load**. The pilot had to remember too many steps in the right sequence. So instead of scrapping the project, they built something revolutionary: **the first aviation checklist in history.**
 
 This simple, one-page list covered all critical tasks: pre-flight, in-flight, pre-landing, post-landing. With the checklist, the Model 299 flew over 1.8 million miles without a major incident. The U.S. Army ordered 13,000 units. The aircraft became mission-critical during WWII. That’s what we call product-market fit.
 
@@ -48,7 +49,7 @@ This simple, one-page list covered all critical tasks: pre-flight, in-flight, pr
 
 During WWII, checklists became standard operating procedure across military aviation. The U.S. Army rolled them out for all aircraft types. Bombers like the B-17 and B-29 required dozens of steps in sequence — checklists ensured that even under combat stress, pilots didn’t skip critical moves.
 
-Key insight: checklists weren’t about doubting pilot competence. They were tools for pros to manage complexity. It’s like having unit tests for your brain.
+**Key insight:** checklists weren’t about doubting pilot competence. They were tools for pros to manage complexity. It’s like having unit tests for your brain.
 
 ### Commercial Aviation: Enterprise Adoption
 
@@ -77,7 +78,7 @@ The ultimate stress test came with Apollo 13 in April 1970. When an oxygen tank 
 
 Here’s the kicker — when standard checklists weren’t enough, the NASA team created new procedures on the fly, tested them in Earth-based simulators, and transmitted them to the astronauts. That systematic approach and checklist discipline brought the crew home safely despite catastrophic failure.
 
-Key learning: checklists aren’t rigid scripts — they’re living tools that can adapt in real-time to changing conditions. Think agile methodology for life-or-death situations.
+**Key learning:** checklists aren’t rigid scripts — they’re living tools that can adapt in real-time to changing conditions. Think agile methodology for life-or-death situations.
 
 <Image src={checklist04} alt="Apollo 13: emergency procedures and teamwork under extreme pressure" class="article-image" />
 
@@ -102,7 +103,7 @@ But NASA was under massive external pressure:
 
 #### Normalization of Deviance
 
-The critical issue was “normalization of deviance” — previous flights had minor O-ring issues but succeeded anyway. So NASA started treating these problems as “acceptable” and ignoring warnings. It’s like shipping with known bugs because nothing broke yet.
+The critical issue was **“normalization of deviance”** — previous flights had minor O-ring issues but succeeded anyway. So NASA started treating these problems as “acceptable” and ignoring warnings. It’s like shipping with known bugs because nothing broke yet.
 
 Organizational pressure broke the safety system. Checklists and procedures only work when people actually follow them and don’t cave to external pressure to ship faster.
 
@@ -137,13 +138,13 @@ A faulty content update crashed 8.5 million Windows devices worldwide. Banks, ai
 
 Old test code was accidentally deployed to production. Within 45 minutes, the trading firm lost $440 million and nearly went bankrupt. The deployment checklist item “remove test code before deploying” was… skipped.
 
-Sometimes that checkbox is worth $10 million per minute.
+**Sometimes that checkbox is worth $10 million per minute.**
 
 **The Live-Streamed Disaster — GitLab Database Incident (2017)**
 
 An engineer accidentally deleted the production database during a recovery attempt. Multiple checklist items were skipped: verify backup integrity before starting, double-check which database you’re connected to, have a second person verify destructive commands. GitLab’s transparency about this incident (they live-streamed the recovery) turned it into a teaching moment for the entire industry.
 
-The pattern? Every single one of these incidents involved skipping documented procedures, usually under time pressure. Sound familiar to Challenger? That’s because it’s the exact same organizational failure mode, just with different consequences.
+**The pattern?** Every single one of these incidents involved skipping documented procedures, usually under time pressure. Sound familiar to Challenger? That’s because it’s the exact same organizational failure mode, just with different consequences.
 
 <Image src={checklist06} alt="Major tech incidents: outages, bad deploys, and skipped verification steps" class="article-image" />
 
@@ -241,7 +242,7 @@ Here’s what separates companies that successfully use checklists from those th
 
 The Challenger lesson applies perfectly here: organizational culture determines whether your safety systems work. You can have the best checklist in the world, but if deadline pressure causes people to skip it, you’re just waiting for your next incident.
 
-<Image src={checklist07} alt="Team culture: leadership, simple checklists, and reviews that stick" class="article-image" />
+<Image src={checklist07} alt="Team culture: leadership, simple checklists, and reviews that stick" class="article-image article-image--natural" />
 
 ## The Psychology & Theory Behind Checklists
 
@@ -267,7 +268,9 @@ That’s the kind of impact metrics VCs dream about. Except here, the ROI is mea
 
 ## Bottom Line
 
-The history of checklists reveals a fundamental truth: human memory and attention are unreliable, especially in complex situations under pressure. Checklists aren’t about lack of trust or competence — they’re tools professionals use to achieve excellence.
+The history of checklists reveals a fundamental truth: **human memory and attention are unreliable**, especially in complex situations under pressure.
+
+<Callout text="Checklists aren't about lack of trust or competence — they're tools professionals use to achieve excellence." />
 
 From the tragic Boeing 299 crash in 1935, through Apollo 13, to the Challenger disaster, to CrowdStrike’s $3 billion outage in 2024 — all these events show that:
 
@@ -278,7 +281,7 @@ From the tragic Boeing 299 crash in 1935, through Apollo 13, to the Challenger d
 
 Today, checklists are deployed everywhere — from medicine to construction to project management to your next pull request. Their history reminds us that when facing complexity and pressure, simple tools often turn out to be the most powerful.
 
-Whether you’re flying a B-17, launching a space shuttle, or merging code to production — the principle is the same: systematic verification beats relying on memory every single time. The companies that understand this — Google, Netflix, Meta — ship faster and more reliably than those that don’t.
+Whether you’re flying a B-17, launching a space shuttle, or merging code to production — **the principle is the same: systematic verification beats relying on memory every single time.** The companies that understand this — Google, Netflix, Meta — ship faster and more reliably than those that don’t.
 
 ## Want to implement this at your company?
 

@@ -9,6 +9,7 @@ ogImage: ../../assets/writing/future-proof_your_code_01.webp
 ---
 
 import { Image } from 'astro:assets';
+import Callout from '../../components/Callout.astro';
 import futureProofIllustration01 from '../../assets/writing/future-proof_your_code_01.webp';
 import futureProofIllustration02 from '../../assets/writing/future-proof_your_code_02.webp';
 import futureProofIllustration03 from '../../assets/writing/future-proof_your_code_03.webp';
@@ -17,7 +18,7 @@ import futureProofIllustration03 from '../../assets/writing/future-proof_your_co
 
 ## Introduction
 
-Right, so here we are — diving into one of those everyday coding puzzles that can be as intricate as navigating a neon-lit cyber city. Whether you’re building analytics dashboards, sprucing up e-commerce carts, or handling wild API responses, grouping data is a challenge every developer faces. In this guide, we’ll quickly jump into some neat JavaScript techniques that not only streamline your code but also prepare it for the future.
+Right, so here we are — diving into one of those everyday coding puzzles that can be as intricate as navigating a neon-lit cyber city. Whether you’re building analytics dashboards, sprucing up e-commerce carts, or handling wild API responses, **grouping data** is a challenge every developer faces. In this guide, we’ll quickly jump into some neat JavaScript techniques that not only **streamline your code** but also **prepare it for the future**.
 
 <Image src={futureProofIllustration01} alt="JavaScript data grouping: from loops to Object.groupBy" class="article-image" />
 
@@ -94,7 +95,7 @@ console.log(grouped);
 
 ### Meet Object.groupBy
 
-Hold on to your hats — here comes the new kid on the block: `Object.groupBy`! This upcoming JavaScript addition simplifies grouping logic without loops or reducers.
+**Hold on to your hats** — here comes the new kid on the block: `Object.groupBy`! This upcoming JavaScript addition simplifies grouping logic without loops or reducers.
 
 **Important:** `Object.groupBy` is a Stage 3 JavaScript proposal, meaning it may not be available in all environments yet. To future-proof your code, use a polyfill (shown later).
 
@@ -160,7 +161,7 @@ Now, regardless of your environment, your code will work as expected.
 
 ## Advanced Example: Cybernetic Agents in a Futuristic Data Structure
 
-Let’s level up with a nod to the cybernetic world of *Ghost in the Shell*. Imagine you’re managing a roster of elite agents from Section 9. You need to group these agents first by their role and then by their specialization.
+Let’s level up with a nod to the cybernetic world of *Ghost in the Shell*. Imagine you’re managing a roster of elite agents from **Section 9**. You need to group these agents first by their role and then by their specialization.
 
 ### Defining the Data Structure
 
@@ -286,6 +287,6 @@ Grouping data efficiently enhances performance, readability, and maintainability
 - How might these techniques evolve as JavaScript continues to grow?
 - What new features are you excited to experiment with in your own code?
 
-Experiment, have a laugh, and code like there’s no tomorrow.
+<Callout text="Experiment, have a laugh, and code like there's no tomorrow." />
 
 Cheers, and happy coding, mate.

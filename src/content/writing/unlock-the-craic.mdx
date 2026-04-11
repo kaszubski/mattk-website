@@ -9,12 +9,13 @@ ogImage: ../../assets/writing/unlock_the_crack_01.webp
 ---
 
 import { Image } from 'astro:assets';
+import Callout from '../../components/Callout.astro';
 import unlockCraic01 from '../../assets/writing/unlock_the_crack_01.webp';
 import unlockCraic02 from '../../assets/writing/unlock_the_crack_02.webp';
 
 <Image src={unlockCraic01} alt="Konami Code sequence and playful Easter egg vibe for a personal website" class="article-image" />
 
-Ah, Easter eggs in software! They’re like hidden gems, waiting to be discovered by those in the know. Today, I’m gonna show you how to add a bit of magic to your website with the famous Konami code. You know the one — Up, Up, Down, Down, Left, Right, Left, Right, B, A. Let’s dive in and give your site some serious craic.
+Ah, **Easter eggs in software**! They’re like hidden gems, waiting to be discovered by those in the know. Today, I’m gonna show you how to add a bit of magic to your website with the famous Konami code. You know the one — **Up, Up, Down, Down, Left, Right, Left, Right, B, A**. Let’s dive in and give your site some **serious craic**.
 
 ## What’s the Story with the Konami Code?
 
@@ -22,7 +23,7 @@ Before we get our hands dirty, let’s have a quick gander at the Konami code. T
 
 ## Setting Up the HTML and TypeScript
 
-First things first, we need a basic HTML setup. This is where the magic happens.
+First things first, we need a basic HTML setup. **This is where the magic happens.**
 
 ```html
 <!DOCTYPE html>
@@ -102,6 +103,8 @@ If it’s not working, don’t be a gobshite — check the console for any error
 
 <Image src={unlockCraic02} alt="Celebrating the hidden page unlock after entering the Konami Code in the browser" class="article-image" />
 
-There you have it, folks! You’ve just added a bit of secret sauce to your website. Now, anyone who knows the code can discover your hidden page. Feel free to jazz it up a bit more and make it your own. And if you’ve got any questions or just want to share your own Easter eggs, drop a comment below.
+<Callout text="Anyone who knows the code can discover your hidden page." />
+
+There you have it, folks! You’ve just added a bit of secret sauce to your website. Feel free to jazz it up a bit more and make it your own. And if you’ve got any questions or just want to share your own Easter eggs, drop a comment below.
 
 Enjoyed this bit of craic? Follow me for more tips and tricks on web development.

@@ -1,27 +1,27 @@
-# Matt Kaszubski — personal site
+# mattkaszubski.com
 
-Static site for Matt Kaszubski — engineering leadership at Asana (Warsaw), bio, and engineering leadership writing.
+Personal site — engineering leadership writing, bio, and career arc.
 
-**Live site:** [mattkaszubski.com](https://mattkaszubski.com)
+**[mattkaszubski.com](https://mattkaszubski.com)**
+
+### Highlights
+
+- **4 runtime dependencies** — Astro, MDX, RSS, Sitemap. Nothing else.
+- **Zero third-party scripts** — no analytics, no tracking, no external fonts.
+- **WCAG AAA accessibility** — automated axe tests on every route in light & dark mode, 44px touch targets, `prefers-reduced-motion` respected across 28 media queries.
+- **Fluid design system** — CSS custom properties, `clamp()` typography, full dark/light theme, scoped component styles.
+- **CI quality gate** — TypeScript strict, Vitest, Playwright + axe (moderate/serious/critical).
 
 ## Stack
 
-- **[Astro](https://astro.build) 6** — static output, islands / client router where needed
-- **MDX** (`@astrojs/mdx`) — articles with a typed content collection (Zod)
-- **RSS** (`@astrojs/rss`) — feed generated from the same collection as the writing pages
-- **Sitemap** (`@astrojs/sitemap`)
-- **TypeScript** (strict) + **`@astrojs/check`** for template/type diagnostics
-- **Vanilla CSS** — design tokens in `:root`, scoped components, `clamp()` typography, light/dark themes
-
-## Features
-
-- Pages: Home, About, Writing, Stack, Accessibility, AI manifesto, 404/500
-- **Single source of truth** for posts: `src/content/writing/*.mdx` drives the writing index, article routes, **RSS**, and related metadata (titles on About are resolved from the collection)
-- `astro:assets` for optimised article images
-- JSON-LD (`WebSite`, `Person`, `Article`), Open Graph / Twitter meta, canonical URLs
-- **Trailing slashes** enforced in config (`trailingSlash: "always"`) for consistent URLs
-- Skip link, landmarks, focus styles, reduced motion, WCAG-oriented contrast (see [Accessibility](https://mattkaszubski.com/accessibility/) on the site)
-- **Vitest** (unit helpers) + **Playwright** + **axe** (moderate/serious/critical) in CI, with HTML report artifacts on failure
+| Layer | Choice |
+| --- | --- |
+| Framework | [Astro 6](https://astro.build) — static output, client router for view transitions |
+| Content | MDX with typed Zod collections |
+| Styling | Vanilla CSS — design tokens, scoped components, `clamp()` fluid type |
+| Fonts | Self-hosted WOFF2 (Syne, Outfit, DM Mono) with `font-display: swap` |
+| Testing | Vitest + Playwright + axe-core |
+| SEO | JSON-LD, Open Graph, Twitter cards, sitemap, RSS |
 
 ## Project structure
 
@@ -64,35 +64,9 @@ Add or edit **`src/content/writing/*.mdx`** with valid frontmatter (`title`, `de
 
 For the About page “featured essays” list, add the slug to **`featuredWritingSlugs`** in `src/i18n/en.ts`. Category labels for the writing index live under **`writing.sectionLabels`**.
 
-## Future work & tech debt
+## Roadmap
 
-### Completed
-
-- ~~Raster OG (PNG/WebP) for social crawler support~~ ✅
-- ~~Per-route OG images for articles~~ ✅ (articles with `ogImage` frontmatter)
-- ~~`try/catch` around `localStorage` / `sessionStorage`~~ ✅
-- ~~Theme toggle `aria-pressed` sync on first paint~~ ✅
-- ~~Gate CI on axe moderate violations~~ ✅
-
-### Next up
-
-**Content & UX** — highest impact
-
-- Flesh out placeholder articles (4 of 6 are stubs that bounce users to Medium) or remove article routes for stubs and link directly to Medium from the writing index
-- Add `ogImage` frontmatter to future articles that include images
-
-**SEO**
-
-- Add `<atom:link rel="self">` to RSS feed for strict validator compliance
-- Env-based `site` URL for staging or preview builds so canonicals stay correct
-
-**Accessibility**
-
-- Periodic manual checks: screen reader spot tests, full keyboard pass on custom widgets (marquee, theme control, etc.)
-- Add `aria-label` to RSS `<link>` in `<head>`
-
-**Engineering** — low priority / blocked
-
-- `content.config.ts`: Zod API deprecation hints from upstream — revisit when Astro documents the replacement
-- Visual regression tests (Playwright screenshots) — nice-to-have, not critical for a personal site
-- Broader Playwright coverage beyond axe (keyboard paths, critical interactions) — nice-to-have
+- Related-article links at the end of each post
+- BreadcrumbList JSON-LD on article pages
+- Responsive `srcset` for article images
+- Periodic manual screen-reader testing (NVDA, VoiceOver)

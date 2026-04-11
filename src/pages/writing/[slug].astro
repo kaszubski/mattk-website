@@ -447,6 +447,13 @@ const breadcrumbJsonLd = {
                 0 1px 8px color-mix(in srgb, black 20%, transparent);
   }
 
+  /* Preserve source aspect ratio (skip 16:9 crop). Use for tall or non-video illustrations. */
+  .prose :global(.article-image.article-image--natural) {
+    aspect-ratio: unset;
+    object-fit: contain;
+    object-position: center top;
+  }
+
   .prose :global(.article-image-caption) {
     text-align: center;
     text-align-last: center;

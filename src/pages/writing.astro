@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
@@ -12,6 +13,24 @@ const sectionOrder = [
 ];
 
 const allPosts = await getCollection("writing");
+
+/** Square list thumbs; size drives `getImage` output and `<img>` dimensions. */
+const LIST_THUMB = 240;
+
+const thumbSrcByPostId = new Map(
+  await Promise.all(
+    allPosts.map(async (post) => {
+      if (!post.data.ogImage) return [post.id, null] as const;
+      const img = await getImage({
+        src: post.data.ogImage,
+        width: LIST_THUMB,
+        height: LIST_THUMB,
+        format: "webp",
+      });
+      return [post.id, img.src] as const;
+    })
+  )
+);
 
 const writingJsonLd = {
   "@context": "https://schema.org",
@@ -62,6 +81,7 @@ const sections = sectionOrder.map(({ id, label }) => ({
             <ul class="posts reveal-stagger" role="list">
               {section.posts.map((post) => {
                 const slug = writingSlugFromEntryId(post.id);
+                const thumbSrc = thumbSrcByPostId.get(post.id) ?? null;
                 const displayDate = post.data.date.toLocaleDateString("en-US", {
                   month: "short",
                   year: "numeric",
@@ -70,6 +90,20 @@ const sections = sectionOrder.map(({ id, label }) => ({
                 return (
                   <li class="post">
                     <a class="post__inner" href={`/writing/${slug}/`}>
+                      {thumbSrc ? (
+                        <div class="post__thumb" aria-hidden="true">
+                          <img
+                            src={thumbSrc}
+                            alt=""
+                            width={LIST_THUMB}
+                            height={LIST_THUMB}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+                      ) : (
+                        <div class="post__thumb post__thumb--placeholder" aria-hidden="true" />
+                      )}
                       <time class="post__date mono" datetime={datetime}>{displayDate}</time>
                       <div class="post__body">
                         <span class="post__title">{post.data.title}</span>
@@ -173,16 +207,48 @@ const sections = sectionOrder.map(({ id, label }) => ({
   .post__inner {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(4.25rem, auto) 1fr auto;
+    grid-template-columns: 5.5rem minmax(4.25rem, auto) 1fr auto;
     align-items: center;
     gap: var(--space-md);
-    padding: 1.1rem 0.75rem;
+    padding: 1.15rem 0.75rem;
     margin-inline: -0.75rem;
     border-radius: var(--radius-md);
     text-decoration: none;
     color: var(--color-text);
     transition: background var(--transition-md);
     cursor: pointer;
+  }
+
+  .post__thumb {
+    width: 5.5rem;
+    aspect-ratio: 1;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    align-self: center;
+  }
+
+  .post__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale var(--transition-md), opacity var(--transition-md);
+  }
+
+  .post__inner:hover .post__thumb img {
+    scale: 1.04;
+  }
+
+  .post__thumb--placeholder {
+    background: linear-gradient(
+      135deg,
+      var(--color-border),
+      color-mix(in srgb, var(--color-accent) 35%, var(--color-border))
+    );
+    opacity: 0.55;
+    border: none;
   }
 
   .post__inner::before {
@@ -262,7 +328,12 @@ const sections = sectionOrder.map(({ id, label }) => ({
 
   @media (min-width: 768px) {
     .post__inner {
-      grid-template-columns: 5.5rem 1fr 1.5rem;
+      grid-template-columns: 7rem 5.5rem 1fr 1.5rem;
+      gap: var(--space-md);
+    }
+
+    .post__thumb {
+      width: 7rem;
     }
 
     .post__date {

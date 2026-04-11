@@ -67,13 +67,48 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
       function applyIntroSeen(){
         try{if(sessionStorage.getItem('intro-seen')){document.documentElement.setAttribute('data-intro-seen','')}}catch(e){}
       }
+      function bindSkeletonMedia(root){
+        root=root||document;
+        root.querySelectorAll('.skeleton-media').forEach(function(wrap){
+          if(wrap.dataset.skeletonInit)return;
+          wrap.dataset.skeletonInit='1';
+          var img=wrap.querySelector('img');
+          if(!img){wrap.classList.add('is-loaded');return;}
+          function done(){wrap.classList.add('is-loaded');}
+          if(img.complete&&img.naturalWidth>0)done();
+          else{
+            img.addEventListener('load',done,{once:true});
+            img.addEventListener('error',done,{once:true});
+          }
+        });
+      }
+      function enhanceProseArticleImages(root){
+        root=root||document;
+        var prose=root.querySelector('.article__body.prose');
+        if(!prose)return;
+        prose.querySelectorAll('img.article-image').forEach(function(img){
+          if(img.closest('.skeleton-media'))return;
+          var block=img.parentElement&&img.parentElement.tagName==='PICTURE'?img.parentElement:img;
+          var wrap=document.createElement('div');
+          wrap.className='skeleton-media skeleton-media--article';
+          block.parentNode.insertBefore(wrap,block);
+          wrap.appendChild(block);
+        });
+      }
+      function initSkeletonMedia(root){
+        root=root||document;
+        enhanceProseArticleImages(root);
+        bindSkeletonMedia(root);
+      }
       applyTheme();
       syncToggleBtn();
       applyIntroSeen();
+      document.addEventListener('DOMContentLoaded',function(){initSkeletonMedia(document);});
       document.addEventListener('astro:after-swap',function(){
         applyTheme();
         syncToggleBtn();
         applyIntroSeen();
+        initSkeletonMedia(document);
         var main=document.getElementById('main-content');
         if(main){main.setAttribute('tabindex','-1');main.focus({preventScroll:true});}
       });
@@ -81,6 +116,16 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     <ClientRouter />
   </head>
   <body>
+    <noscript>
+      <style is:global>
+        .skeleton-media img {
+          opacity: 1 !important;
+        }
+        .skeleton-media::after {
+          display: none !important;
+        }
+      </style>
+    </noscript>
     <a class="skip-nav" href="#main-content">{t.nav.skipToContent}</a>
     <div class="bg-glow" aria-hidden="true"></div>
     <slot />
@@ -458,5 +503,104 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
   .about__links a:active {
     scale: 0.97;
     transition-duration: 50ms;
+  }
+
+  /* ─── Image skeleton (shimmer reserve space → fade in when loaded) ─ */
+  .skeleton-media {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-bg-overlay);
+  }
+
+  .skeleton-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent 35%,
+      color-mix(in srgb, var(--color-text) 9%, transparent) 50%,
+      transparent 65%
+    );
+    background-size: 220% 100%;
+    opacity: 0.85;
+    transition: opacity 0.35s ease;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes skeleton-shimmer {
+      0% { background-position: 120% 0; }
+      100% { background-position: -120% 0; }
+    }
+
+    .skeleton-media:not(.is-loaded)::after {
+      animation: skeleton-shimmer 1.4s ease-in-out infinite;
+    }
+  }
+
+  .skeleton-media.is-loaded::after {
+    opacity: 0;
+  }
+
+  /* Thumbnails & cards: single img fills a fixed aspect-ratio box */
+  .skeleton-media:not(.skeleton-media--article) img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+
+  .skeleton-media.is-loaded:not(.skeleton-media--article) img {
+    opacity: 1;
+  }
+
+  /* Writing articles: wrapper around <picture> or <img>; keep .article-image layout */
+  .skeleton-media--article {
+    width: 100%;
+    display: block;
+    border-radius: var(--radius-md);
+  }
+
+  .skeleton-media--article picture,
+  .skeleton-media--article > img.article-image {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+  }
+
+  .skeleton-media--article img.article-image {
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+
+  .skeleton-media--article.is-loaded img.article-image {
+    opacity: 1;
+  }
+
+  .article__body.prose .skeleton-media--article {
+    margin-block: var(--space-xl);
+  }
+
+  .article__body.prose .skeleton-media--article .article-image {
+    margin-block: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton-media::after {
+      display: none;
+    }
+
+    .skeleton-media:not(.skeleton-media--article) img,
+    .skeleton-media--article img.article-image {
+      opacity: 1;
+      transition: none;
+    }
   }
 </style>

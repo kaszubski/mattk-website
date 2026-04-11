@@ -141,14 +141,23 @@ const homeJsonLd = {
         </div>
 
         <ul class="latest__grid" role="list">
-          {postCards.map(({ post, thumb }) => {
+          {postCards.map(({ post, thumb }, index) => {
             const colorScheme = categoryColors[post.data.category] ?? "teal";
+            const isFirstCard = index === 0;
             return (
               <li>
                 <a href={`/writing/${writingSlugFromEntryId(post.id)}/`} class={`latest__card latest__card--${colorScheme}`}>
                   {thumb ? (
-                    <div class="latest__card-image">
-                      <img src={thumb} alt="" loading="lazy" width="480" height="252" />
+                    <div class="latest__card-image skeleton-media">
+                      <img
+                        src={thumb}
+                        alt=""
+                        width="480"
+                        height="252"
+                        loading={isFirstCard ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchpriority={isFirstCard ? "high" : undefined}
+                      />
                     </div>
                   ) : (
                     <div class="latest__card-accent" aria-hidden="true"></div>

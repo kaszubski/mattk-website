@@ -91,7 +91,7 @@ const sections = sectionOrder.map(({ id, label }) => ({
                   <li class="post">
                     <a class="post__inner" href={`/writing/${slug}/`}>
                       {thumbSrc ? (
-                        <div class="post__thumb" aria-hidden="true">
+                        <div class="post__thumb skeleton-media" aria-hidden="true">
                           <img
                             src={thumbSrc}
                             alt=""
@@ -228,6 +228,10 @@ const sections = sectionOrder.map(({ id, label }) => ({
     background: var(--color-bg-elevated);
     border: 1px solid var(--color-border);
     align-self: center;
+  }
+
+  .post__thumb.skeleton-media {
+    background: var(--color-bg-overlay);
   }
 
   .post__thumb img {

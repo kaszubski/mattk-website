@@ -1,10 +1,291 @@
 ---
 title: "Future-Proof Your Code: Mastering JavaScript Data Grouping"
 shortTitle: "JavaScript Data Grouping"
-description: "From forEach loops to Object.groupBy — a practical guide to data grouping in JavaScript with TypeScript-safe implementations."
-date: "2024-01-01"
+description: "From forEach and reduce to Object.groupBy — group data in JavaScript with clear patterns, TypeScript typings, polyfills, and a nested Ghost in the Shell–style example."
+date: "2025-02-08"
 mediumUrl: "https://medium.com/@matt.kaszubski/future-proof-your-code-mastering-javascript-data-grouping-b4183540b8ad"
 category: coding
+ogImage: ../../assets/writing/future-proof_your_code_01.webp
 ---
 
-{/* PASTE FULL ARTICLE CONTENT BELOW */}
+import { Image } from 'astro:assets';
+import futureProofIllustration01 from '../../assets/writing/future-proof_your_code_01.webp';
+import futureProofIllustration02 from '../../assets/writing/future-proof_your_code_02.webp';
+import futureProofIllustration03 from '../../assets/writing/future-proof_your_code_03.webp';
+
+**TL;DR:** Learn how to group data in JavaScript using simple and powerful techniques — `forEach` for clarity and `reduce` for a sleek, functional approach. Plus, get a sneak peek at the new `Object.groupBy` feature with TypeScript enhancements and an advanced example inspired by cybernetic agents from *Ghost in the Shell*. Grab a cuppa, and let’s future-proof your code!
+
+## Introduction
+
+Right, so here we are — diving into one of those everyday coding puzzles that can be as intricate as navigating a neon-lit cyber city. Whether you’re building analytics dashboards, sprucing up e-commerce carts, or handling wild API responses, grouping data is a challenge every developer faces. In this guide, we’ll quickly jump into some neat JavaScript techniques that not only streamline your code but also prepare it for the future.
+
+<Image src={futureProofIllustration01} alt="JavaScript data grouping: from loops to Object.groupBy" class="article-image" />
+
+## A Quick Look at the Basics
+
+### Using forEach
+
+If you’re after clarity with a touch of old-school charm, `forEach` is like having a friendly natter over a pint. Simply loop through your array and slot each item into its proper group — no fuss, no frills:
+
+```javascript
+const data = [
+  { category: 'Tech', value: 10 },
+  { category: 'Books', value: 15 },
+  { category: 'Tech', value: 20 }
+];
+
+const grouped = {};
+
+data.forEach(item => {
+  if (!grouped[item.category]) {
+    grouped[item.category] = [];
+  }
+  grouped[item.category].push(item);
+});
+
+console.log(grouped);
+/* Expected output:
+{
+  Tech: [
+    { category: 'Tech', value: 10 },
+    { category: 'Tech', value: 20 }
+  ],
+  Books: [
+    { category: 'Books', value: 15 }
+  ]
+}
+*/
+```
+
+This method is straightforward, perfect for when you need a quick and reliable solution.
+
+### Embracing reduce
+
+If you’re feeling a bit more cybernetic and want your code to have that sleek, futuristic vibe, `reduce` is your mate. It transforms your data in one elegant sweep — like melding your mind with the digital network:
+
+```javascript
+const grouped = data.reduce((acc, item) => {
+  acc[item.category] = acc[item.category] || [];
+  acc[item.category].push(item);
+  return acc;
+}, {});
+
+console.log(grouped);
+/* Expected output:
+{
+  Tech: [
+    { category: 'Tech', value: 10 },
+    { category: 'Tech', value: 20 }
+  ],
+  Books: [
+    { category: 'Books', value: 15 }
+  ]
+}
+*/
+```
+
+### Why use reduce?
+
+- No side effects (doesn’t modify external variables like `forEach` does)
+- More concise than looping manually
+- Immutable-friendly for functional programming
+
+## Advanced Grouping: New Features & TypeScript Best Practices
+
+### Meet Object.groupBy
+
+Hold on to your hats — here comes the new kid on the block: `Object.groupBy`! This upcoming JavaScript addition simplifies grouping logic without loops or reducers.
+
+**Important:** `Object.groupBy` is a Stage 3 JavaScript proposal, meaning it may not be available in all environments yet. To future-proof your code, use a polyfill (shown later).
+
+```javascript
+const grouped = Object.groupBy(data, item => item.category);
+
+console.log(grouped);
+/* Expected output:
+{
+  Tech: [
+    { category: 'Tech', value: 10 },
+    { category: 'Tech', value: 20 }
+  ],
+  Books: [
+    { category: 'Books', value: 15 }
+  ]
+}
+*/
+```
+
+### Extending TypeScript for Object.groupBy
+
+Since TypeScript doesn’t natively recognize `Object.groupBy` you can declare it manually inside `declare global` to ensure it’s available across your project:
+
+```typescript
+declare global {
+  interface ObjectConstructor {
+    groupBy<T, K extends PropertyKey>(
+      items: T[],
+      keyFn: (item: T) => K
+    ): Record<K, T[]>;
+  }
+}
+```
+
+Now, TypeScript won’t complain, and your code remains type-safe.
+
+### Providing a Fallback for Older Environments
+
+If `Object.groupBy` isn’t available yet, you can polyfill it using `reduce`:
+
+```typescript
+if (!Object.groupBy) {
+  Object.defineProperty(Object, "groupBy", {
+    value: function <T, K extends PropertyKey>(
+      items: T[],
+      keyFn: (item: T) => K
+    ): Record<K, T[]> {
+      return items.reduce((acc, item) => {
+        (acc[keyFn(item)] ||= []).push(item);
+        return acc;
+      }, {} as Record<K, T[]>);
+    },
+    writable: true,
+    configurable: true,
+  });
+}
+```
+
+Now, regardless of your environment, your code will work as expected.
+
+<Image src={futureProofIllustration02} alt="Object.groupBy, TypeScript declarations, and a reduce-based polyfill" class="article-image" />
+
+## Advanced Example: Cybernetic Agents in a Futuristic Data Structure
+
+Let’s level up with a nod to the cybernetic world of *Ghost in the Shell*. Imagine you’re managing a roster of elite agents from Section 9. You need to group these agents first by their role and then by their specialization.
+
+### Defining the Data Structure
+
+```typescript
+interface Agent {
+  name: string;
+  role: 'Leader' | 'Operative' | 'Support';
+  specialization: 'Cyber Warfare' | 'Combat' | 'Sniper' | 'AI';
+  affiliation: string;
+  cyberId: string;
+}
+
+const agents: Agent[] = [
+  { name: 'Motoko Kusanagi', role: 'Leader', specialization: 'Cyber Warfare', affiliation: 'Section 9', cyberId: 'C-01' },
+  { name: 'Batou', role: 'Operative', specialization: 'Combat', affiliation: 'Section 9', cyberId: 'C-02' },
+  { name: 'Tachikoma', role: 'Support', specialization: 'AI', affiliation: 'Section 9', cyberId: 'C-03' },
+  { name: 'Saito', role: 'Operative', specialization: 'Sniper', affiliation: 'Section 9', cyberId: 'C-04' },
+  { name: 'Ishikawa', role: 'Operative', specialization: 'Cyber Warfare', affiliation: 'Section 9', cyberId: 'C-05' },
+];
+```
+
+### Nested Grouping with reduce
+
+Group the agents first by role and then by specialization:
+
+```typescript
+const nestedGroupedAgents = agents.reduce((acc, agent) => {
+  if (!acc[agent.role]) {
+    acc[agent.role] = {};
+  }
+  if (!acc[agent.role][agent.specialization]) {
+    acc[agent.role][agent.specialization] = [];
+  }
+  acc[agent.role][agent.specialization].push(agent);
+  return acc;
+}, {} as Record<Agent['role'], Record<Agent['specialization'], Agent[]>>);
+
+console.log(nestedGroupedAgents);
+/* Expected output:
+{
+  Leader: {
+    'Cyber Warfare': [
+      { name: 'Motoko Kusanagi', role: 'Leader', specialization: 'Cyber Warfare', affiliation: 'Section 9', cyberId: 'C-01' }
+    ]
+  },
+  Operative: {
+    Combat: [
+      { name: 'Batou', role: 'Operative', specialization: 'Combat', affiliation: 'Section 9', cyberId: 'C-02' }
+    ],
+    Sniper: [
+      { name: 'Saito', role: 'Operative', specialization: 'Sniper', affiliation: 'Section 9', cyberId: 'C-04' }
+    ],
+    'Cyber Warfare': [
+      { name: 'Ishikawa', role: 'Operative', specialization: 'Cyber Warfare', affiliation: 'Section 9', cyberId: 'C-05' }
+    ]
+  },
+  Support: {
+    AI: [
+      { name: 'Tachikoma', role: 'Support', specialization: 'AI', affiliation: 'Section 9', cyberId: 'C-03' }
+    ]
+  }
+}
+*/
+```
+
+### Nested Grouping Using Object.groupBy
+
+And if you’re all in on the new `Object.groupBy` feature:
+
+**Note:** `Object.groupBy` is a new JavaScript feature and may not be supported in all environments.
+
+```typescript
+const groupByRole = Object.groupBy(agents, agent => agent.role);
+
+const nestedGrouped = Object.fromEntries(
+  Object.entries(groupByRole).map(([role, group]) => [
+    role,
+    Object.groupBy(group, agent => agent.specialization)
+  ])
+);
+
+console.log(nestedGrouped);
+/* Expected output (same structure as the nestedGroupedAgents snippet):
+{
+  Leader: {
+    'Cyber Warfare': [
+      { name: 'Motoko Kusanagi', role: 'Leader', specialization: 'Cyber Warfare', affiliation: 'Section 9', cyberId: 'C-01' }
+    ]
+  },
+  Operative: {
+    Combat: [
+      { name: 'Batou', role: 'Operative', specialization: 'Combat', affiliation: 'Section 9', cyberId: 'C-02' }
+    ],
+    Sniper: [
+      { name: 'Saito', role: 'Operative', specialization: 'Sniper', affiliation: 'Section 9', cyberId: 'C-04' }
+    ],
+    'Cyber Warfare': [
+      { name: 'Ishikawa', role: 'Operative', specialization: 'Cyber Warfare', affiliation: 'Section 9', cyberId: 'C-05' }
+    ]
+  },
+  Support: {
+    AI: [
+      { name: 'Tachikoma', role: 'Support', specialization: 'AI', affiliation: 'Section 9', cyberId: 'C-03' }
+    ]
+  }
+}
+*/
+```
+
+<Image src={futureProofIllustration03} alt="Nested grouping: Section 9 agents by role and specialization" class="article-image" />
+
+## Summary & Reflective Questions
+
+Whether you’re grouping a simple array or constructing a nested data structure for cybernetic agents, knowing your options is key.
+
+- **forEach** → offers a clear and straightforward approach
+- **reduce** → more functional and cleaner
+- **Object.groupBy** → the future-proof, built-in way (with a polyfill for compatibility)
+
+Grouping data efficiently enhances performance, readability, and maintainability. Whether you opt for `forEach`, `reduce`, or `Object.groupBy`, the best approach depends on your project’s needs and browser support. Take a moment to reflect:
+
+- Which grouping method suits your current project best?
+- How might these techniques evolve as JavaScript continues to grow?
+- What new features are you excited to experiment with in your own code?
+
+Experiment, have a laugh, and code like there’s no tomorrow.
+
+Cheers, and happy coding, mate.

@@ -5,5 +5,5 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   site: "https://mattkaszubski.com",
   trailingSlash: "always",
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes("/secret/") })],
 });

@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import SpeedInsights from "@vercel/speed-insights/astro";
 import type { Translations } from "@/i18n";
 
 interface Props {
@@ -129,6 +130,7 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     <a class="skip-nav" href="#main-content">{t.nav.skipToContent}</a>
     <div class="bg-glow" aria-hidden="true"></div>
     <slot />
+    <SpeedInsights />
   </body>
 </html>
 

@@ -13,9 +13,10 @@ interface Props {
   publishedTime?: string;
   jsonLd?: Record<string, unknown>;
   ogImage?: string;
+  noindex?: boolean;
 }
 
-const { t, title, description, canonicalUrl, ogType = "website", publishedTime, jsonLd, ogImage: ogImageProp } = Astro.props;
+const { t, title, description, canonicalUrl, ogType = "website", publishedTime, jsonLd, ogImage: ogImageProp, noindex = false } = Astro.props;
 
 const pageTitle = title ? `${title} — ${t.siteTitle}` : t.siteTitle;
 const pageDescription = description ?? t.siteDescription;
@@ -34,7 +35,7 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     <meta name="generator" content={Astro.generator} />
     <meta name="author" content="Matt Kaszubski" />
     <meta name="theme-color" content="#07080A" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
     <meta property="og:type" content={ogType} />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     <meta property="og:url" content={canon} />

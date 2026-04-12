@@ -6,8 +6,8 @@ Personal site — engineering leadership writing, bio, and career arc.
 
 ### Highlights
 
-- **4 runtime dependencies** — Astro, MDX, RSS, Sitemap. Nothing else.
-- **Zero third-party scripts** — no analytics, no tracking, no external fonts.
+- **6 runtime dependencies** — Astro, MDX, RSS, Sitemap, Vercel Speed Insights, Vercel Web Analytics.
+- **Minimal third-party scripts** — only Vercel Speed Insights and Web Analytics (privacy-friendly, no cookies); no external fonts.
 - **WCAG AAA accessibility** — automated axe tests on every route in light & dark mode, 44px touch targets, `prefers-reduced-motion` respected across 28 media queries.
 - **Fluid design system** — CSS custom properties, `clamp()` typography, full dark/light theme, scoped component styles.
 - **CI quality gate** — TypeScript strict, Vitest, Playwright + axe (moderate/serious/critical).

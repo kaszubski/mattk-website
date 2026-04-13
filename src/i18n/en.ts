@@ -11,7 +11,7 @@ export const en = {
 
   home: {
     intro:
-      "I'm building Asana's Digital Engineering team in Warsaw, shipping daily alongside partners in San Francisco, New York, and Dublin.",
+      "I lead Digital Engineering in Warsaw, shipping daily alongside partners in San Francisco, New York, and Dublin.",
     introWriting:
       "I write about what leadership gets wrong: metrics that hide the real story, checklists that save launches, and why commitment beats being right.",
   },

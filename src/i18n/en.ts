@@ -10,8 +10,11 @@ export const en = {
   },
 
   home: {
-    intro:
-      "I lead Digital Engineering in Warsaw, shipping daily alongside partners in San Francisco, New York, and Dublin.",
+    introBeforeCities:
+      "I lead Digital Engineering in Warsaw, shipping daily alongside partners in ",
+    introCities: "San Francisco, New York, and Dublin",
+    introCitiesHref: "/clocks/",
+    introAfterCities: ".",
     introWriting:
       "I write about what leadership gets wrong: metrics that hide the real story, checklists that save launches, and why commitment beats being right.",
   },

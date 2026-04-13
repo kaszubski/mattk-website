@@ -246,7 +246,8 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: scale var(--transition-md), opacity var(--transition-md);
   }
 
-  .post__inner:hover .post__thumb img {
+  .post__inner:hover .post__thumb img,
+  .post__inner:focus-within .post__thumb img {
     scale: 1.04;
   }
 
@@ -272,11 +273,13 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: width var(--transition-md);
   }
 
-  .post__inner:hover::before {
+  .post__inner:hover::before,
+  .post__inner:focus-within::before {
     width: 100%;
   }
 
-  .post__inner:hover {
+  .post__inner:hover,
+  .post__inner:focus-within {
     background: var(--color-bg-elevated);
     opacity: 1;
   }
@@ -298,7 +301,8 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: color var(--transition);
   }
 
-  .post__inner:hover .post__title {
+  .post__inner:hover .post__title,
+  .post__inner:focus-within .post__title {
     color: var(--color-accent);
   }
 
@@ -329,7 +333,8 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: color var(--transition), translate var(--transition);
   }
 
-  .post__inner:hover .post__arrow {
+  .post__inner:hover .post__arrow,
+  .post__inner:focus-within .post__arrow {
     color: var(--color-accent);
     translate: 3px 0;
   }

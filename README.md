@@ -64,6 +64,12 @@ Add or edit **`src/content/writing/*.mdx`** with valid frontmatter (`title`, `de
 
 For the About page “featured essays” list, add the slug to **`featuredWritingSlugs`** in `src/i18n/en.ts`. Category labels for the writing index live under **`writing.sectionLabels`**.
 
+## License
+
+- **Code** — [MIT](LICENSE)
+- **Content** (original articles, images, and written material in `src/content/` and `public/og-image.*`, `public/videos/`) — [CC BY-NC 4.0](LICENSE-content)
+- **Third-party fonts** in `public/fonts/` (Syne, Outfit, DM Mono) — [SIL Open Font License](https://openfontlicense.org/)
+
 ## Roadmap
 
 - Related-article links at the end of each post

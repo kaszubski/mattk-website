@@ -67,7 +67,8 @@ For the About page “featured essays” list, add the slug to **`featuredWritin
 ## License
 
 - **Code** — [MIT](LICENSE)
-- **Content** (articles, images, written material in `src/content/` and `public/`) — [CC BY-NC 4.0](LICENSE-content)
+- **Content** (original articles, images, and written material in `src/content/` and `public/og-image.*`, `public/videos/`) — [CC BY-NC 4.0](LICENSE-content)
+- **Third-party fonts** in `public/fonts/` (Syne, Outfit, DM Mono) — [SIL Open Font License](https://openfontlicense.org/)
 
 ## Roadmap
 

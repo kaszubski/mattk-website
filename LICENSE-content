@@ -2,10 +2,17 @@ Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 
 Copyright (c) 2026 Matt Kaszubski
 
-The written content, articles, images, and other creative works in this
-repository — including but not limited to files under `src/content/` and
-`public/` — are licensed under the Creative Commons Attribution-NonCommercial
-4.0 International License.
+The original written content, articles, and images authored for this
+repository — including but not limited to files under `src/content/`,
+`public/og-image.png`, `public/og-image.svg`, and `public/videos/` — are
+licensed under the Creative Commons Attribution-NonCommercial 4.0
+International License.
+
+This license does NOT apply to third-party assets bundled in this
+repository, which remain governed by their own licenses. In particular,
+the fonts under `public/fonts/` (Syne, Outfit, DM Mono) are distributed
+under the SIL Open Font License (OFL) by their respective authors. Refer
+to each upstream project for full license text and attribution.
 
 You are free to:
 

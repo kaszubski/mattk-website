@@ -268,7 +268,7 @@ const aboutJsonLd = {
 
   .timeline__legend-dot--ic { background: var(--color-warm); }
   .timeline__legend-dot--tlm { background: var(--color-accent); }
-  .timeline__legend-dot--em { background: #A78BFA; }
+  .timeline__legend-dot--em { background: var(--color-em); }
 
   .timeline__list {
     list-style: none;
@@ -309,7 +309,7 @@ const aboutJsonLd = {
   }
 
   .timeline__entry--em:hover .timeline__company {
-    color: #A78BFA;
+    color: var(--color-em);
   }
 
   .timeline__entry:hover .timeline__dot {
@@ -342,13 +342,13 @@ const aboutJsonLd = {
   }
 
   .timeline__entry--em .timeline__dot {
-    border-color: #A78BFA;
+    border-color: var(--color-em);
   }
 
   .timeline__entry:first-child .timeline__dot {
-    background: #A78BFA;
-    border-color: #A78BFA;
-    box-shadow: 0 0 8px rgba(167, 139, 250, 0.18);
+    background: var(--color-em);
+    border-color: var(--color-em);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--color-em) 18%, transparent);
   }
 
   .timeline__line {
@@ -421,8 +421,8 @@ const aboutJsonLd = {
   }
 
   .timeline__entry--em .timeline__type-badge {
-    color: #A78BFA;
-    background: rgba(167, 139, 250, 0.15);
+    color: var(--color-em);
+    background: color-mix(in srgb, var(--color-em) 15%, transparent);
   }
 
   /* Writing CTA */

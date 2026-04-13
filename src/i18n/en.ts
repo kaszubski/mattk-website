@@ -1,7 +1,7 @@
 export const en = {
   siteTitle: "Matt Kaszubski",
   siteDescription:
-    "Engineering leadership writing by Matt Kaszubski. Engineering Leader in Warsaw — building teams, shipping globally, enabling AI.",
+    "Engineering leadership writing by Matt Kaszubski. Engineering Leader based in Warsaw — mentoring distributed teams, staying hands-on, and thinking about AI enablement.",
 
   nav: {
     writing: "Writing",
@@ -11,7 +11,7 @@ export const en = {
 
   home: {
     intro:
-      "I took Digital Engineering from zero to a function that ships daily alongside San Francisco, New York, and Dublin.",
+      "I lead engineering work on asana.com from Warsaw, shipping daily alongside teammates in San Francisco, New York, and Dublin.",
     introWriting:
       "I write about what leadership gets wrong: metrics that hide the real story, checklists that save launches, and why commitment beats being right.",
   },
@@ -37,11 +37,11 @@ export const en = {
       "Engineering Leader, Warsaw — building teams, mentoring across functions, and finding what the dashboard hides.",
     narrative: [
       "Your metrics are hiding your best work. I build the teams and systems that find what's missing—the handoffs, the early warnings, and the impact nobody put a KPI on yet.",
-      "I've spent eight years in software—starting as an IC shipping fintech trading platforms, framework-agnostic design systems, and greenfield React apps, then moving into technical leadership and management. The transition was fast, but I never stopped writing code. Even now as an EM I stay hands-on, because I know what good engineering looks like and I can tell when a technical problem is actually a people problem wearing a ticket as a disguise.",
+      "I've spent eight years in software—starting as an IC shipping fintech trading platforms, framework-agnostic design systems, and greenfield React apps, then moving into technical leadership. The transition was fast, but I never stopped writing code. Even as my remit shifted toward leadership I stayed hands-on, because I know what good engineering looks like and I can tell when a technical problem is actually a people problem wearing a ticket as a disguise.",
       "Along the way I've led and mentored engineers across companies like HSBC, Dyson, and Asana—from pair-programming with juniors to coaching Tech Leads who don't report to me. The common thread: distributed leadership scales faster than org charts. I've built hiring bars, shaped team culture, and owned technical vision in orgs where ownership isn't a buzzword but a hiring criterion.",
-      "Currently I'm building Digital Engineering at Asana in Warsaw, shipping daily alongside partners in San Francisco, New York, and Dublin. I also run employer brand for our Warsaw office—campaigns, events, and the stories we tell candidates—which means I regularly coach people across functions.",
+      "Currently I'm a Lead Creative Technologist at Asana, leading engineering work across a distributed team that ships asana.com. The title says IC; the practice says manager — I hire, coach, run reviews, and shape direction, reporting to an EM who treats me as one. I also run employer brand for our Warsaw office—campaigns, events, and the stories we tell candidates—which means I regularly coach people across functions.",
       "I lead with Blanchard SLII because managing everyone the same way is lazy and it burns people out. Some engineers need structure. Some need support. Some need you to get out of the way. The skill is reading which—fast.",
-      "Right now I'm focused on AI enablement—not the hype version, but the practical one: building frameworks so my team actually adopts AI tools in their daily workflows and we can measure the impact honestly, with the same instinct that started this page: knowing what's really happening, not only what's on the dashboard.",
+      "Right now I'm focused on AI enablement—not the hype version, but the practical one: Claude Code as a daily default, AI-driven code review, and MCP-based workflows built on top of Asana itself. The aim is to make these tools the way we work, not a side experiment, and to stay honest about where they actually move the needle—with the same instinct that started this page: knowing what's really happening, not only what's on the dashboard.",
     ],
     timeline: [
       {
@@ -49,14 +49,14 @@ export const en = {
         role: "Engineering Leader / Lead Creative Technologist",
         type: "em" as const,
         period: "Apr 2025 – present",
-        description: "Building Digital Engineering in Warsaw from zero; own technical vision, hiring bar, and team culture across four time zones.",
+        description: "Leading engineering work for the asana.com team across multiple time zones — marketing pages, components, design-system contributions. Hands-on in the codebase; running hiring, coaching, and AI enablement.",
       },
       {
         company: "Sii Poland → HSBC",
         role: "Senior Software Engineer",
         type: "tlm" as const,
         period: "Sep 2021 – Mar 2025",
-        description: "Led squad of 5 engineers; drove architecture decisions, mentored juniors toward independent delivery. Built framework-agnostic component library.",
+        description: "Led technical direction for a framework-agnostic component library adopted across multiple downstream teams. Drove architecture decisions and mentored juniors toward independent delivery.",
       },
       {
         company: "Mindtree → Dyson",
@@ -100,7 +100,7 @@ export const en = {
     closingCtaHref: "https://www.linkedin.com/in/kaszubski/",
     shortBioLabel: "Short bio",
     shortBio:
-      "Matt Kaszubski is an Engineering Leader in Warsaw with eight years across fintech, consumer electronics, and SaaS — currently building Digital Engineering at Asana. He mentors across functions, builds distributed teams, and writes about engineering leadership on this site and on Medium.",
+      "Matt Kaszubski is an Engineering Leader based in Warsaw with eight years across fintech, consumer electronics, and SaaS — currently leading engineering work for asana.com. He mentors across functions, stays hands-on in the code, and writes about engineering leadership on this site and on Medium.",
     connectLabel: "Find me on",
   },
 

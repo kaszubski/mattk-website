@@ -19,6 +19,20 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const slug = writingSlugFromEntryId(post.id);
 
+const allPosts = await getCollection("writing");
+const sameCategory = allPosts
+  .filter((p) => p.id !== post.id && p.data.category === post.data.category)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const otherRecent = allPosts
+  .filter((p) => p.id !== post.id && p.data.category !== post.data.category)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const relatedPosts = [...sameCategory, ...otherRecent].slice(0, 2).map((p) => ({
+  slug: writingSlugFromEntryId(p.id),
+  title: p.data.title,
+  description: p.data.description,
+  category: p.data.category,
+}));
+
 let Content: AstroComponentFactory | undefined;
 try {
   ({ Content } = await render(post));
@@ -52,33 +66,35 @@ if (post.data.ogImage) {
   ogImage = new URL(optimized.src, Astro.site ?? Astro.url).href;
 }
 
-const articleJsonLd = {
+const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Article",
-  headline: post.data.title,
-  description: post.data.description,
-  datePublished: post.data.date.toISOString(),
-  dateModified: post.data.date.toISOString(),
-  image: ogImage ?? new URL("/og-image.png", Astro.site ?? Astro.url).href,
-  author: {
-    "@type": "Person",
-    name: "Matt Kaszubski",
-    url: new URL("/about/", Astro.site ?? Astro.url).href,
-  },
-  publisher: {
-    "@type": "Person",
-    name: "Matt Kaszubski",
-  },
-  url: new URL(`/writing/${slug}/`, Astro.site ?? Astro.url).href,
-};
-
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
-    { "@type": "ListItem", position: 2, name: "Writing", item: `${siteUrl}/writing/` },
-    { "@type": "ListItem", position: 3, name: post.data.title, item: articleUrl },
+  "@graph": [
+    {
+      "@type": "Article",
+      headline: post.data.title,
+      description: post.data.description,
+      datePublished: post.data.date.toISOString(),
+      dateModified: post.data.date.toISOString(),
+      image: ogImage ?? new URL("/og-image.png", Astro.site ?? Astro.url).href,
+      author: {
+        "@type": "Person",
+        name: "Matt Kaszubski",
+        url: new URL("/about/", Astro.site ?? Astro.url).href,
+      },
+      publisher: {
+        "@type": "Person",
+        name: "Matt Kaszubski",
+      },
+      url: articleUrl,
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
+        { "@type": "ListItem", position: 2, name: "Writing", item: `${siteUrl}/writing/` },
+        { "@type": "ListItem", position: 3, name: post.data.title, item: articleUrl },
+      ],
+    },
   ],
 };
 ---
@@ -89,7 +105,7 @@ const breadcrumbJsonLd = {
   description={post.data.description}
   ogType="article"
   publishedTime={post.data.date.toISOString()}
-  jsonLd={articleJsonLd}
+  jsonLd={jsonLd}
   ogImage={ogImage}
 >
   <Nav t={t} activePage="writing" />
@@ -157,6 +173,24 @@ const breadcrumbJsonLd = {
               </div>
             </div>
 
+            {relatedPosts.length > 0 && (
+              <aside class="article__related" aria-labelledby="related-heading">
+                <h2 id="related-heading" class="article__related-label mono">Read next</h2>
+                <ul class="article__related-list" role="list">
+                  {relatedPosts.map((rp) => (
+                    <li class="article__related-item">
+                      <a class="article__related-link" href={`/writing/${rp.slug}/`}>
+                        <span class="mono article__related-category">{rp.category}</span>
+                        <span class="article__related-title">{rp.title}</span>
+                        <span class="article__related-desc">{rp.description}</span>
+                        <span class="article__related-arrow" aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            )}
+
             <footer class="article__footer">
               <a
                 href={mediumUrl}
@@ -180,7 +214,6 @@ const breadcrumbJsonLd = {
   <Footer t={t} />
 </BaseLayout>
 
-<script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
 <style>
   /* ── Reading progress bar ───────────────────────────────── */
@@ -580,6 +613,101 @@ const breadcrumbJsonLd = {
     border-color: var(--color-accent-dim);
     background: var(--color-accent-glow);
     opacity: 1;
+  }
+
+  /* ── Related reading ─────────────────────────────────────── */
+  .article__related {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .article__related-label {
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.6rem;
+    font-weight: 400;
+    margin-bottom: var(--space-md);
+  }
+
+  .article__related-list {
+    list-style: none;
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .article__related-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition), background var(--transition);
+  }
+
+  .article__related-item:hover,
+  .article__related-item:focus-within {
+    border-color: var(--color-accent-dim);
+    background: var(--color-accent-glow);
+  }
+
+  .article__related-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "category arrow"
+      "title    arrow"
+      "desc     arrow";
+    align-items: center;
+    gap: 0.25rem var(--space-md);
+    padding: var(--space-md);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .article__related-category {
+    grid-area: category;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.6rem;
+  }
+
+  .article__related-title {
+    grid-area: title;
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    transition: color var(--transition);
+  }
+
+  .article__related-item:hover .article__related-title,
+  .article__related-item:focus-within .article__related-title {
+    color: var(--color-accent);
+  }
+
+  .article__related-desc {
+    grid-area: desc;
+    font-size: var(--text-xs);
+    color: var(--color-text-2);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .article__related-arrow {
+    grid-area: arrow;
+    color: var(--color-text-faint);
+    font-size: var(--text-sm);
+    transition: color var(--transition), translate var(--transition);
+  }
+
+  .article__related-item:hover .article__related-arrow,
+  .article__related-item:focus-within .article__related-arrow {
+    color: var(--color-accent);
+    translate: 3px 0;
   }
 
   /* ── Entry animation ─────────────────────────────────────── */

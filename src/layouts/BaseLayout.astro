@@ -45,6 +45,7 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content={t.siteTitle} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@kaszubski_" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={ogImage} />
@@ -239,6 +240,8 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     --color-warm-dim:     rgba(245, 197, 99, 0.15);
     --color-warm-glow:    rgba(245, 197, 99, 0.06);
 
+    --color-em:           #A78BFA;   /* violet — used for EM role accents on the about timeline */
+
     --color-border:       rgba(255, 255, 255, 0.16);  /* ≈3:1 on --color-bg — passes 1.4.11 */
     --color-border-hover: rgba(255, 255, 255, 0.28);
     --color-focus:        #5EEAD4;
@@ -296,6 +299,8 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
     --color-warm:         #9E6C1B;   /* dark amber for light bg — ~5.7:1 on #F8F9FA — AA+ */
     --color-warm-dim:     rgba(158, 108, 27, 0.10);
     --color-warm-glow:    rgba(158, 108, 27, 0.05);
+
+    --color-em:           #6D28D9;   /* darker violet for light bg — ~7.4:1 on #F8F9FA */
 
     --color-border:       rgba(0, 0, 0, 0.12);
     --color-border-hover: rgba(0, 0, 0, 0.24);
@@ -405,6 +410,16 @@ const ogImage = ogImageProp ?? new URL("/og-image.png", Astro.site ?? Astro.url)
   }
 
   p { text-wrap: pretty; }
+
+  /* Justified text creates awkward word spacing on very narrow screens.
+     Force left-align + disable hyphenation below 400px.
+     !important needed to override Astro's scoped-style specificity. */
+  @media (max-width: 400px) {
+    p, .article__desc, .writing-page__desc {
+      text-align: left !important;
+      hyphens: none !important;
+    }
+  }
 
   /* ─── Skip nav ───────────────────────────────────────── */
   .skip-nav {

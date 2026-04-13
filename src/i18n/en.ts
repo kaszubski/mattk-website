@@ -1,7 +1,7 @@
 export const en = {
   siteTitle: "Matt Kaszubski",
   siteDescription:
-    "Engineering leadership writing by Matt Kaszubski. Engineering Leader based in Warsaw — mentoring distributed teams, staying hands-on, and thinking about AI enablement.",
+    "Engineering leadership writing by Matt Kaszubski. Engineering Leader based in Warsaw — building AI-enabled engineering teams, mentoring across distances, staying hands-on.",
 
   nav: {
     writing: "Writing",

@@ -36,10 +36,10 @@ export const en = {
     tagline:
       "Engineering Leader, Warsaw — building teams, mentoring across functions, and finding what the dashboard hides.",
     narrative: [
-      "Your metrics are hiding your best work. I build the teams and systems that find what's missing—the handoffs, the early warnings, and the impact nobody put a KPI on yet.",
-      "I've spent eight years in software—starting as an IC shipping fintech trading platforms, framework-agnostic design systems, and greenfield React apps, then moving into technical leadership. The transition was fast, but I never stopped writing code. Even as my remit shifted toward leadership I stayed hands-on, because I know what good engineering looks like and I can tell when a technical problem is actually a people problem wearing a ticket as a disguise.",
+      "Your metrics are hiding your best work. I build and lead the teams — and the systems around them — that find what's missing: the handoffs, the early warnings, and the impact nobody put a KPI on yet.",
+      "I've spent eight years in software—starting as an IC shipping fintech trading platforms, framework-agnostic design systems, and greenfield React apps, then taking on leadership: running delivery, owning hiring and growth decisions, setting technical direction across squads. The transition was fast, and I never stopped writing code. I lead hands-on because I know what good engineering looks like, and because a technical problem is often a people problem wearing a ticket as a disguise.",
       "Along the way I've led and mentored engineers across companies like HSBC, Dyson, and Asana—from pair-programming with juniors to coaching Tech Leads who don't report to me. The common thread: distributed leadership scales faster than org charts. I've built hiring bars, shaped team culture, and owned technical vision in orgs where ownership isn't a buzzword but a hiring criterion.",
-      "Currently I'm a Lead Creative Technologist at Asana, leading engineering work across a distributed team that ships asana.com. The title says IC; the practice says manager — I hire, coach, run reviews, and shape direction, reporting to an EM who treats me as one. I also run employer brand for our Warsaw office—campaigns, events, and the stories we tell candidates—which means I regularly coach people across functions.",
+      "Currently at Asana as Lead Creative Technologist, I lead the engineering work on asana.com across a distributed team — hiring, coaching, shaping technical direction, and shipping code myself. I also run employer brand for our Warsaw office—campaigns, events, and the stories we tell candidates—which means I regularly coach people across functions.",
       "I lead with Blanchard SLII because managing everyone the same way is lazy and it burns people out. Some engineers need structure. Some need support. Some need you to get out of the way. The skill is reading which—fast.",
       "Right now I'm focused on AI enablement—not the hype version, but the practical one: Claude Code as a daily default, AI-driven code review, and MCP-based workflows built on top of Asana itself. The aim is to make these tools the way we work, not a side experiment, and to stay honest about where they actually move the needle—with the same instinct that started this page: knowing what's really happening, not only what's on the dashboard.",
     ],
@@ -56,7 +56,7 @@ export const en = {
         role: "Senior Software Engineer",
         type: "tlm" as const,
         period: "Sep 2021 – Mar 2025",
-        description: "Led technical direction for a framework-agnostic component library adopted across multiple downstream teams. Drove architecture decisions and mentored juniors toward independent delivery.",
+        description: "Ran technical direction and day-to-day delivery for a framework-agnostic component library adopted across multiple downstream teams. Coached engineers across squads, shaped architecture, and grew juniors into independent delivery.",
       },
       {
         company: "Mindtree → Dyson",

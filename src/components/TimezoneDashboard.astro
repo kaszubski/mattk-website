@@ -550,9 +550,17 @@ interface DashboardState {
   function initDashboard(): void {
     const dashboardState = ((window as Window & { __tzDashboardState?: DashboardState }).__tzDashboardState ??= {});
     dashboardState.cleanup?.();
+    dashboardState.cleanup = undefined;
 
     const dashEl = document.querySelector("[data-tz-dashboard]");
-    if (!dashEl) return;
+    if (!dashEl) {
+      if (dashboardState.onAfterSwap) {
+        document.removeEventListener("astro:after-swap", dashboardState.onAfterSwap);
+        dashboardState.onAfterSwap = undefined;
+      }
+      (window as Window & { __tzDashboardState?: DashboardState }).__tzDashboardState = undefined;
+      return;
+    }
     const dash = dashEl;
 
     const cityRows = dash.querySelectorAll<HTMLElement>("[data-tz-city]");

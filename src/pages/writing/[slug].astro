@@ -753,6 +753,10 @@ const jsonLd = {
     if (!bar || !article) {
       progressState.cleanup?.();
       progressState.cleanup = undefined;
+      if (progressState.onAfterSwap) {
+        document.removeEventListener('astro:after-swap', progressState.onAfterSwap);
+        progressState.onAfterSwap = undefined;
+      }
       return;
     }
 

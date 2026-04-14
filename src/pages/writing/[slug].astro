@@ -75,7 +75,7 @@ const jsonLd = {
       description: post.data.description,
       datePublished: post.data.date.toISOString(),
       dateModified: post.data.date.toISOString(),
-      image: ogImage ?? new URL("/og-image.svg", Astro.site ?? Astro.url).href,
+      image: ogImage ?? new URL("/og-image.png", Astro.site ?? Astro.url).href,
       author: {
         "@type": "Person",
         name: "Matt Kaszubski",

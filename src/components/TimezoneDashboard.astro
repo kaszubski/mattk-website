@@ -32,6 +32,8 @@ const CITIES = [
       class="tz-city"
       data-tz-city={city.code}
       data-tz={city.tz}
+      tabindex="0"
+      aria-label={`Highlight ${city.name} timezone row and related hour differences`}
       style={`animation-delay: ${i * 80}ms`}
     >
       <div class="tz-city__info">
@@ -174,6 +176,12 @@ const CITIES = [
 
   .tz-city[data-tz-hovered] {
     background: rgba(255, 107, 107, 0.04);
+  }
+
+  .tz-city:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
   }
 
   :global([data-theme="light"]) .tz-city[data-tz-hovered] {
@@ -573,7 +581,7 @@ const CITIES = [
 
     // Hover handling
     cityRows.forEach((row) => {
-      row.addEventListener("mouseenter", () => {
+      const activate = () => {
         const code = row.dataset.tzCity;
         cityRows.forEach((r) => {
           if (r.dataset.tzCity === code) {
@@ -586,14 +594,19 @@ const CITIES = [
         dash.querySelectorAll<HTMLElement>("[data-tz-matrix-head]").forEach((th) => {
           th.style.color = th.dataset.tzMatrixHead === code ? "#ff6b6b" : "";
         });
-      });
+      };
 
-      row.addEventListener("mouseleave", () => {
+      const deactivate = () => {
         cityRows.forEach((r) => r.removeAttribute("data-tz-hovered"));
         dash.querySelectorAll<HTMLElement>("[data-tz-matrix-head]").forEach((th) => {
           th.style.color = "";
         });
-      });
+      };
+
+      row.addEventListener("mouseenter", activate);
+      row.addEventListener("mouseleave", deactivate);
+      row.addEventListener("focus", activate);
+      row.addEventListener("blur", deactivate);
     });
 
     // Tick — update clocks, cursors, phases, matrix

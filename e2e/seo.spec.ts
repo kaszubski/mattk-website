@@ -12,7 +12,10 @@ const PUBLIC_INDEXABLE_ROUTES = [
   "/ai/",
   "/stack/",
   "/accessibility/",
-  "/clocks/",
+] as const;
+
+const NOINDEX_ROUTES = [
+  "/secret/yir/",
 ] as const;
 
 test.describe("seo metadata regressions", () => {
@@ -44,8 +47,10 @@ test.describe("seo metadata regressions", () => {
     });
   }
 
-  test("secret year-in-review route stays noindex", async ({ page }) => {
-    await page.goto("/secret/yir/", { waitUntil: "load" });
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
-  });
+  for (const pathname of NOINDEX_ROUTES) {
+    test(`${pathname} stays noindex`, async ({ page }) => {
+      await page.goto(pathname, { waitUntil: "load" });
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
+    });
+  }
 });

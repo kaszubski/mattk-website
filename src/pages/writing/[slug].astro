@@ -62,7 +62,7 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
 
 let ogImage: string | undefined;
 if (post.data.ogImage) {
-  const optimized = await getImage({ src: post.data.ogImage, width: 1200, height: 630, format: "png" });
+  const optimized = await getImage({ src: post.data.ogImage, width: 1200, height: 630, format: "jpg", quality: 82 });
   ogImage = new URL(optimized.src, Astro.site ?? Astro.url).href;
 }
 

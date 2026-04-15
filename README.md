@@ -39,7 +39,7 @@ public/                  # favicon, robots.txt, og-image, self-hosted fonts
 
 ## Requirements
 
-- **Node.js 22+** (`engines` in `package.json`)
+- **Node.js 24.x** (`engines` in `package.json`)
 
 ## Development
 
@@ -60,7 +60,7 @@ npm run verify           # check + Vitest + e2e (matches CI)
 
 ## Content
 
-Add or edit **`src/content/writing/*.mdx`** with valid frontmatter (`title`, `description`, `date`, `mediumUrl`, `category`, optional `ogImage`). The writing index, RSS, and article URLs are derived automatically. Articles with `ogImage` get a 1200×630 PNG for social previews; others fall back to the generic OG card.
+Add or edit **`src/content/writing/*.mdx`** with valid frontmatter (`title`, `description`, `date`, `mediumUrl`, `category`, optional `ogImage`). The writing index, RSS, and article URLs are derived automatically. Articles with `ogImage` get a 1200×630 generated social card; others fall back to the generic OG card.
 
 For the About page “featured essays” list, add the slug to **`featuredWritingSlugs`** in `src/i18n/en.ts`. Category labels for the writing index live under **`writing.sectionLabels`**.
 
@@ -72,7 +72,7 @@ For the About page “featured essays” list, add the slug to **`featuredWritin
 
 ## Roadmap
 
-- Related-article links at the end of each post
-- BreadcrumbList JSON-LD on article pages
-- Responsive `srcset` for article images
+- Expand keyboard-interaction e2e coverage beyond clocks
+- Add SEO regression checks for additional utility/error routes in CI
+- Keep OG image quality/size tuning under periodic review
 - Periodic manual screen-reader testing (NVDA, VoiceOver)

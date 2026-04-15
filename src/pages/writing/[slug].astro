@@ -736,10 +736,29 @@ const jsonLd = {
 </style>
 
 <script>
+  type ProgressState = {
+    cleanup?: () => void;
+    onAfterSwap?: () => void;
+  };
+
+  const progressState = ((window as Window & { __articleProgressState?: ProgressState }).__articleProgressState ??= {});
+  progressState.cleanup?.();
+  if (progressState.onAfterSwap) {
+    document.removeEventListener('astro:after-swap', progressState.onAfterSwap);
+  }
+
   function initProgressBar() {
     const bar = document.querySelector<HTMLElement>('.reading-progress__bar');
     const article = document.querySelector<HTMLElement>('.article__body');
-    if (!bar || !article) return;
+    if (!bar || !article) {
+      progressState.cleanup?.();
+      progressState.cleanup = undefined;
+      if (progressState.onAfterSwap) {
+        document.removeEventListener('astro:after-swap', progressState.onAfterSwap);
+        progressState.onAfterSwap = undefined;
+      }
+      return;
+    }
 
     function updateProgress() {
       const rect = article!.getBoundingClientRect();
@@ -750,11 +769,19 @@ const jsonLd = {
       bar!.style.width = `${(progress * 100).toFixed(1)}%`;
     }
 
+    progressState.cleanup?.();
     window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress, { passive: true });
     updateProgress();
+    progressState.cleanup = () => {
+      window.removeEventListener('scroll', updateProgress);
+      window.removeEventListener('resize', updateProgress);
+    };
   }
+
   initProgressBar();
-  document.addEventListener('astro:after-swap', initProgressBar);
+  progressState.onAfterSwap = initProgressBar;
+  document.addEventListener('astro:after-swap', progressState.onAfterSwap);
 </script>
 
 <script>

@@ -26,12 +26,18 @@ const CITIES = [
     </div>
   </div>
 
+  <p id="tz-row-helper" class="sr-only">
+    Focus a city row to highlight its timezone timeline and matrix differences.
+  </p>
+
   <!-- City rows -->
   {CITIES.map((city, i) => (
     <div
       class="tz-city"
       data-tz-city={city.code}
       data-tz={city.tz}
+      tabindex="0"
+      aria-describedby="tz-row-helper"
       style={`animation-delay: ${i * 80}ms`}
     >
       <div class="tz-city__info">
@@ -174,6 +180,12 @@ const CITIES = [
 
   .tz-city[data-tz-hovered] {
     background: rgba(255, 107, 107, 0.04);
+  }
+
+  .tz-city:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
   }
 
   :global([data-theme="light"]) .tz-city[data-tz-hovered] {
@@ -593,34 +605,39 @@ interface DashboardState {
       row: HTMLElement;
       enter: () => void;
       leave: () => void;
+      focus: () => void;
+      blur: () => void;
     }> = [];
 
+    const applyActiveCode = (activeCode?: string) => {
+      cityRows.forEach((r) => {
+        if (activeCode && r.dataset.tzCity === activeCode) {
+          r.setAttribute("data-tz-hovered", "");
+        } else {
+          r.removeAttribute("data-tz-hovered");
+        }
+      });
+      dash.querySelectorAll<HTMLElement>("[data-tz-matrix-head]").forEach((th) => {
+        th.style.color = activeCode && th.dataset.tzMatrixHead === activeCode ? "#ff6b6b" : "";
+      });
+    };
+
     cityRows.forEach((row) => {
-      const enter = () => {
+      const activate = () => {
         const code = row.dataset.tzCity;
-        cityRows.forEach((r) => {
-          if (r.dataset.tzCity === code) {
-            r.setAttribute("data-tz-hovered", "");
-          } else {
-            r.removeAttribute("data-tz-hovered");
-          }
-        });
-        // Highlight matrix headers
-        dash.querySelectorAll<HTMLElement>("[data-tz-matrix-head]").forEach((th) => {
-          th.style.color = th.dataset.tzMatrixHead === code ? "#ff6b6b" : "";
-        });
+        applyActiveCode(code);
       };
 
-      const leave = () => {
-        cityRows.forEach((r) => r.removeAttribute("data-tz-hovered"));
-        dash.querySelectorAll<HTMLElement>("[data-tz-matrix-head]").forEach((th) => {
-          th.style.color = "";
-        });
+      const deactivate = () => {
+        const focusedRow = dash.querySelector<HTMLElement>("[data-tz-city]:focus");
+        applyActiveCode(focusedRow?.dataset.tzCity);
       };
 
-      row.addEventListener("mouseenter", enter);
-      row.addEventListener("mouseleave", leave);
-      hoverListeners.push({ row, enter, leave });
+      row.addEventListener("mouseenter", activate);
+      row.addEventListener("mouseleave", deactivate);
+      row.addEventListener("focus", activate);
+      row.addEventListener("blur", deactivate);
+      hoverListeners.push({ row, enter: activate, leave: deactivate, focus: activate, blur: deactivate });
     });
 
     // Tick — update clocks, cursors, phases, matrix
@@ -678,9 +695,11 @@ interface DashboardState {
       clearInterval(intervalId);
       window.removeEventListener("resize", onResize);
       clearTimeout(resizeTimer);
-      hoverListeners.forEach(({ row, enter, leave }) => {
+      hoverListeners.forEach(({ row, enter, leave, focus, blur }) => {
         row.removeEventListener("mouseenter", enter);
         row.removeEventListener("mouseleave", leave);
+        row.removeEventListener("focus", focus);
+        row.removeEventListener("blur", blur);
       });
     };
   }

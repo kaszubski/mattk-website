@@ -1,12 +1,13 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 function writingLastmods(): Map<string, string> {
   const dir = join(process.cwd(), "src/content/writing");
   const out = new Map<string, string>();
+  if (!existsSync(dir)) return out;
   for (const file of readdirSync(dir)) {
     if (!/\.mdx?$/i.test(file)) continue;
     const raw = readFileSync(join(dir, file), "utf8");

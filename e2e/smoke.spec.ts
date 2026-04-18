@@ -1,5 +1,8 @@
 import { expect, test, request } from "@playwright/test";
 
+// Routes to cover explicitly even if they drop out of the sitemap
+// (`/secret/yir/` is noindex by design; `/clocks/` is a belt-and-braces check
+// in case the sitemap config ever excludes it).
 const EXTRA_ROUTES = [
   "/clocks/",
   "/secret/yir/",
@@ -59,15 +62,17 @@ test.describe("site smoke", () => {
       page.on("pageerror", onPageError);
       page.on("response", onResponse);
 
-      const res = await page.goto(pathname, { waitUntil: "load" });
-      if (!res || res.status() !== 200) {
-        failures.push(`${pathname} → ${res?.status() ?? "no response"}`);
+      try {
+        const res = await page.goto(pathname, { waitUntil: "load" });
+        if (!res || res.status() !== 200) {
+          failures.push(`${pathname} → ${res?.status() ?? "no response"}`);
+        }
+        if (pageErrors.length) failures.push(`${pathname} pageerror: ${pageErrors.join(" | ")}`);
+        if (badResources.length) failures.push(`${pathname} bad resources: ${badResources.join(" | ")}`);
+      } finally {
+        page.off("pageerror", onPageError);
+        page.off("response", onResponse);
       }
-      if (pageErrors.length) failures.push(`${pathname} pageerror: ${pageErrors.join(" | ")}`);
-      if (badResources.length) failures.push(`${pathname} bad resources: ${badResources.join(" | ")}`);
-
-      page.off("pageerror", onPageError);
-      page.off("response", onResponse);
     }
 
     expect(failures, `failures on ${baseURL}`).toEqual([]);

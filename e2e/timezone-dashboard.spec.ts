@@ -23,9 +23,9 @@ test.describe("timezone dashboard", () => {
     const clock = page.locator("[data-tz-clock]").first();
     await expect(clock).toHaveText(/^\d{2}:\d{2}:\d{2}$/, { timeout: 2000 });
 
-    const first = await clock.textContent();
+    const first = (await clock.textContent()) ?? "";
     await expect
-      .poll(async () => clock.textContent(), { timeout: 3000, intervals: [500, 500, 500] })
+      .poll(async () => (await clock.textContent()) ?? "", { timeout: 3000, intervals: [500, 500, 500] })
       .not.toBe(first);
   });
 });

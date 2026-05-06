@@ -87,24 +87,6 @@ const aboutJsonLd = {
           </ol>
         </section>
 
-        <p class="about__cta reveal">
-          {t.about.closingLead}{" "}
-          <a
-            href={t.about.closingCtaHref}
-            class="about__cta-link"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {t.about.closingCtaLabel}<span aria-hidden="true"> ↗</span>
-            <span class="sr-only"> (opens in new tab)</span>
-          </a>
-        </p>
-
-        <aside class="about__bio reveal" aria-labelledby="bio-label">
-          <h2 id="bio-label" class="mono about__bio-label">{t.about.shortBioLabel}</h2>
-          <p class="about__bio-text">{t.about.shortBio}</p>
-        </aside>
-
         <aside class="about__glossary reveal" aria-labelledby="glossary-label">
           <h2 id="glossary-label" class="mono about__glossary-label">Glossary</h2>
           <dl class="about__glossary-list reveal-stagger">
@@ -133,6 +115,24 @@ const aboutJsonLd = {
               <dd>DevOps Research and Assessment — four key software delivery metrics</dd>
             </div>
           </dl>
+        </aside>
+
+        <p class="about__cta reveal">
+          {t.about.closingLead}{" "}
+          <a
+            href={t.about.closingCtaHref}
+            class="about__cta-link"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {t.about.closingCtaLabel}<span aria-hidden="true"> ↗</span>
+            <span class="sr-only"> (opens in new tab)</span>
+          </a>
+        </p>
+
+        <aside class="about__bio reveal" aria-labelledby="bio-label">
+          <h2 id="bio-label" class="mono about__bio-label">{t.about.shortBioLabel}</h2>
+          <p class="about__bio-text">{t.about.shortBio}</p>
         </aside>
 
         <div class="about__writing-cta reveal">

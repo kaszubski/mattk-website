@@ -240,6 +240,15 @@ const CITIES = [
     text-transform: uppercase;
   }
 
+  /* On desktop the full city name is visible; the code is redundant
+     (and still shown in the matrix headers below). Mobile keeps it
+     because tz-city__name is hidden there. */
+  @media (min-width: 701px) {
+    .tz-city__code {
+      display: none;
+    }
+  }
+
   .tz-city__clock-wrap {
     display: flex;
     flex-direction: column;

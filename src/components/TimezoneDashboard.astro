@@ -46,9 +46,9 @@ const CITIES = [
         </div>
         <span class="tz-city__phase mono" data-tz-phase></span>
       </div>
-      <div class="tz-city__timeline">
-        <canvas class="tz-city__canvas" data-tz-canvas height="36"></canvas>
-        <div class="tz-city__cursor" data-tz-cursor></div>
+      <div class="tz-city__timeline" role="img" aria-label={`24-hour business/off-hours timeline for ${city.name}; current local time and phase are shown in the adjacent labels.`}>
+        <canvas class="tz-city__canvas" data-tz-canvas height="36" aria-hidden="true"></canvas>
+        <div class="tz-city__cursor" data-tz-cursor aria-hidden="true"></div>
       </div>
     </div>
   ))}

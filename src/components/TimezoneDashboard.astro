@@ -173,11 +173,11 @@ const CITIES = [
   }
 
   .tz-city[data-tz-hovered] {
-    background: rgba(255, 107, 107, 0.04);
+    background: rgba(255, 107, 107, 0.10);
   }
 
   :global([data-theme="light"]) .tz-city[data-tz-hovered] {
-    background: rgba(255, 107, 107, 0.06);
+    background: rgba(255, 107, 107, 0.10);
   }
 
   /* ── City info panel ─────────────────────────────────── */
@@ -272,20 +272,15 @@ const CITIES = [
   }
 
   .tz-city__phase {
-    display: none;
     font-size: 9px;
     color: var(--color-text-faint);
     white-space: nowrap;
     margin-left: var(--space-xs);
   }
 
-  .tz-city[data-tz-hovered] .tz-city__phase {
-    display: inline;
-  }
-
   @media (max-width: 700px) {
     .tz-city__phase {
-      display: none !important;
+      display: none;
     }
   }
 
@@ -488,7 +483,38 @@ interface DashboardState {
     return "rgba(255, 107, 107, 0.25)";                    // red — very far
   }
 
-  function drawTimeline(canvas: HTMLCanvasElement, tz: string): void {
+  type RGB = readonly [number, number, number];
+  type Palette = {
+    night: RGB;
+    duskPeak: RGB;
+    dayPeak: RGB;
+    workOverlay: string;
+    workBorder: string;
+  };
+
+  const DARK_PALETTE: Palette = {
+    night: [8, 12, 24],
+    duskPeak: [88, 52, 29],
+    dayPeak: [46, 140, 24],
+    workOverlay: "rgba(94, 234, 212, 0.08)",
+    workBorder: "rgba(94, 234, 212, 0.2)",
+  };
+
+  const LIGHT_PALETTE: Palette = {
+    night: [200, 210, 230],
+    duskPeak: [230, 195, 165],
+    dayPeak: [180, 220, 195],
+    workOverlay: "rgba(0, 95, 80, 0.06)",
+    workBorder: "rgba(0, 95, 80, 0.18)",
+  };
+
+  function getPalette(): Palette {
+    return document.documentElement.getAttribute("data-theme") === "light"
+      ? LIGHT_PALETTE
+      : DARK_PALETTE;
+  }
+
+  function drawTimeline(canvas: HTMLCanvasElement, _tz: string): void {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -500,6 +526,10 @@ interface DashboardState {
 
     const w = rect.width;
     const h = rect.height;
+    const palette = getPalette();
+    const [nr, ng, nb] = palette.night;
+    const [dr, dg, db] = palette.duskPeak;
+    const [pr, pg, pb] = palette.dayPeak;
 
     // Draw 24h gradient strip
     for (let px = 0; px < w; px++) {
@@ -508,20 +538,19 @@ interface DashboardState {
 
       let r: number, g: number, b: number;
       if (daylight === 0) {
-        // Night — dark blue
-        r = 8; g = 12; b = 24;
+        r = nr; g = ng; b = nb;
       } else if (daylight < 0.3) {
-        // Dawn/dusk — warm orange blend
+        // Night → dusk peak
         const t = daylight / 0.3;
-        r = 8 + t * 80;
-        g = 12 + t * 40;
-        b = 24 + t * 5;
+        r = nr + (dr - nr) * t;
+        g = ng + (dg - ng) * t;
+        b = nb + (db - nb) * t;
       } else {
-        // Day — green
+        // Dusk peak → full daylight
         const t = (daylight - 0.3) / 0.7;
-        r = 88 - t * 42;
-        g = 52 + t * 88;
-        b = 29 - t * 5;
+        r = dr + (pr - dr) * t;
+        g = dg + (pg - dg) * t;
+        b = db + (pb - db) * t;
       }
 
       ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
@@ -531,11 +560,11 @@ interface DashboardState {
     // Work hours overlay (9-17)
     const x9 = (9 / 24) * w;
     const x17 = (17 / 24) * w;
-    ctx.fillStyle = "rgba(94, 234, 212, 0.08)";
+    ctx.fillStyle = palette.workOverlay;
     ctx.fillRect(x9, 0, x17 - x9, h);
 
     // Work hours borders
-    ctx.strokeStyle = "rgba(94, 234, 212, 0.2)";
+    ctx.strokeStyle = palette.workBorder;
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
@@ -574,19 +603,32 @@ interface DashboardState {
       drawTimeline(canvas, tz);
     });
 
+    const redrawAll = () => {
+      canvases.forEach((canvas) => {
+        const row = canvas.closest<HTMLElement>("[data-tz-city]");
+        if (!row) return;
+        drawTimeline(canvas, row.dataset.tz!);
+      });
+    };
+
     // Redraw on resize
     let resizeTimer: ReturnType<typeof setTimeout>;
     const onResize = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        canvases.forEach((canvas) => {
-          const row = canvas.closest<HTMLElement>("[data-tz-city]");
-          if (!row) return;
-          drawTimeline(canvas, row.dataset.tz!);
-        });
-      }, 150);
+      resizeTimer = setTimeout(redrawAll, 150);
     };
     window.addEventListener("resize", onResize);
+
+    // Redraw on theme change (data-theme attribute on <html>)
+    const themeObserver = new MutationObserver((mutations) => {
+      if (mutations.some((m) => m.attributeName === "data-theme")) {
+        redrawAll();
+      }
+    });
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
 
     // Hover handling
     const hoverListeners: Array<{
@@ -678,6 +720,7 @@ interface DashboardState {
       clearInterval(intervalId);
       window.removeEventListener("resize", onResize);
       clearTimeout(resizeTimer);
+      themeObserver.disconnect();
       hoverListeners.forEach(({ row, enter, leave }) => {
         row.removeEventListener("mouseenter", enter);
         row.removeEventListener("mouseleave", leave);

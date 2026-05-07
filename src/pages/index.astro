@@ -187,6 +187,7 @@ const homeJsonLd = {
     <section class="worked" aria-labelledby="worked-heading">
       <div class="container">
         <h2 class="worked__label mono" id="worked-heading">Experience</h2>
+        <p class="worked__subtitle">Eight years across fintech, hardware, and SaaS.</p>
       </div>
       <div
         class="worked__track-wrap"
@@ -515,7 +516,7 @@ const homeJsonLd = {
   }
 
   .worked__label {
-    margin: 0 0 var(--space-lg) 0;
+    margin: 0 0 var(--space-sm) 0;
     font-family: var(--font-mono);
     font-weight: 400;
     line-height: 1.2;
@@ -523,6 +524,13 @@ const homeJsonLd = {
     letter-spacing: 0.12em;
     font-size: 0.6rem;
     color: var(--color-text-faint);
+  }
+
+  .worked__subtitle {
+    margin: 0 0 var(--space-lg) 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-2);
+    max-width: 56ch;
   }
 
   .worked__track-wrap {
@@ -668,7 +676,7 @@ const homeJsonLd = {
   }
 
   .latest__all {
-    color: var(--color-text-faint);
+    color: var(--color-text-2);
     text-decoration: none;
     font-size: 0.65rem;
     letter-spacing: 0.04em;

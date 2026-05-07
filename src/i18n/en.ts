@@ -51,7 +51,7 @@ export const en = {
     timeline: [
       {
         company: "Asana",
-        role: "Engineering Leader / Lead Creative Technologist",
+        role: "Lead Creative Technologist / Engineering Manager",
         type: "em" as const,
         period: "Apr 2025 – present",
         description: "Building Digital Engineering in Warsaw — first engineer on the ground, first hire made. Partnering with the Platform team in San Francisco on the component system, infrastructure, on-call, and the interactive launches that ship on asana.com. Hands-on in the codebase; running hiring, coaching, and AI enablement.",

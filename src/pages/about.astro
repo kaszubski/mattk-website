@@ -40,6 +40,7 @@ const aboutJsonLd = {
           <p class="mono about__page-label">{t.about.pageLabel}</p>
           <h1 id="about-heading" class="about__title" transition:name="page-title">{t.about.headline}</h1>
           <p class="mono about__tagline">{t.about.tagline}</p>
+          <p class="mono about__skills">{t.about.topSkills}</p>
         </header>
 
         <div class="about__narrative reveal">
@@ -215,6 +216,16 @@ const aboutJsonLd = {
     font-size: 0.65rem;
     line-height: 1.5;
     max-width: 52ch;
+  }
+
+  .about__skills {
+    margin-top: var(--space-sm);
+    color: var(--color-text-faint);
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: 0.65rem;
+    line-height: 1.5;
+    max-width: 56ch;
   }
 
   /* Narrative */

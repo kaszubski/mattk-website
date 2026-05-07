@@ -38,18 +38,20 @@ export const en = {
     headline: "Matt Kaszubski",
     tagline:
       "Engineering Leader, Warsaw — building teams, mentoring across functions, and finding what the dashboard hides.",
+    topSkills:
+      "Engineering Management · Team Leadership · Technical Strategy · TypeScript · React",
     narrative: [
       "Your metrics are hiding your best work. I build and lead the teams — and the systems around them — that find what's missing: the handoffs, the early warnings, and the impact nobody put a KPI on yet.",
       "I've spent eight years in software—starting as an IC shipping fintech trading platforms, framework-agnostic design systems, and greenfield React apps, then taking on leadership: running delivery, owning hiring and growth decisions, setting technical direction across squads. The transition was fast, and I never stopped writing code. I lead hands-on because I know what good engineering looks like, and because a technical problem is often a people problem wearing a ticket as a disguise.",
       "Along the way I've led and mentored engineers across companies like HSBC, Dyson, and Asana—from pair-programming with juniors to coaching Tech Leads who don't report to me. The common thread: distributed leadership scales faster than org charts. I've built hiring bars, shaped team culture, and owned technical vision in orgs where ownership isn't a buzzword but a hiring criterion.",
-      "Currently at Asana I'm building Digital Engineering in Warsaw as Lead Creative Technologist — first engineer on the ground, first hire made. I partner daily with the Platform team in San Francisco on the full engineering stack: component system, infrastructure, on-call, and the interactive launches and campaigns that ship on asana.com. Day-to-day: hiring, coaching, shaping technical direction, and shipping code myself.",
+      "Currently at Asana I'm building Digital Engineering in Warsaw as Lead Creative Technologist — first engineer on the ground, first hire made. I partner daily with the Platform team in San Francisco on the full engineering stack: component system, infrastructure, on-call, and the interactive launches and campaigns that ship on asana.com. Weekly 1:1s with Tech Leads, platform engineers, and contractors across four time zones — Warsaw, SF, NY, Dublin. Day-to-day: hiring, coaching, shaping technical direction, and shipping code myself.",
       "I lead with Blanchard SLII because managing everyone the same way is lazy and it burns people out. Some engineers need structure. Some need support. Some need you to get out of the way. The skill is reading which—fast.",
       "Right now I'm focused on AI enablement—not the hype version, but the practical one: Claude Code as a daily default, AI-driven code review, and MCP-based workflows built on top of Asana itself. The aim is to make these tools the way we work, not a side experiment, and to stay honest about where they actually move the needle—with the same instinct that started this page: knowing what's really happening, not only what's on the dashboard.",
     ],
     timeline: [
       {
         company: "Asana",
-        role: "Engineering Leader / Lead Creative Technologist",
+        role: "Lead Creative Technologist / Engineering Manager",
         type: "em" as const,
         period: "Apr 2025 – present",
         description: "Building Digital Engineering in Warsaw — first engineer on the ground, first hire made. Partnering with the Platform team in San Francisco on the component system, infrastructure, on-call, and the interactive launches that ship on asana.com. Hands-on in the codebase; running hiring, coaching, and AI enablement.",

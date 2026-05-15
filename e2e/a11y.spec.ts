@@ -14,6 +14,7 @@ const ROUTES = [
   ["AI manifesto", "/ai/"],
   ["stack", "/stack/"],
   ["accessibility statement", "/accessibility/"],
+  ["clocks", "/clocks/"],
   ["404 page", "/this-route-should-not-exist-404-test/"],
 ] as const;
 
@@ -27,7 +28,11 @@ async function expectNoA11yViolations(page: Page, pathname: string, colorScheme:
       /* noop */
     }
   });
-  await page.emulateMedia({ colorScheme });
+  // Audit the settled visual state. Entrance animations (e.g. the timezone
+  // dashboard's staggered fade-up) transiently lower contrast mid-transition;
+  // reduced motion pins elements to their final opacity so axe scans a stable
+  // frame. Colour contrast itself is motion-independent, so coverage is intact.
+  await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
   await page.goto(pathname, { waitUntil: "load" });
 
   await expect(page.locator("#main-content"), `${pathname}: main landmark`).toBeVisible();

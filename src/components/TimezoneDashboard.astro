@@ -140,7 +140,6 @@ const CITIES = [
     font-family: var(--font-mono);
     font-size: 9px;
     color: var(--color-text-faint);
-    opacity: 0.6;
     user-select: none;
   }
 
@@ -279,7 +278,6 @@ const CITIES = [
   .tz-city__offset {
     font-size: 9px;
     color: var(--color-text-faint);
-    opacity: 0.7;
   }
 
   .tz-city__phase {
@@ -385,6 +383,9 @@ const CITIES = [
   }
 
   .tz-matrix__cell {
+    /* Override the global `.mono` colour: cells sit on tinted diff backgrounds,
+       so they need full-strength text to clear AAA contrast on every tint. */
+    color: var(--color-text);
     font-variant-numeric: tabular-nums;
     transition: background var(--transition);
   }
@@ -714,12 +715,6 @@ interface DashboardState {
           const rounded = Math.round(diff);
           cell.textContent = `${rounded >= 0 ? "+" : ""}${rounded}h`;
           cell.style.background = diffColor(rounded);
-          cell.style.color =
-            Math.abs(rounded) <= 2
-              ? "#5eead4"
-              : Math.abs(rounded) >= 8
-                ? "#ff6b6b"
-                : "var(--color-text-2)";
         });
       });
     }

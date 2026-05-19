@@ -166,7 +166,7 @@ const homeJsonLd = {
                   <div class="latest__card-body">
                     <div class="latest__card-top">
                       <p class="latest__card-category mono">{post.data.category}</p>
-                      <span class="latest__card-arrow" aria-hidden="true">↗</span>
+                      <span class="latest__card-arrow" aria-hidden="true">→</span>
                     </div>
                     <p class="latest__card-title">{post.data.shortTitle ?? post.data.title}</p>
                     <p class="latest__card-desc">{post.data.description}</p>
@@ -186,7 +186,25 @@ const homeJsonLd = {
     <!-- ── Worked at ─────────────────────────────────────── -->
     <section class="worked" aria-labelledby="worked-heading">
       <div class="container">
-        <h2 class="worked__label mono" id="worked-heading">Experience</h2>
+        <div class="worked__header">
+          <h2 class="worked__label mono" id="worked-heading">Experience</h2>
+          <button
+            class="worked__toggle mono"
+            type="button"
+            aria-pressed="false"
+            aria-label="Pause companies marquee"
+            data-worked-toggle
+          >
+            <svg class="worked__toggle-icon worked__toggle-icon--pause" width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+              <rect x="2" y="1.5" width="2" height="7" rx="0.5"/>
+              <rect x="6" y="1.5" width="2" height="7" rx="0.5"/>
+            </svg>
+            <svg class="worked__toggle-icon worked__toggle-icon--play" width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+              <path d="M2.5 1.5 L8.5 5 L2.5 8.5 Z"/>
+            </svg>
+            <span class="worked__toggle-label" data-worked-toggle-label>Pause</span>
+          </button>
+        </div>
         <p class="worked__subtitle">Eight years across fintech, hardware, and SaaS.</p>
       </div>
       <div
@@ -515,8 +533,16 @@ const homeJsonLd = {
     padding-block: clamp(2rem, 3.5vw, 3rem) clamp(1rem, 2vw, 1.5rem);
   }
 
+  .worked__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-bottom: var(--space-sm);
+  }
+
   .worked__label {
-    margin: 0 0 var(--space-sm) 0;
+    margin: 0;
     font-family: var(--font-mono);
     font-weight: 400;
     line-height: 1.2;
@@ -524,6 +550,42 @@ const homeJsonLd = {
     letter-spacing: 0.12em;
     font-size: 0.6rem;
     color: var(--color-text-faint);
+  }
+
+  .worked__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.4rem 0.75rem;
+    background: transparent;
+    color: var(--color-text-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+  }
+
+  .worked__toggle:hover,
+  .worked__toggle:focus-visible {
+    color: var(--color-text);
+    border-color: var(--color-accent-dim);
+    background: var(--color-bg-elevated);
+  }
+
+  .worked__toggle-icon {
+    flex-shrink: 0;
+  }
+
+  .worked__toggle[aria-pressed="false"] .worked__toggle-icon--play { display: none; }
+  .worked__toggle[aria-pressed="true"] .worked__toggle-icon--pause { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .worked__toggle { display: none; }
   }
 
   .worked__subtitle {
@@ -811,7 +873,7 @@ const homeJsonLd = {
 
   .latest__card:hover .latest__card-arrow {
     color: var(--color-accent);
-    translate: 2px -2px;
+    translate: 3px 0;
   }
 
   .latest__card--warm:hover .latest__card-arrow {
@@ -908,6 +970,7 @@ document.addEventListener('astro:page-load', () => {
     let dragPointerId: number | null = null;
     let lastClientX = 0;
     let dragging = false;
+    let paused = false;
 
     const normalize = (px: number, w: number) => {
       if (w <= 1) return px;
@@ -935,7 +998,7 @@ document.addEventListener('astro:page-load', () => {
     const tick = (now: number) => {
       const dt = Math.min((now - lastT) / 1000, 0.05);
       lastT = now;
-      if (!dragging && !reduceMotion && setWidth > 0) {
+      if (!dragging && !paused && !reduceMotion && setWidth > 0) {
         x -= AUTO_PX_PER_SEC * dt;
         x = normalize(x, setWidth);
       }
@@ -1033,6 +1096,15 @@ document.addEventListener('astro:page-load', () => {
       else return;
       x = normalize(x, setWidth);
       apply();
+    });
+
+    const toggleBtn = document.querySelector<HTMLButtonElement>('[data-worked-toggle]');
+    const toggleLabel = toggleBtn?.querySelector<HTMLElement>('[data-worked-toggle-label]');
+    toggleBtn?.addEventListener('click', () => {
+      paused = !paused;
+      toggleBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      toggleBtn.setAttribute('aria-label', paused ? 'Play companies marquee' : 'Pause companies marquee');
+      if (toggleLabel) toggleLabel.textContent = paused ? 'Play' : 'Pause';
     });
   }
 });

@@ -186,8 +186,9 @@ const homeJsonLd = {
     <!-- ── Worked at ─────────────────────────────────────── -->
     <section class="worked" aria-labelledby="worked-heading">
       <div class="container">
-        <div class="worked__header">
-          <h2 class="worked__label mono" id="worked-heading">Experience</h2>
+        <h2 class="worked__label mono" id="worked-heading">Experience</h2>
+        <div class="worked__intro">
+          <p class="worked__subtitle">Eight years across fintech, hardware, and SaaS.</p>
           <button
             class="worked__toggle mono"
             type="button"
@@ -205,7 +206,6 @@ const homeJsonLd = {
             <span class="worked__toggle-label" data-worked-toggle-label>Pause</span>
           </button>
         </div>
-        <p class="worked__subtitle">Eight years across fintech, hardware, and SaaS.</p>
       </div>
       <div
         class="worked__track-wrap"
@@ -533,16 +533,8 @@ const homeJsonLd = {
     padding-block: clamp(2rem, 3.5vw, 3rem) clamp(1rem, 2vw, 1.5rem);
   }
 
-  .worked__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-md);
-    margin-bottom: var(--space-sm);
-  }
-
   .worked__label {
-    margin: 0;
+    margin: 0 0 var(--space-sm) 0;
     font-family: var(--font-mono);
     font-weight: 400;
     line-height: 1.2;
@@ -550,6 +542,15 @@ const homeJsonLd = {
     letter-spacing: 0.12em;
     font-size: 0.6rem;
     color: var(--color-text-faint);
+  }
+
+  .worked__intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-lg);
   }
 
   .worked__toggle {
@@ -589,10 +590,12 @@ const homeJsonLd = {
   }
 
   .worked__subtitle {
-    margin: 0 0 var(--space-lg) 0;
+    margin: 0;
     font-size: var(--text-sm);
     color: var(--color-text-2);
     max-width: 56ch;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .worked__track-wrap {

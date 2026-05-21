@@ -585,6 +585,14 @@ const homeJsonLd = {
   .worked__toggle[aria-pressed="false"] .worked__toggle-icon--play { display: none; }
   .worked__toggle[aria-pressed="true"] .worked__toggle-icon--pause { display: none; }
 
+  /* Reserve width for the longer label ("Pause") so the button geometry
+     stays fixed when the text swaps to "Play". 5ch + letter-spacing slack. */
+  .worked__toggle-label {
+    display: inline-block;
+    min-width: calc(5ch + 0.4em);
+    text-align: left;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .worked__toggle { display: none; }
   }

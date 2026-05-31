@@ -1,0 +1,92 @@
+---
+title: "Second Opinion, Not Oracle: AI Tooling for Engineering Leaders"
+shortTitle: "Second Opinion, Not Oracle"
+deck: "A follow-up to The Fishing Net Problem — the leadership skills I built for Claude, what they're good at, and where they fall down."
+description: "I built a small set of Claude Code skills for engineering leadership — code review, coaching, repo health, retros — and held all four to one rule: if the framework doesn't change the output, cut it. Here's the one I actually trust, and where the rest hit their ceiling."
+date: "2026-05-31"
+mediumUrl: "https://medium.com/@matt.kaszubski/second-opinion-not-oracle-ai-tooling-for-engineering-leaders-81c1c52b23bb"
+category: leadership
+readingTimeMinutes: 6
+ogImage: ../../assets/writing/second_opinion_not_oracle_01.webp
+---
+
+import { Image } from 'astro:assets';
+import Callout from '../../components/Callout.astro';
+import secondOpinion01 from '../../assets/writing/second_opinion_not_oracle_01.webp';
+import secondOpinion02 from '../../assets/writing/second_opinion_not_oracle_02.webp';
+import secondOpinion03 from '../../assets/writing/second_opinion_not_oracle_03.webp';
+import secondOpinion04 from '../../assets/writing/second_opinion_not_oracle_04.webp';
+
+<Image src={secondOpinion01} alt="A lone figure in a boat lowering a glowing line into dark water, faint fish and a lattice of light revealed beneath the surface" class="article-image" />
+
+A few months back I wrote about [the fishing net problem](https://mattkaszubski.com/writing/the-fishing-net-problem/) — the idea that your measurement instruments quietly decide what you're allowed to see. Count the wrong things and you'll miss the fish slipping clean through the holes in your net. The argument, in short: measure **better**, not less.
+
+Which left me with an honest, slightly uncomfortable follow-up. **Better with what?**
+
+It's easy to spend 2,000 words telling people to measure outcomes over output. It's much harder to put an actual instrument in their hands. So over a few evenings I built one — well, four. A small set of Claude Code skills for the bits of engineering leadership I do most: reviewing code, coaching people, reading a team's health, running retros. I called it [engineering-leader-skills](https://github.com/kaszubski/engineering-leader-skills).
+
+This isn't a launch post. It's the more interesting bit: what I learned building tools that are meant to help you *lead*, and the one rule I held all four of them to. Because here's my worry with most "AI for managers" tooling — and I say this as someone who just shipped some — **most of it is theatre.**
+
+## The Theatre Test
+
+Go and ask any chatbot to "review this PR like a senior engineering leader," or "help me coach a struggling engineer." You'll get something that *sounds* right. Confident, well-organised, sprinkled with the correct vocabulary — psychological safety, radical candor, growth mindset. All very tidy. And most of it is mush.
+
+The problem isn't that the advice is wrong. It's that the framework is **wallpaper**. You could swap Radical Candor for any other model — or no model at all — and the output would barely twitch. The framework gets name-dropped in the opening line and then quietly ignored for the rest of the answer. That's theatre: the costume of rigour without the rigour.
+
+<Image src={secondOpinion02} alt="A classical theatrical mask lit beside a heavy red stage curtain" class="article-image" />
+
+So I gave myself one rule, and it turned out to be the only design principle that really mattered: **if the framework doesn't visibly change the output, cut it.** Not "mention the framework." Not "be loosely inspired by it." Change the output, in a way you could point at.
+
+Here's what that looks like in practice. A generic PR reviewer tells you to "consider being clearer and more empathetic" — thanks, very helpful. The `pr-review` skill, anchored on Radical Candor, is instead forced to sort every comment into **blocking** or **non-blocking**, cite a `file:line` for each one, and then run a self-check before it hands anything back: *did I bury a real defect under a polite "nit:"?* That last question isn't decoration. It's Radical Candor's **Ruinous Empathy** failure mode doing actual work — catching the most common mistake thoughtful reviewers make, the kindness that softens a real problem until it disappears. You can *see* the framework in the result. If you couldn't, it wouldn't have earned its place.
+
+## The One I Actually Reach For
+
+If the framework skills are the part I'm most cautious about (more on that in a second), `repo-xray` is the one I trust without hesitation — and not by accident. It's the only skill in the set that doesn't *opine*. It **counts**.
+
+Point it at a repo and it reads your git and GitHub history for the signals nobody puts on a dashboard: knowledge silos (files only one person has ever touched), review concentration (one person quietly carrying every review), time-to-first-review and whether it's drifting, PRs that sat open far too long, and silent merges — code that shipped with no review at all. Then it narrates those numbers into a short, plain-English health note.
+
+This is the fishing net problem turned into a tool. Your dashboards count the fish that made it through the net — PRs merged, velocity, deployment frequency. `repo-xray` goes looking for the ones slipping through the holes: the bus-factor-of-one module, the review bottleneck, the merges nobody actually read. The fragility that doesn't show up until someone hands in their notice.
+
+Two things make me trust it where I'm sceptical of the rest.
+
+First, **it never does the arithmetic.** A deterministic script does all the counting; the model only narrates what the script found. That's deliberate — LLMs are confidently terrible at counting, and a health tool that quietly miscounts is worse than no tool at all. The numbers are real. The model's only job is to tell you what they mean.
+
+Second, **it's calibrated, and it knows its own blind spots.** A 66% silent-merge rate on a two-person side project is not the same animal as 66% across a thirty-person team — so on a tiny repo it softens the alarm and tells you why. (A health tool that cries wolf gets uninstalled by Friday.) And when it can only see a recent slice of your history, it says so, rather than dressing up a partial sample as the whole truth. Which, if you've read the fishing net piece, is the entire point: be honest about what your instrument can and can't see.
+
+One detail that matters more than it sounds — it runs entirely on your machine, with your own `git` and `gh` credentials, and it never posts a thing. It reads, it narrates, and every decision stays with you. For a tool you'd point at real company repos, "nothing leaves the room" isn't a footnote.
+
+## Second Opinion, Not Oracle
+
+The other three skills are where I want to be most honest, because this is exactly where the theatre tends to creep back in.
+
+`pr-review` reviews a diff for the things that cost a *team* over time — coupling, reviewability, convention drift — and delivers it with Radical Candor. `coaching-calibrator` takes an engineer and a specific task and works out how to hand it off, using Situational Leadership II. `retro-facilitator` runs a debrief through Conscious Leadership, splitting what actually happened (the verifiable fact) from the story everyone's layered on top, and turning blame into ownership.
+
+They're genuinely useful. But I'll be blunt about what they are, because the gap between *useful* and *oracle* is where credibility goes to die. Underneath, each one takes a framework you could read in a book and applies it, carefully, to your situation. For a newer manager, or as a structured second opinion before a tricky conversation, that's real value. As a pre-mortem — *have I actually thought this through?* — it earns its keep. But none of them is going to tell a seasoned director something they don't already know. They're **scaffolds, not oracles.**
+
+<Image src={secondOpinion03} alt="A dim crystal ball and a brighter one on a desk beside brass measuring calipers and papers" class="article-image" />
+
+And honestly, saying that out loud is the point. `coaching-calibrator` doesn't make the call for you; it forces you to separate two things managers constantly collapse — whether someone is *competent* at a task versus whether they're *committed* to it — and that discipline is the value, not the verdict at the end. The tool that knows it's a thinking aid is worth more than the one pretending to be a brain. **Second opinion, not oracle.** If a tool can't tell you where it falls down, don't trust where it claims to soar.
+
+## What I Left Out
+
+There's an obvious next move with a project like this, which is to keep adding. A 1:1 agenda generator. An OKR drafter. A performance-review helper. A standup summariser. The list writes itself, and every item sounds reasonable in isolation.
+
+I cut all of it. Not because those are bad ideas, but because the moment I couldn't show the framework changing the output — the moment a skill became "helpful generic text with a leadership flavour" — it failed the theatre test and didn't ship. Four skills, not forty. The restraint *is* the product. Anyone can generate a hundred mediocre prompts; the harder and more useful thing is deciding what doesn't belong. If you've managed engineers, you already know the instinct: the senior move is almost never adding more. It's having the taste to take things away.
+
+<Image src={secondOpinion04} alt="A plinth holding four clean tools, ringed by a scatter of smashed and discarded gadgets" class="article-image" />
+
+## The Bottom Line
+
+It's early. The collection is at `v0.2.x`, it's been pointed at far more of my own repos than anyone else's, and the triggers and rubrics will keep sharpening as they meet real PRs and real teams. I'm not going to pretend otherwise — that iteration is the plan, not a disclaimer.
+
+But the bet underneath it is one I'd defend: tooling that's meant to help you *lead* should **measure more than it opines, and own its blind spots.** The instrument that counts honestly — and tells you what it can't see — beats the one that confidently hands you a verdict. That's true of a fishing net, a DORA dashboard, and a pile of AI skills alike.
+
+If you want to poke at it, it's [on GitHub](https://github.com/kaszubski/engineering-leader-skills), MIT-licensed, and installs in Claude Code with one line:
+
+```bash
+/plugin marketplace add kaszubski/engineering-leader-skills
+```
+
+Tell me where it misfires. That's the feedback worth having.
+
+<Callout text="The best leadership tools don't replace your judgment — they make it harder to fool yourself. A second opinion, not an oracle. That's the measure that counts." />

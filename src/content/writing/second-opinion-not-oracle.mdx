@@ -7,9 +7,17 @@ date: "2026-05-31"
 mediumUrl: "https://github.com/kaszubski/engineering-leader-skills"
 category: leadership
 readingTimeMinutes: 6
+ogImage: ../../assets/writing/second_opinion_not_oracle_01.webp
 ---
 
+import { Image } from 'astro:assets';
 import Callout from '../../components/Callout.astro';
+import secondOpinion01 from '../../assets/writing/second_opinion_not_oracle_01.webp';
+import secondOpinion02 from '../../assets/writing/second_opinion_not_oracle_02.webp';
+import secondOpinion03 from '../../assets/writing/second_opinion_not_oracle_03.webp';
+import secondOpinion04 from '../../assets/writing/second_opinion_not_oracle_04.webp';
+
+<Image src={secondOpinion01} alt="A lone figure in a boat lowering a glowing line into dark water, faint fish and a lattice of light revealed beneath the surface" class="article-image" />
 
 A few months back I wrote about [the fishing net problem](/writing/the-fishing-net-problem) — the idea that your measurement instruments quietly decide what you're allowed to see. Count the wrong things and you'll miss the fish slipping clean through the holes in your net. The argument, in short: measure **better**, not less.
 
@@ -24,6 +32,8 @@ This isn't a launch post. It's the more interesting bit: what I learned building
 Go and ask any chatbot to "review this PR like a senior engineering leader," or "help me coach a struggling engineer." You'll get something that *sounds* right. Confident, well-organised, sprinkled with the correct vocabulary — psychological safety, radical candor, growth mindset. All very tidy. And most of it is mush.
 
 The problem isn't that the advice is wrong. It's that the framework is **wallpaper**. You could swap Radical Candor for any other model — or no model at all — and the output would barely twitch. The framework gets name-dropped in the opening line and then quietly ignored for the rest of the answer. That's theatre: the costume of rigour without the rigour.
+
+<Image src={secondOpinion02} alt="A classical theatrical mask lit beside a heavy red stage curtain" class="article-image" />
 
 So I gave myself one rule, and it turned out to be the only design principle that really mattered: **if the framework doesn't visibly change the output, cut it.** Not "mention the framework." Not "be loosely inspired by it." Change the output, in a way you could point at.
 
@@ -53,6 +63,8 @@ The other three skills are where I want to be most honest, because this is exact
 
 They're genuinely useful. But I'll be blunt about what they are, because the gap between *useful* and *oracle* is where credibility goes to die. Underneath, each one takes a framework you could read in a book and applies it, carefully, to your situation. For a newer manager, or as a structured second opinion before a tricky conversation, that's real value. As a pre-mortem — *have I actually thought this through?* — it earns its keep. But none of them is going to tell a seasoned director something they don't already know. They're **scaffolds, not oracles.**
 
+<Image src={secondOpinion03} alt="A dim crystal ball and a brighter one on a desk beside brass measuring calipers and papers" class="article-image" />
+
 And honestly, saying that out loud is the point. `coaching-calibrator` doesn't make the call for you; it forces you to separate two things managers constantly collapse — whether someone is *competent* at a task versus whether they're *committed* to it — and that discipline is the value, not the verdict at the end. The tool that knows it's a thinking aid is worth more than the one pretending to be a brain. **Second opinion, not oracle.** If a tool can't tell you where it falls down, don't trust where it claims to soar.
 
 ## What I Left Out
@@ -60,6 +72,8 @@ And honestly, saying that out loud is the point. `coaching-calibrator` doesn't m
 There's an obvious next move with a project like this, which is to keep adding. A 1:1 agenda generator. An OKR drafter. A performance-review helper. A standup summariser. The list writes itself, and every item sounds reasonable in isolation.
 
 I cut all of it. Not because those are bad ideas, but because the moment I couldn't show the framework changing the output — the moment a skill became "helpful generic text with a leadership flavour" — it failed the theatre test and didn't ship. Four skills, not forty. The restraint *is* the product. Anyone can generate a hundred mediocre prompts; the harder and more useful thing is deciding what doesn't belong. If you've managed engineers, you already know the instinct: the senior move is almost never adding more. It's having the taste to take things away.
+
+<Image src={secondOpinion04} alt="A plinth holding four clean tools, ringed by a scatter of smashed and discarded gadgets" class="article-image" />
 
 ## The Bottom Line
 

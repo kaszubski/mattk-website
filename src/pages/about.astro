@@ -7,6 +7,17 @@ import { Image, getImage } from "astro:assets";
 import profilePhoto from "@/assets/about/matt-profile.jpg";
 
 const profileImageMeta = await getImage({ src: profilePhoto, width: 800, height: 800, format: "webp" });
+const profileImageUrl = new URL(profileImageMeta.src, Astro.site ?? Astro.url).href;
+
+// 800x420 (same 1.91:1 ratio as writing/[slug].astro's 1200x630 ogImage) for
+// og:image/twitter:image — the JSON-LD image above is square, but social cards
+// expect landscape. Capped at 800 wide since the source photo is 800x800 and
+// Astro's image service won't upscale.
+const profileOgImageMeta = await getImage({ src: profilePhoto, width: 800, height: 420, format: "jpg", quality: 82 });
+const profileOgImageUrl = new URL(profileOgImageMeta.src, Astro.site ?? Astro.url).href;
+
+// Derived from shortBio's first sentence so it can't drift out of sync with it.
+const metaDescription = t.about.shortBio.split(". ")[0] + ".";
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -16,7 +27,7 @@ const aboutJsonLd = {
   worksFor: { "@type": "Organization", name: "Asana" },
   url: new URL("/about/", Astro.site ?? Astro.url).href,
   description: t.about.shortBio,
-  image: new URL(profileImageMeta.src, Astro.site ?? Astro.url).href,
+  image: profileImageUrl,
   sameAs: [
     "https://www.linkedin.com/in/kaszubski/",
     "https://github.com/kaszubski",
@@ -30,7 +41,8 @@ const aboutJsonLd = {
 <BaseLayout
   t={t}
   title={t.about.title}
-  description={t.about.shortBio}
+  description={metaDescription}
+  ogImage={profileOgImageUrl}
   jsonLd={aboutJsonLd}
 >
   <Nav t={t} activePage="about" />

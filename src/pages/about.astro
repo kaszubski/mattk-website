@@ -7,6 +7,11 @@ import { Image, getImage } from "astro:assets";
 import profilePhoto from "@/assets/about/matt-profile.jpg";
 
 const profileImageMeta = await getImage({ src: profilePhoto, width: 800, height: 800, format: "webp" });
+const profileImageUrl = new URL(profileImageMeta.src, Astro.site ?? Astro.url).href;
+
+// Shorter than shortBio so it doesn't get truncated mid-sentence in search results.
+const metaDescription =
+  "Matt Kaszubski is an Engineering Manager based in Warsaw with eight years across fintech, consumer electronics, and SaaS — currently building Digital Engineering at Asana.";
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -16,7 +21,7 @@ const aboutJsonLd = {
   worksFor: { "@type": "Organization", name: "Asana" },
   url: new URL("/about/", Astro.site ?? Astro.url).href,
   description: t.about.shortBio,
-  image: new URL(profileImageMeta.src, Astro.site ?? Astro.url).href,
+  image: profileImageUrl,
   sameAs: [
     "https://www.linkedin.com/in/kaszubski/",
     "https://github.com/kaszubski",
@@ -30,7 +35,8 @@ const aboutJsonLd = {
 <BaseLayout
   t={t}
   title={t.about.title}
-  description={t.about.shortBio}
+  description={metaDescription}
+  ogImage={profileImageUrl}
   jsonLd={aboutJsonLd}
 >
   <Nav t={t} activePage="about" />

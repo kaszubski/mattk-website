@@ -46,9 +46,11 @@ const aboutJsonLd = {
           <div class="about__identity">
             <Image
               src={profilePhoto}
-              alt={`Portrait of ${t.about.headline}`}
+              alt=""
               width={176}
               height={176}
+              loading="eager"
+              fetchpriority="high"
               class="about__avatar"
             />
             <h1 id="about-heading" class="about__title" transition:name="page-title">{t.about.headline}</h1>

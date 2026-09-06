@@ -9,9 +9,15 @@ import profilePhoto from "@/assets/about/matt-profile.jpg";
 const profileImageMeta = await getImage({ src: profilePhoto, width: 800, height: 800, format: "webp" });
 const profileImageUrl = new URL(profileImageMeta.src, Astro.site ?? Astro.url).href;
 
-// Shorter than shortBio so it doesn't get truncated mid-sentence in search results.
-const metaDescription =
-  "Matt Kaszubski is an Engineering Manager based in Warsaw with eight years across fintech, consumer electronics, and SaaS — currently building Digital Engineering at Asana.";
+// 800x420 (same 1.91:1 ratio as writing/[slug].astro's 1200x630 ogImage) for
+// og:image/twitter:image — the JSON-LD image above is square, but social cards
+// expect landscape. Capped at 800 wide since the source photo is 800x800 and
+// Astro's image service won't upscale.
+const profileOgImageMeta = await getImage({ src: profilePhoto, width: 800, height: 420, format: "jpg", quality: 82 });
+const profileOgImageUrl = new URL(profileOgImageMeta.src, Astro.site ?? Astro.url).href;
+
+// Derived from shortBio's first sentence so it can't drift out of sync with it.
+const metaDescription = t.about.shortBio.split(". ")[0] + ".";
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -36,7 +42,7 @@ const aboutJsonLd = {
   t={t}
   title={t.about.title}
   description={metaDescription}
-  ogImage={profileImageUrl}
+  ogImage={profileOgImageUrl}
   jsonLd={aboutJsonLd}
 >
   <Nav t={t} activePage="about" />

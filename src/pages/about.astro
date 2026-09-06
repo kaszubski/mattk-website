@@ -3,6 +3,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import { en as t } from "@/i18n";
+import { Image, getImage } from "astro:assets";
+import profilePhoto from "@/assets/about/matt-profile.jpg";
+
+const profileImageMeta = await getImage({ src: profilePhoto, width: 800, height: 800, format: "webp" });
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -12,6 +16,7 @@ const aboutJsonLd = {
   worksFor: { "@type": "Organization", name: "Asana" },
   url: new URL("/about/", Astro.site ?? Astro.url).href,
   description: t.about.shortBio,
+  image: new URL(profileImageMeta.src, Astro.site ?? Astro.url).href,
   sameAs: [
     "https://www.linkedin.com/in/kaszubski/",
     "https://github.com/kaszubski",
@@ -38,7 +43,18 @@ const aboutJsonLd = {
       <div class="container">
         <header class="about__header">
           <p class="mono about__page-label">{t.about.pageLabel}</p>
-          <h1 id="about-heading" class="about__title" transition:name="page-title">{t.about.headline}</h1>
+          <div class="about__identity">
+            <Image
+              src={profilePhoto}
+              alt=""
+              width={176}
+              height={176}
+              loading="eager"
+              fetchpriority="high"
+              class="about__avatar"
+            />
+            <h1 id="about-heading" class="about__title" transition:name="page-title">{t.about.headline}</h1>
+          </div>
           <p class="mono about__tagline">{t.about.tagline}</p>
           <p class="mono about__skills">{t.about.topSkills}</p>
         </header>
@@ -129,7 +145,16 @@ const aboutJsonLd = {
 
         <aside class="about__bio reveal" aria-labelledby="bio-label">
           <h2 id="bio-label" class="mono about__bio-label">{t.about.shortBioLabel}</h2>
-          <p class="about__bio-text">{t.about.shortBio}</p>
+          <div class="about__bio-content">
+            <Image
+              src={profilePhoto}
+              alt=""
+              width={80}
+              height={80}
+              class="about__bio-avatar"
+            />
+            <p class="about__bio-text">{t.about.shortBio}</p>
+          </div>
         </aside>
 
         <div class="about__writing-cta reveal">
@@ -193,6 +218,22 @@ const aboutJsonLd = {
     letter-spacing: 0.1em;
     font-size: 0.65rem;
     margin-bottom: var(--space-md);
+  }
+
+  .about__identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .about__avatar {
+    width: clamp(64px, 14vw, 88px);
+    height: clamp(64px, 14vw, 88px);
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-accent);
+    flex-shrink: 0;
   }
 
   .about__title {
@@ -505,7 +546,25 @@ const aboutJsonLd = {
     margin-bottom: var(--space-sm);
   }
 
+  .about__bio-content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .about__bio-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
   .about__bio-text {
+    flex: 1 1 auto;
+    min-width: 0;
     font-size: var(--text-sm);
     color: var(--color-text);
     line-height: 1.7;

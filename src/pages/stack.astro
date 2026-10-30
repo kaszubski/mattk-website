@@ -313,9 +313,11 @@ import { en as t } from "@/i18n";
     flex-shrink: 0;
   }
 
-  .stack-item__link:hover {
-    color: var(--color-accent);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .stack-item__link:hover {
+      color: var(--color-accent);
+      opacity: 1;
+    }
   }
 
   .stack-page__updated {

@@ -361,24 +361,26 @@ const aboutJsonLd = {
     transition: background var(--transition-md);
   }
 
-  .timeline__entry:hover .timeline__content {
-    background: var(--color-bg-elevated);
-  }
+  @media (hover: hover) and (pointer: fine) {
+    .timeline__entry:hover .timeline__content {
+      background: var(--color-bg-elevated);
+    }
 
-  .timeline__entry:hover .timeline__company {
-    color: var(--color-accent);
-  }
+    .timeline__entry:hover .timeline__company {
+      color: var(--color-accent);
+    }
 
-  .timeline__entry--ic:hover .timeline__company {
-    color: var(--color-warm);
-  }
+    .timeline__entry--ic:hover .timeline__company {
+      color: var(--color-warm);
+    }
 
-  .timeline__entry--em:hover .timeline__company {
-    color: var(--color-em);
-  }
+    .timeline__entry--em:hover .timeline__company {
+      color: var(--color-em);
+    }
 
-  .timeline__entry:hover .timeline__dot {
-    scale: 1.4;
+    .timeline__entry:hover .timeline__dot {
+      scale: 1.4;
+    }
   }
 
   .timeline__marker {
@@ -510,11 +512,13 @@ const aboutJsonLd = {
     transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
-  .about__writing-btn:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .about__writing-btn:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent-dim);
+      background: var(--color-accent-glow);
+      opacity: 1;
+    }
   }
 
   /* CTA */
@@ -535,8 +539,10 @@ const aboutJsonLd = {
     white-space: nowrap;
   }
 
-  .about__cta-link:hover {
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .about__cta-link:hover {
+      opacity: 1;
+    }
   }
 
   /* Short bio */
@@ -667,11 +673,13 @@ const aboutJsonLd = {
     transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
-  .about__links a:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .about__links a:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent-dim);
+      background: var(--color-accent-glow);
+      opacity: 1;
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -697,11 +705,13 @@ const aboutJsonLd = {
 
   .reading-progress__bar {
     height: 100%;
-    width: 0%;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
     background: linear-gradient(90deg, var(--color-accent), var(--color-warm));
     border-radius: 0 1px 1px 0;
-    transition: width 80ms linear;
-    will-change: width;
+    transition: transform 80ms linear;
+    will-change: transform;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -721,7 +731,7 @@ const aboutJsonLd = {
       const contentHeight = rect.height;
       const scrolled = window.scrollY - contentTop;
       const progress = Math.max(0, Math.min(1, scrolled / (contentHeight - window.innerHeight)));
-      bar!.style.width = `${(progress * 100).toFixed(1)}%`;
+      bar!.style.transform = `scaleX(${progress.toFixed(3)})`;
     }
 
     window.addEventListener('scroll', updateProgress, { passive: true });

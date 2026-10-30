@@ -230,11 +230,13 @@ const jsonLd = {
 
   .reading-progress__bar {
     height: 100%;
-    width: 0%;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
     background: linear-gradient(90deg, var(--color-accent), var(--color-warm));
     border-radius: 0 1px 1px 0;
-    transition: width 80ms linear;
-    will-change: width;
+    transition: transform 80ms linear;
+    will-change: transform;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -292,9 +294,11 @@ const jsonLd = {
     transition: color var(--transition);
   }
 
-  .article__breadcrumb-link:hover {
-    color: var(--color-accent);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .article__breadcrumb-link:hover {
+      color: var(--color-accent);
+      opacity: 1;
+    }
   }
 
   .article__breadcrumb-current {
@@ -537,18 +541,20 @@ const jsonLd = {
     transition: border-color var(--transition), color var(--transition);
   }
 
-  .article__medium-cta:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    opacity: 1;
-  }
-
   .article__medium-cta-arrow {
     transition: translate var(--transition);
   }
 
-  .article__medium-cta:hover .article__medium-cta-arrow {
-    translate: 1px -1px;
+  @media (hover: hover) and (pointer: fine) {
+    .article__medium-cta:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      opacity: 1;
+    }
+
+    .article__medium-cta:hover .article__medium-cta-arrow {
+      translate: 1px -1px;
+    }
   }
 
   .article__back-footer {
@@ -562,9 +568,11 @@ const jsonLd = {
     transition: color var(--transition);
   }
 
-  .article__back-footer:hover {
-    color: var(--color-accent);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .article__back-footer:hover {
+      color: var(--color-accent);
+      opacity: 1;
+    }
   }
 
   /* ── Share ───────────────────────────────────────────────── */
@@ -606,11 +614,13 @@ const jsonLd = {
     transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
-  .article__share-btn:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .article__share-btn:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent-dim);
+      background: var(--color-accent-glow);
+      opacity: 1;
+    }
   }
 
   /* ── Related reading ─────────────────────────────────────── */
@@ -641,10 +651,16 @@ const jsonLd = {
     transition: border-color var(--transition), background var(--transition);
   }
 
-  .article__related-item:hover,
   .article__related-item:focus-within {
     border-color: var(--color-accent-dim);
     background: var(--color-accent-glow);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .article__related-item:hover {
+      border-color: var(--color-accent-dim);
+      background: var(--color-accent-glow);
+    }
   }
 
   .article__related-link {
@@ -679,9 +695,14 @@ const jsonLd = {
     transition: color var(--transition);
   }
 
-  .article__related-item:hover .article__related-title,
   .article__related-item:focus-within .article__related-title {
     color: var(--color-accent);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .article__related-item:hover .article__related-title {
+      color: var(--color-accent);
+    }
   }
 
   .article__related-desc {
@@ -702,10 +723,16 @@ const jsonLd = {
     transition: color var(--transition), translate var(--transition);
   }
 
-  .article__related-item:hover .article__related-arrow,
   .article__related-item:focus-within .article__related-arrow {
     color: var(--color-accent);
     translate: 3px 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .article__related-item:hover .article__related-arrow {
+      color: var(--color-accent);
+      translate: 3px 0;
+    }
   }
 
   /* ── Entry animation ─────────────────────────────────────── */
@@ -760,7 +787,7 @@ const jsonLd = {
       const articleHeight = rect.height;
       const scrolled = window.scrollY - articleTop;
       const progress = Math.max(0, Math.min(1, scrolled / (articleHeight - window.innerHeight)));
-      bar!.style.width = `${(progress * 100).toFixed(1)}%`;
+      bar!.style.transform = `scaleX(${progress.toFixed(3)})`;
     }
 
     progressState.cleanup?.();

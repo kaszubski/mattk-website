@@ -313,12 +313,14 @@ const CITIES = [
     position: absolute;
     top: 0;
     bottom: 0;
+    left: 0;
     width: 2px;
     background: #ffd43b;
     border-radius: 1px;
     box-shadow: 0 0 6px rgba(255, 212, 59, 0.6), 0 0 12px rgba(255, 212, 59, 0.3);
     pointer-events: none;
-    transition: left 0.3s ease;
+    transition: transform 0.3s ease;
+    will-change: transform;
   }
 
   :global([data-theme="light"]) .tz-city__cursor {
@@ -697,7 +699,10 @@ interface DashboardState {
         if (phase) phase.textContent = getTimePhase(info.h);
 
         const cursor = row.querySelector<HTMLElement>("[data-tz-cursor]");
-        if (cursor) cursor.style.left = `${(info.frac / 24) * 100}%`;
+        if (cursor) {
+          const timelineWidth = cursor.parentElement?.clientWidth ?? 0;
+          cursor.style.transform = `translateX(${(info.frac / 24) * timelineWidth}px)`;
+        }
       });
 
       // Update matrix

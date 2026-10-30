@@ -88,9 +88,11 @@ const { t, activePage = "home" } = Astro.props;
     transition: color var(--transition);
   }
 
-  .nav__logo:hover {
-    color: var(--color-accent);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .nav__logo:hover {
+      color: var(--color-accent);
+      opacity: 1;
+    }
   }
 
   .nav__list {
@@ -116,11 +118,18 @@ const { t, activePage = "home" } = Astro.props;
     transition: color var(--transition), background var(--transition);
   }
 
-  .nav__list a:hover,
   .nav__list a.active {
     color: var(--color-text);
     background: var(--color-nav-hover-bg);
     opacity: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav__list a:hover {
+      color: var(--color-text);
+      background: var(--color-nav-hover-bg);
+      opacity: 1;
+    }
   }
 
   /* Theme toggle */
@@ -139,9 +148,11 @@ const { t, activePage = "home" } = Astro.props;
     transition: color var(--transition), background var(--transition);
   }
 
-  .nav__theme-toggle:hover {
-    color: var(--color-text);
-    background: var(--color-nav-hover-bg);
+  @media (hover: hover) and (pointer: fine) {
+    .nav__theme-toggle:hover {
+      color: var(--color-text);
+      background: var(--color-nav-hover-bg);
+    }
   }
 
   /* Dark mode (default): show sun icon, hide moon */

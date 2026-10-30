@@ -164,11 +164,13 @@ const quote = quotes[Math.floor(Math.random() * quotes.length)];
     transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
-  .not-found__link:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .not-found__link:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent-dim);
+      background: var(--color-accent-glow);
+      opacity: 1;
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {

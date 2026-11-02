@@ -629,7 +629,10 @@ interface DashboardState {
     let resizeTimer: ReturnType<typeof setTimeout>;
     const onResize = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(redrawAll, 150);
+      resizeTimer = setTimeout(() => {
+        redrawAll();
+        tick();
+      }, 150);
     };
     window.addEventListener("resize", onResize);
 

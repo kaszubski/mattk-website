@@ -213,11 +213,13 @@ import { en as t } from "@/i18n";
 
   .reading-progress__bar {
     height: 100%;
-    width: 0%;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
     background: linear-gradient(90deg, var(--color-accent), var(--color-warm));
     border-radius: 0 1px 1px 0;
-    transition: width 80ms linear;
-    will-change: width;
+    transition: transform 80ms linear;
+    will-change: transform;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -237,7 +239,7 @@ import { en as t } from "@/i18n";
       const contentHeight = rect.height;
       const scrolled = window.scrollY - contentTop;
       const progress = Math.max(0, Math.min(1, scrolled / (contentHeight - window.innerHeight)));
-      bar!.style.width = `${(progress * 100).toFixed(1)}%`;
+      bar!.style.transform = `scaleX(${progress.toFixed(3)})`;
     }
 
     window.addEventListener('scroll', updateProgress, { passive: true });

@@ -359,13 +359,22 @@ const homeJsonLd = {
     transition: color var(--transition), text-decoration-color var(--transition);
   }
 
-  .hero__cities-link:hover,
   .hero__cities-link:focus-visible {
     color: var(--color-accent);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
     opacity: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero__cities-link:hover {
+      color: var(--color-accent);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      opacity: 1;
+    }
   }
 
   .hero__actions {
@@ -385,27 +394,15 @@ const homeJsonLd = {
     letter-spacing: 0.02em;
     text-decoration: none;
     border-radius: var(--radius-md);
-    transition: all var(--transition-md);
+    transition: color var(--transition-md), border-color var(--transition-md), box-shadow var(--transition-md), translate var(--transition-md);
     background: var(--color-accent);
     color: var(--color-bg);
     font-weight: 500;
     border: 1px solid transparent;
   }
 
-  .hero__cta:hover {
-    opacity: 1;
-    translate: 0 -1px;
-    box-shadow:
-      0 4px 20px var(--color-accent-dim),
-      0 1px 4px rgba(0,0,0,0.2);
-  }
-
   .hero__cta-arrow {
     transition: translate var(--transition);
-  }
-
-  .hero__cta:hover .hero__cta-arrow {
-    translate: 3px 0;
   }
 
   .hero__cta--secondary {
@@ -414,12 +411,26 @@ const homeJsonLd = {
     border: 1px solid var(--color-border);
   }
 
-  .hero__cta--secondary:hover {
-    border-color: var(--color-warm);
-    color: var(--color-warm);
-    box-shadow:
-      0 4px 20px var(--color-warm-dim),
-      0 1px 4px rgba(0,0,0,0.1);
+  @media (hover: hover) and (pointer: fine) {
+    .hero__cta:hover {
+      opacity: 1;
+      translate: 0 -1px;
+      box-shadow:
+        0 4px 20px var(--color-accent-dim),
+        0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .hero__cta:hover .hero__cta-arrow {
+      translate: 3px 0;
+    }
+
+    .hero__cta--secondary:hover {
+      border-color: var(--color-warm);
+      color: var(--color-warm);
+      box-shadow:
+        0 4px 20px var(--color-warm-dim),
+        0 1px 4px rgba(0,0,0,0.1);
+    }
   }
 
   /* ── Hero decorative graphic (desktop) ─────────────── */
@@ -571,11 +582,18 @@ const homeJsonLd = {
     transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
-  .worked__toggle:hover,
   .worked__toggle:focus-visible {
     color: var(--color-text);
     border-color: var(--color-accent-dim);
     background: var(--color-bg-elevated);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .worked__toggle:hover {
+      color: var(--color-text);
+      border-color: var(--color-accent-dim);
+      background: var(--color-bg-elevated);
+    }
   }
 
   .worked__toggle-icon {
@@ -666,11 +684,13 @@ const homeJsonLd = {
     font-weight: 400;
   }
 
-  .worked__item:hover {
-    color: var(--color-accent);
-    text-shadow:
-      0 0 28px rgba(var(--glow-color, 94, 234, 212), 0.75),
-      0 0 60px rgba(var(--glow-color, 94, 234, 212), 0.25);
+  @media (hover: hover) and (pointer: fine) {
+    .worked__item:hover {
+      color: var(--color-accent);
+      text-shadow:
+        0 0 28px rgba(var(--glow-color, 94, 234, 212), 0.75),
+        0 0 60px rgba(var(--glow-color, 94, 234, 212), 0.25);
+    }
   }
 
   :global([data-theme="light"]) .worked__item {
@@ -756,9 +776,11 @@ const homeJsonLd = {
     transition: color var(--transition);
   }
 
-  .latest__all:hover {
-    color: var(--color-accent);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .latest__all:hover {
+      color: var(--color-accent);
+      opacity: 1;
+    }
   }
 
   .latest__grid {
@@ -787,19 +809,21 @@ const homeJsonLd = {
     will-change: transform;
   }
 
-  .latest__card:hover {
-    border-color: var(--color-accent-dim);
-    box-shadow:
-      0 12px 40px var(--color-accent-glow),
-      0 4px 12px rgba(0, 0, 0, 0.2);
-    opacity: 1;
-  }
+  @media (hover: hover) and (pointer: fine) {
+    .latest__card:hover {
+      border-color: var(--color-accent-dim);
+      box-shadow:
+        0 12px 40px var(--color-accent-glow),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+      opacity: 1;
+    }
 
-  .latest__card--warm:hover {
-    border-color: var(--color-warm-dim);
-    box-shadow:
-      0 12px 40px var(--color-warm-glow),
-      0 4px 12px rgba(0, 0, 0, 0.2);
+    .latest__card--warm:hover {
+      border-color: var(--color-warm-dim);
+      box-shadow:
+        0 12px 40px var(--color-warm-glow),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+    }
   }
 
   /* Card image */
@@ -816,8 +840,10 @@ const homeJsonLd = {
     transition: scale var(--transition-md);
   }
 
-  .latest__card:hover .latest__card-image img {
-    scale: 1.03;
+  @media (hover: hover) and (pointer: fine) {
+    .latest__card:hover .latest__card-image img {
+      scale: 1.03;
+    }
   }
 
   /* Decorative accent area for cards without images */
@@ -849,8 +875,10 @@ const homeJsonLd = {
     background: linear-gradient(135deg, var(--color-warm-glow) 0%, var(--color-bg-elevated) 40%, var(--color-accent-glow) 100%);
   }
 
-  .latest__card:hover .latest__card-accent {
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .latest__card:hover .latest__card-accent {
+      opacity: 1;
+    }
   }
 
   .latest__card-body {
@@ -882,13 +910,15 @@ const homeJsonLd = {
     transition: color var(--transition), translate var(--transition);
   }
 
-  .latest__card:hover .latest__card-arrow {
-    color: var(--color-accent);
-    translate: 3px 0;
-  }
+  @media (hover: hover) and (pointer: fine) {
+    .latest__card:hover .latest__card-arrow {
+      color: var(--color-accent);
+      translate: 3px 0;
+    }
 
-  .latest__card--warm:hover .latest__card-arrow {
-    color: var(--color-warm);
+    .latest__card--warm:hover .latest__card-arrow {
+      color: var(--color-warm);
+    }
   }
 
   .latest__card-title {
@@ -906,12 +936,14 @@ const homeJsonLd = {
     overflow: hidden;
   }
 
-  .latest__card:hover .latest__card-title {
-    color: var(--color-accent);
-  }
+  @media (hover: hover) and (pointer: fine) {
+    .latest__card:hover .latest__card-title {
+      color: var(--color-accent);
+    }
 
-  .latest__card--warm:hover .latest__card-title {
-    color: var(--color-warm);
+    .latest__card--warm:hover .latest__card-title {
+      color: var(--color-warm);
+    }
   }
 
   .latest__card-desc {

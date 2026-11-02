@@ -168,7 +168,7 @@ const sections = sectionOrder.map(({ id, label }) => ({
 
   .writing-page__desc {
     font-size: var(--text-sm);
-    color: var(--color-text);
+    color: var(--color-text-2);
     max-width: 52ch;
     line-height: 1.7;
     hyphens: auto;
@@ -245,9 +245,14 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: scale var(--transition-md), opacity var(--transition-md);
   }
 
-  .post__inner:hover .post__thumb img,
   .post__inner:focus-within .post__thumb img {
     scale: 1.04;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .post__inner:hover .post__thumb img {
+      scale: 1.04;
+    }
   }
 
   .post__thumb--placeholder {
@@ -272,15 +277,24 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: width var(--transition-md);
   }
 
-  .post__inner:hover::before,
   .post__inner:focus-within::before {
     width: 100%;
   }
 
-  .post__inner:hover,
   .post__inner:focus-within {
     background: var(--color-bg-elevated);
     opacity: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .post__inner:hover::before {
+      width: 100%;
+    }
+
+    .post__inner:hover {
+      background: var(--color-bg-elevated);
+      opacity: 1;
+    }
   }
 
   .post__body {
@@ -300,14 +314,19 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: color var(--transition);
   }
 
-  .post__inner:hover .post__title,
   .post__inner:focus-within .post__title {
     color: var(--color-accent);
   }
 
+  @media (hover: hover) and (pointer: fine) {
+    .post__inner:hover .post__title {
+      color: var(--color-accent);
+    }
+  }
+
   .post__desc {
     font-size: var(--text-xs);
-    color: var(--color-text);
+    color: var(--color-text-2);
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -332,10 +351,16 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: color var(--transition), translate var(--transition);
   }
 
-  .post__inner:hover .post__arrow,
   .post__inner:focus-within .post__arrow {
     color: var(--color-accent);
     translate: 3px 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .post__inner:hover .post__arrow {
+      color: var(--color-accent);
+      translate: 3px 0;
+    }
   }
 
   @media (min-width: 768px) {
@@ -372,9 +397,11 @@ const sections = sectionOrder.map(({ id, label }) => ({
     transition: color var(--transition);
   }
 
-  .writing-page__medium-link:hover {
-    color: var(--color-accent);
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .writing-page__medium-link:hover {
+      color: var(--color-accent);
+      opacity: 1;
+    }
   }
 
   /* Page load animation */

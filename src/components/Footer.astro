@@ -49,8 +49,10 @@ const year = new Date().getFullYear();
     transition: color var(--transition);
   }
 
-  .footer__copy a:hover {
-    color: var(--color-text-2);
+  @media (hover: hover) and (pointer: fine) {
+    .footer__copy a:hover {
+      color: var(--color-text-2);
+    }
   }
 
   .footer__links {
@@ -70,19 +72,21 @@ const year = new Date().getFullYear();
     min-height: 44px;
   }
 
-  .footer__links a:hover {
-    color: var(--color-text);
-    opacity: 1;
-  }
-
   .footer__ext {
     font-size: 0.6em;
     opacity: 0.5;
     transition: opacity var(--transition);
   }
 
-  .footer__links a:hover .footer__ext {
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .footer__links a:hover {
+      color: var(--color-text);
+      opacity: 1;
+    }
+
+    .footer__links a:hover .footer__ext {
+      opacity: 1;
+    }
   }
 
   @media (min-width: 768px) {
